@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { SoapClientService } from '../../services/soap-client.service';
 
 @Component({
   selector: 'app-seats',
@@ -8,5 +9,12 @@ import { Component } from '@angular/core';
   styleUrl: './seats.component.css'
 })
 export class SeatsComponent {
+
+  constructor(private soapClient: SoapClientService) {}
+  // Inyecta el servicio SOAP
+  ngOnInit() {
+    this.soapClient.callMoviesMethod();
+    // Llama al método SOAP
+  }
 
 }
