@@ -6,9 +6,13 @@ import { parseStringPromise } from 'xml2js';
   providedIn: 'root',
 })
 export class SoapClientService {
-  private url = 'http://atmcinestar.sytes.net/cswsinfo/info.asmx?wsdl';
 
-  async callMoviesMethod() {
+  private info = 'http://atmcinestar.sytes.net/cswsinfo/info.asmx?wsdl';
+  private trans = 'http://atmcinestar.sytes.net/cswstrans/trans.asmx?wsdl';
+
+  //Obtiene las peliculas
+  async getMovies() {
+
     const soapRequest = `
       <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/CSwsInfo/Info">
         <soapenv:Header/>
@@ -21,21 +25,145 @@ export class SoapClientService {
       </soapenv:Envelope>
     `;
 
-    const soapRequest2 = {
-      TheatreGroupId: 191,
-      FilterId: 'MWITHSCHEDULE'
-    }
+    var features = [];
     
     try {
-      const response = await axios.post(this.url, soapRequest, {
+
+      const response = await axios.post(this.info, soapRequest, {
         headers: {
           'Content-Type': 'text/xml',
           'SOAPAction': 'http://tempuri.org/CSwsInfo/Info/Moviesv2'
         },
       });
-      const result = await parseStringPromise(response.data);
-      console.log(result);
+
+      const result = await parseStringPromise(response.data, { explicitArray: false });
+
+      // console.log(result);
+
+      features = result['soap:Envelope']['soap:Body']['Moviesv2Response']['Moviesv2Result']['root']['Feature'];
+      
+      // console.log(features);
+
     } catch (error) {
+
+      console.error('Error al llamar al método SOAP:', error);
+    }
+
+    return features;
+  }
+
+  //Obtiene las imagenes de la peliculas
+  async getPoster(FeatureID: any) {
+
+    const soapRequest = `
+      <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/CSwsInfo/Info">
+        <soapenv:Header/>
+        <soapenv:Body>
+          <tem:GetPoster>
+            <tem:TheatreGroupId>191</tem:TheatreGroupId>
+            <tem:FeatureID>` + FeatureID + `</tem:FeatureID>
+          </tem:GetPoster>
+        </soapenv:Body>
+      </soapenv:Envelope>
+    `;
+
+    var poster = '';
+    
+    try {
+
+      const response = await axios.post(this.info, soapRequest, {
+        headers: {
+          'Content-Type': 'text/xml',
+          'SOAPAction': 'http://tempuri.org/CSwsInfo/Info/GetPoster'
+        },
+      });
+
+      const result = await parseStringPromise(response.data, { explicitArray: false });
+
+      // console.log(result);
+
+      poster = result['soap:Envelope']['soap:Body']['GetPosterResponse']['GetPosterResult'];
+      
+    } catch (error) {
+
+      console.error('Error al llamar al método SOAP:', error);
+    }
+
+    return poster;
+  }
+
+  //Obtiene las funciones de las peliculas
+  async getShows(FeatureID: any) {
+
+    const soapRequest = `
+      <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/CSwsInfo/Info">
+        <soapenv:Header/>
+        <soapenv:Body>
+          <tem:ShowTimeByDateAndMovie>
+            <tem:TheatreGroupId>191</tem:TheatreGroupId>
+            <tem:SDate>20241210</tem:SDate>
+            <tem:FeatureId>`+ FeatureID +`</tem:FeatureId>
+            <tem:FilterId></tem:FilterId>
+          </tem:ShowTimeByDateAndMovie>
+        </soapenv:Body>
+      </soapenv:Envelope>
+    `;
+
+    var show : any = [];
+    
+    try {
+
+      const response = await axios.post(this.info, soapRequest, {
+        headers: {
+          'Content-Type': 'text/xml',
+          'SOAPAction': 'http://tempuri.org/CSwsInfo/Info/ShowTimeByDateAndMovie'
+        },
+      });
+
+      const result = await parseStringPromise(response.data, { explicitArray: false });
+
+      // console.log(result);
+
+      show = result['soap:Envelope']['soap:Body']['ShowTimeByDateAndMovieResponse']['ShowTimeByDateAndMovieResult']['root']['Show'];
+
+    } catch (error) {
+
+      console.error('Error al llamar al método SOAP:', error);
+    }
+
+    return show;
+  }
+
+  async getSeats() {
+    const soapRequest = `
+      <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/CSwsInfo/Info">
+        <soapenv:Header/>
+        <soapenv:Body>
+          <tem:GetSeats>
+            <tem:pTheatreID>191</tem:pTheatreID>
+            <tem:pScheduleID>14505</tem:pScheduleID>
+            <tem:pSessionID>191</tem:pSessionID>
+            <tem:pWorkstation>14505</tem:pWorkstation>
+          </tem:GetSeats>
+        </soapenv:Body>
+      </soapenv:Envelope>
+    `;
+    
+    try {
+
+      const response = await axios.post(this.trans, soapRequest, {
+        headers: {
+          'Content-Type': 'text/xml',
+          'SOAPAction': 'http://tempuri.org/CSwsInfo/Info/GetSeats'
+        },
+      });
+
+      const result = await parseStringPromise(response.data);
+
+      console.log(result);
+
+    } catch (error) {
+
       console.error('Error al llamar al método SOAP:', error);
     }
   }
