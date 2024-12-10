@@ -37,8 +37,8 @@ body {
 }
 
 #sidebar {
-    width: 70px;
-    min-width: 70px;
+    width: 48px;
+    min-width: 48px;
     z-index: 1000;
     transition: all .25s ease-in-out;
     background-color: #240d86;
@@ -52,8 +52,8 @@ body {
 }
 
 #sidebar.expand {
-    width: 260px;
-    min-width: 260px;
+    width: 166px;
+    min-width: 166px;
 }
 
 .toggle-btn {
@@ -89,7 +89,7 @@ body {
 }
 
 a.sidebar-link {
-    padding: .625rem 1.625rem;
+    padding: .625rem 0.625rem;
     color: #FFF;
     display: block;
     font-size: 0.9rem;
