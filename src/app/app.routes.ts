@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { HomeComponent } from './home/home.component';
-import { SeatsComponent } from './seats/seats.component';
+import { LoginComponent } from './screens/login/login.component';
+import { HomeComponent } from './screens/home/home.component';
+import { SeatsComponent } from './screens/seats/seats.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, // Redirección inicial
