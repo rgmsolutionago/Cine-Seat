@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SoapClientService } from '../../services/soap-client.service';
+import { SoapClientService } from '../../core/services/soap-client.service';
 
 @Component({
   selector: 'app-seats',
