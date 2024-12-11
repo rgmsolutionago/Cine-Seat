@@ -25,6 +25,8 @@ export class SeatsComponent {
 
   maxY: number = 0;
 
+  letters: any = [];
+
   constructor(private soapClient: SoapClientService) {}
   
   async ngOnInit() {
@@ -121,13 +123,13 @@ export class SeatsComponent {
 
     });
 
-    const letters = await this.extractUniqueLetters(seats);
+    this.letters = await this.extractUniqueLetters(seats, coordinates.minX);
 
     this.seatsPrint = seats;
     
     // console.log(seats);
 
-    // console.log(letters);
+    // console.log(this.letters);
   }
 
   async findMinCoordinates(seats: any[]){
@@ -147,6 +149,9 @@ export class SeatsComponent {
       }
 
     });
+
+    // Se ajusta minimo de X para agregar las letras
+    minX = minX - 30;
 
     return { minX, minY };
   }
@@ -172,7 +177,7 @@ export class SeatsComponent {
     this.maxY = maxY + 26;
   }
   
-  async extractUniqueLetters(seats: any[]) {
+  async extractUniqueLetters(seats: any[], minX: number) {
 
     const lettersSet = new Set<string>();
 
@@ -183,7 +188,13 @@ export class SeatsComponent {
       // Agregar al conjunto
     });
 
-    return Array.from(lettersSet);
+    const lettersArray = Array.from(lettersSet).map((letter, index) => ({
+      letter,
+      X: 0, // Colocar la letra a la izquierda de los asientos
+      Y: index * 27 // Colocar la letra al comienzo de cada fila
+    }));
+
+    return lettersArray;
     // Convertir el conjunto a un array
   }
 
