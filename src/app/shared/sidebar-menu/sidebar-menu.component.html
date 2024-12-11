@@ -1,43 +1,70 @@
-<div class="sidebarDesk">
-    <aside id="sidebar" [ngClass]="{'expand': isExpanded}">
-      <div class="d-flex">
-        <button class="toggle-btn" (click)="toggleSidebar()" type="button">
-          <!-- <i class="lni lni-grid-alt"></i> -->
-        </button>
-        <div class="sidebar-logo">
-        </div>
+<div class="sidebarDesk d-none d-md-block">
+  <aside id="sidebar" [ngClass]="{'expand': isExpanded}">
+    <div class="d-flex">
+      <button class="toggle-btn" (click)="toggleSidebar()" type="button">
+      </button>
+      <div class="sidebar-logo">
       </div>
-      <ul class="sidebar-nav">
-        
-        <li class="sidebar-item">
-          <a href="#" class="sidebar-link">
-            <i class="fa-solid fa-house"></i>
-            <span>Inicio</span>
-          </a>
-        </li>
+    </div>
+    <ul class="sidebar-nav">
 
-        <li class="sidebar-item">
-          <a href="#" class="sidebar-link">
-            <i class="fa-solid fa-gear"></i>
-            <span>Configuración</span>
-          </a>
-        </li>
-
-      </ul>
-      <div class="sidebar-footer">
+      <li class="sidebar-item">
         <a href="#" class="sidebar-link">
-       <i class="fa-solid fa-circle-question"></i>
-          <span>Ayuda</span>
+          <i class="fa-solid fa-house"></i>
+          <span>Inicio</span>
         </a>
-      </div>
+      </li>
 
-      <div class="sidebar-footer">
+      <li class="sidebar-item">
         <a href="#" class="sidebar-link">
-            <i class="fa-solid fa-door-open"></i>
-          <span>Cerrar Sesión</span>
+          <i class="fa-solid fa-gear"></i>
+          <span>Configuración</span>
         </a>
-      </div>
-    </aside>
-  
+      </li>
+
+    </ul>
+    <div class="sidebar-footer">
+      <a href="#" class="sidebar-link">
+        <i class="fa-solid fa-circle-question"></i>
+        <span>Ayuda</span>
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <a href="#" class="sidebar-link">
+        <i class="fa-solid fa-door-open"></i>
+        <span>Cerrar Sesión</span>
+      </a>
+    </div>
+  </aside>
   </div>
-  
+
+    <style>
+      
+    </style>
+
+<!-- Menú móvil inferior -->
+<div class="container-fluid d-md-none">
+  <div class="row">
+    <div class="col-12">
+      <div class="mobile-menu">
+        <a href="#" class="col d-flex flex-column align-items-center">
+          <i class="fa-solid fa-house"></i>
+          <!-- <span>Inicio</span> -->
+        </a>
+        <a href="#" class="col d-flex flex-column align-items-center">
+          <i class="fa-solid fa-gear"></i>
+          <!-- <span>Configuración</span> -->
+        </a>
+        <a href="#" class="col d-flex flex-column align-items-center">
+          <i class="fa-solid fa-circle-question"></i>
+          <!-- <span>Ayuda</span> -->
+        </a>
+        <a href="#" class="col d-flex flex-column align-items-center">
+          <i class="fa-solid fa-door-open"></i>
+          <!-- <span>Salir</span> -->
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

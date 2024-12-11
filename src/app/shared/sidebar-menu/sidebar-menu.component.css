@@ -40,13 +40,10 @@ body {
     min-width: 48px;
     z-index: 1000;
     transition: all .25s ease-in-out;
-    /* background-color: #240d86; */
-
     background-color: #FFFFFF;
     display: flex;
     flex-direction: column;
     border-radius: 30px;
-    /* box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75); */
     margin-left: 14px;
     margin-top: 40px;
     margin-bottom: 8px;
@@ -153,6 +150,44 @@ a.sidebar-link:hover {
 }
 /* Desktop End */
 
+/* Moboile Init */
+
+.mobile-menu {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    width: auto;
+    height: 60px;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 5px 0; 
+    border-radius: 30px;
+    margin: 0 0 60px 0; 
+  }
+
+  .mobile-menu a {
+    color: #001A54; 
+    text-decoration: none;
+    font-size: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mobile-menu a i {
+    color: #001A54;
+    font-size: 1.25rem;
+  }
+
+  .mobile-menu a span {
+    font-size: 0.65rem;
+    margin-top: 3px; 
+  }
+
+/* Mobile End */
 
 /* Querys Ordenadas */
 
@@ -173,17 +208,17 @@ a.sidebar-link:hover {
 
 /* Telefono */
 @media (max-width: 767px){
-
+  
 }
 
 /* iphone XR */
 @media (max-width: 414px) {
-
+  
 }
 
 /* iphone 12 Pro */
 @media (max-width: 390px) {
-
+ 
 }
 
 /* iphone SE */
