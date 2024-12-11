@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 ::after,
@@ -24,9 +25,7 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
-.wrapper {
-    display: flex;
-}
+/* Desktop Init */
 
 .main {
     min-height: 100vh;
@@ -41,14 +40,19 @@ body {
     min-width: 48px;
     z-index: 1000;
     transition: all .25s ease-in-out;
-    background-color: #240d86;
+    /* background-color: #240d86; */
+
+    background-color: #FFFFFF;
     display: flex;
     flex-direction: column;
     border-radius: 30px;
-    box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
+    /* box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75); */
     margin-left: 14px;
-    margin-top: 14px;
-    margin-bottom: 14px;
+    margin-top: 40px;
+    margin-bottom: 8px;
+    position: absolute;
+    left: 2px;
+    min-height: 90vh;
 }
 
 #sidebar.expand {
@@ -100,6 +104,7 @@ a.sidebar-link {
 .sidebar-link i {
     font-size: 1.1rem;
     margin-right: .75rem;
+    color: #001A54; 
 }
 
 a.sidebar-link:hover {
@@ -109,6 +114,7 @@ a.sidebar-link:hover {
 
 .sidebar-item {
     position: relative;
+    color: #001A540A;
 }
 
 #sidebar:not(.expand) .sidebar-item .sidebar-dropdown {
@@ -145,3 +151,44 @@ a.sidebar-link:hover {
     transform: rotate(45deg);
     transition: all .2s ease-out;
 }
+/* Desktop End */
+
+
+/* Querys Ordenadas */
+
+/* PC */
+@media (min-width: 1357px) {
+
+}
+
+/* Ipad Pro */
+@media (min-width: 1024px) and (max-width: 1356px){
+
+}
+
+/* /Tablet/ */
+@media (min-width: 768px) and (max-width: 1023px){
+
+}
+
+/* Telefono */
+@media (max-width: 767px){
+
+}
+
+/* iphone XR */
+@media (max-width: 414px) {
+
+}
+
+/* iphone 12 Pro */
+@media (max-width: 390px) {
+
+}
+
+/* iphone SE */
+@media (max-width: 375px) {
+   
+}
+
+/* Querys Ordenadas */
