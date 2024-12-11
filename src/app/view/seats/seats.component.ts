@@ -2,12 +2,12 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { SoapClientService } from '../../core/services/soap-client.service';
 import { CommonModule } from '@angular/common';
 import html2canvas from 'html2canvas';
-
+import { SidebarMenuComponent } from '../../shared/sidebar-menu/sidebar-menu.component';
 
 @Component({
   selector: 'app-seats',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,SidebarMenuComponent],
   templateUrl: './seats.component.html',
   styleUrl: './seats.component.css'
 })

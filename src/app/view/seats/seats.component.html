@@ -1,7 +1,6 @@
-<p>seats works!</p>
-
-
 <div #seatContainer style="position: relative; width: 100%; height: 500px;" [ngStyle]="{'width.px': maxX, 'height.px': maxY}">
+    <app-sidebar-menu></app-sidebar-menu>
+
 
     <div *ngFor="let seat of seatsPrint"
         style="width: 20px; height: 26px; border: solid 1px #E1E3EC; position: absolute; font-size: 7px; text-align: center; align-content: center; border-radius: 3px;"

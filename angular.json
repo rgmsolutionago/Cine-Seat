@@ -27,11 +27,9 @@
             "styles": [
               "src/styles.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-<<<<<<< HEAD
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
-=======
-              "node_modules/bootstrap-icons/font/bootstrap-icons.css"
->>>>>>> d1d6e27e7b372611a782a7c85827c1f864ace15b
+
             ],
             "scripts": []
           },
