@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { trigger, style, transition, animate } from '@angular/animations';
-
+import { SidebarMenuComponent } from '../../shared/sidebar-menu/sidebar-menu.component';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,SidebarMenuComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   animations: [
