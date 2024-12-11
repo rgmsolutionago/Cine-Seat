@@ -1,25 +1,31 @@
-<p>seats works!</p>
 
+<div class="col-10 col-sm-10 col-md-9 mx-auto">
 
-<div #seatContainer style="position: absolute; content-visibility: hidden;" [ngStyle]="{'width.px': maxX, 'height.px': maxY}">
+    <div style="overflow: hidden; position: relative; z-index: 1;">
 
-    <div *ngFor="let seat of seatsPrint"
-        style="width: 20px; height: 26px; border: solid 1px #E1E3EC; position: absolute; font-size: 7px; text-align: center; align-content: center; border-radius: 3px; color: #7F859C;"
-        [ngStyle]="{'top.px': seat.Y, 'left.px': seat.X}"
-    >
-        {{seat.SeatNumber}}
+        <div #seatContainer style="position: absolute; content-visibility: hidden;"
+            [ngStyle]="{'width.px': maxX, 'height.px': maxY}">
+    
+            <div *ngFor="let seat of seatsPrint"
+                style="width: 20px; height: 26px; border: solid 1px #E1E3EC; position: absolute; font-size: 7px; text-align: center; align-content: center; border-radius: 3px; color: #7F859C;"
+                [ngStyle]="{'top.px': seat.Y, 'left.px': seat.X}"
+            >
+                {{seat.SeatNumber}}
+            </div>
+    
+            <div *ngFor="let letter of letters"
+                style="width: 20px; height: 26px; border: solid 1px transparent; position: absolute; font-size: 10px; font-weight: 400; text-align: center; align-content: center; border-radius: 3px; color: #7F859C;"
+                [ngStyle]="{'top.px': letter.Y, 'left.px': letter.X}"
+            >
+                {{letter.letter}}
+            </div>
+    
+        </div>
+    
+    </div>
+    
+    <div *ngIf="seatImage" style="position: relative; z-index: 2;">
+        <img [src]="seatImage" alt="Seat Layout" style="width: auto; height: 100vh; max-width: 100%; object-fit: contain;"/>
     </div>
 
-    <div *ngFor="let letter of letters"
-        style="width: 20px; height: 26px; border: solid 1px transparent; position: absolute; font-size: 10px; font-weight: 400; text-align: center; align-content: center; border-radius: 3px; color: #7F859C;"
-        [ngStyle]="{'top.px': letter.Y, 'left.px': letter.X}"
-    >
-        {{letter.letter}}
-    </div>
-
-</div>
-
-<div *ngIf="seatImage" style="position: relative; z-index: 2;">
-    <h2>Imagen Generada:</h2>
-    <img [src]="seatImage" alt="Seat Layout"/>
 </div>
