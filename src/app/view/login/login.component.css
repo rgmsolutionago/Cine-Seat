@@ -69,7 +69,7 @@
     position: absolute;
     /* top: 50%; */
     /* left: 0px; */
-    margin-top: 25px;
+    margin-top: 20px;
     margin-left: 10px;
     transform: translateY(-50%);
     font-size: 20px;
@@ -166,6 +166,10 @@
     text-align: left;
     position: absolute;
     margin-left: -250px;
+  }
+
+  .error-x {
+    margin-right: 10px;
   }
   
   @keyframes fadeInOut {
