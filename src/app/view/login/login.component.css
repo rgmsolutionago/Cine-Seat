@@ -1,180 +1,190 @@
 /* General */
 .login-view {
-    background: linear-gradient(135deg, #f1f2fc, #c8d4fc) !important;
-  }
-  
-  
-  /* Contenedor principal */
-  .login-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    padding: 20px;
-  }
-  
-  /* Logo */
-  .logo img {
-    width: 350px;
-    margin-bottom: 40px;
-  }
-  
-  /* Contenedor del formulario */
-  .form-container {
-    background: transparent;
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  /* Estilo de etiquetas */
-  .form-label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    display: block;
-    text-align: left;
-  }
-  
-  /* Grupo de inputs */
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  /* Input */
-  .form-control {
-    width: 100%;
-    padding: 10px 15px 10px 40px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 15px !important;
-    background-color: #fff;
-    box-sizing: border-box;
-    outline: none;
-  }
-  
-  .form-control:focus {
-    border-color: #03a8fd;
-    box-shadow: 0 0 5px rgba(3, 168, 253, 0.5);
-  }
-  
-  /* Icono dentro del input */
-  .input-group-text {
-    position: relative;
-  }
-  
-  .input-icon {
-    position: absolute;
-    /* top: 50%; */
-    /* left: 0px; */
-    margin-top: 25px;
-    margin-left: 10px;
-    transform: translateY(-50%);
-    font-size: 20px;
-    color: #242424;
-  }
-  
-  /* Botón */
-  .btn-ingresar {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #fff;
-    border: none;
-    border-radius: 15px;
-    background: linear-gradient(45deg, #0336fe, #03a8fd);
-    cursor: pointer;
-  }
-  
-  .btn-ingresar:hover {
-    background: linear-gradient(45deg, #03a8fd, #0336fe);
-    opacity: 0.9;
-  }
-  
+  background: linear-gradient(135deg, #f1f2fc, #c8d4fc) !important;
+}
 
-  /* Recuadro de alerta */
+/* Contenedor principal */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 20px;
+}
+
+/* Logo */
+.logo img {
+  width: 350px;
+  margin-bottom: 40px;
+}
+
+/* Contenedor del formulario */
+.form-container {
+  background: transparent;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Estilo de etiquetas */
+.form-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+  text-align: left;
+}
+
+/* Grupo de inputs */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Input */
+.form-control {
+  width: 100%;
+  padding: 10px 15px 10px 40px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 15px !important;
+  background-color: #fff;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.form-control:focus {
+  border-color: #03a8fd;
+  box-shadow: 0 0 5px rgba(3, 168, 253, 0.5);
+}
+
+/* Icono dentro del input */
+.input-group-text {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  /* top: 50%; */
+  /* left: 0px; */
+  margin-top: 20px;
+  margin-left: 10px;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #242424;
+}
+
+/* Botón */
+.btn-ingresar {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  border: none;
+  border-radius: 15px;
+  background: linear-gradient(45deg, #0336fe, #03a8fd);
+  cursor: pointer;
+}
+
+.btn-ingresar:hover {
+  background: linear-gradient(45deg, #03a8fd, #0336fe);
+  opacity: 0.9;
+}
+
+
+/* Recuadro de alerta */
 .alert-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #fff;
-    color: #ff847e;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    padding: 10px 20px;
-    margin-bottom: 20px;
-    font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  color: #ff847e;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease-in-out;
+}
+
+.alert-container .alert-icon {
+  margin-right: 10px;
+  font-size: 24px;
+}
+
+.alert-container .alert-text {
+  font-weight: bold;
+}
+
+/* Estilo para campos con error */
+.form-group.error .form-label,
+.form-group.error .input-icon i,
+.form-group.error .form-control {
+  color: #ff847e !important;
+  border-color: #ff847e !important;
+}
+
+.error-message {
+  color: #ff847e;
+  font-size: 12px;
+  margin-top: 5px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.form-group.error .error-message {
+  opacity: 1;
+}
+
+.error-box {
+  width: 350px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  color: #ff847e;
+  padding: 10px 20px;
+  font-size: 16px;
+  animation: fadeIn 0.7s ease-in-out;
+}
+
+.error-box i {
+  margin-right: 10px;
+  text-align: left;
+  position: absolute;
+  margin-left: -250px;
+}
+
+.error-x {
+  margin-right: 10px;
+}
+
+@keyframes fadeInOut {
+  0% {
     opacity: 0;
     transform: translateY(-10px);
-    transition: all 0.3s ease-in-out;
   }
-  
-  .alert-container .alert-icon {
-    margin-right: 10px;
-    font-size: 24px;
-  }
-  
-  .alert-container .alert-text {
-    font-weight: bold;
-  }
-  
-  /* Estilo para campos con error */
-  .form-group.error .form-label,
-  .form-group.error .input-icon i,
-  .form-group.error .form-control {
-    color: #ff847e !important;
-    border-color: #ff847e !important;
-  }
-  
-  .error-message {
-    color: #ff847e;
-    font-size: 12px;
-    margin-top: 5px;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-    animation: fadeIn 0.5s ease-in-out;
-  }
-  
-  .form-group.error .error-message {
+  100% {
     opacity: 1;
+    transform: translateY(0);
   }
+}
+/* ####################################### */
+/* ############## Queries ################*/
+/* ####################################### */
 
-  .error-box {
-    width: 350px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    color: #ff847e;
-    padding: 10px 20px;
-    font-size: 16px;
-    animation: fadeIn 0.7s ease-in-out;
-  }
-  
-  .error-box i {
-    margin-right: 10px;
-    text-align: left;
-    position: absolute;
-    margin-left: -250px;
-  }
-  
-  @keyframes fadeInOut {
-    0% {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+/* Desktop */
+@media (min-width: 1357px) {
+}

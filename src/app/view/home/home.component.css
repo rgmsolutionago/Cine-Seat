@@ -1,0 +1,497 @@
+/* General */
+.catalogo-view {
+  background: linear-gradient(135deg, #f1f2fc, #c8d4fc);
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo-img {
+  width: 300px;
+}
+
+/* Filtros */
+.filters-container {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 20px;
+}
+
+.filter {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.filter-select,
+.filter-input {
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  padding: 8px 40px 8px 10px;
+  width: 200px;
+  text-indent: 30px;
+  border-color: transparent;
+}
+
+.filter-icon {
+  position: absolute;
+  left: 15px;
+  color: #0139ff;
+}
+
+/* Indicadores de estado */
+.status-container {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-bottom: 20px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-icon {
+  font-size: 12px;
+}
+
+.status-icon.start {
+  color: #0139ff;
+}
+
+.status-icon.ongoing {
+  color: #0139ff;
+}
+
+.status-icon.end {
+  color: #aab2d1;
+}
+
+/* Tarjetas */
+.movies-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.movie-card {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s ease; /* Suaviza todos los cambios en 0.3s */
+}
+
+.movie-card:hover {
+  background-color: #f2f5ff;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #0139ff;
+  box-shadow: 0 8px 16px rgba(1, 57, 255, 0.3); /* Sombra azul */
+}
+
+
+.movie-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.movie-card-info {
+  display: flex;
+  align-items: center;
+}
+
+.movie-card-img {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.movie-card-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.room {
+  font-weight: bold;
+}
+
+.title {
+  font-weight: bold;
+  color: #161616 !important;
+}
+
+.movie-card-status {
+  padding: 10px;
+  border-radius: 10px;
+  color: #ffffff;
+  text-align: center;
+  font-size: 12px;
+}
+
+.movie-card-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.duration,
+.starts-in {
+  font-size: 14px;
+}
+
+.duration strong,
+.starts-in strong {
+  font-weight: bold;
+}
+
+/*##########################################################*/
+/*######################## QUERIES #########################*/
+/*##########################################################*/
+
+/* Querys Ordenadas */
+
+@media (min-width: 1357px) {
+  .movie-card {
+    width: 400px;
+    height: 200px;
+  }
+
+  .movie-card-img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .movie-card {
+    flex: 1 1 calc(33.333% - 16px); /* 3 tarjetas por línea */
+    max-width: calc(26% - 16px);
+  }
+}
+
+/* Ipad Pro */
+@media (min-width: 1024px) and (max-width: 1356px) {
+  /* General */
+  .catalogo-view {
+    padding-top: 50px;
+  }
+
+  .movie-card {
+    flex: 1 1 calc(50% - 16px); /* 3 tarjetas por línea */
+    max-width: calc(45% - 16px);
+  }
+
+  .filter-select,
+  .filter-input {
+    width: 280px;
+    height: 70px;
+    font-size: 25px;
+    text-indent: 40px;
+  }
+
+  .filter-icon {
+    position: absolute;
+    right: 10px;
+    color: #0139ff;
+    font-size: 20px;
+  }
+
+  .movie-card {
+    height: auto;
+  }
+
+  .movie-card-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+  }
+
+  .movie-card-status {
+    font-size: 15px;
+    padding: 20px;
+    margin-top: 5px;
+  }
+
+  .duration,
+  .starts-in {
+    font-size: 20px;
+    margin-bottom: 10px !important;
+  }
+
+  .status {
+    font-size: 25px;
+    font-weight: bold;
+  }
+
+  .status-icon {
+    font-size: 20px;
+  }
+
+  .movie-card-status-text {
+    margin-top: -5px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .movie-card-text{
+    font-size: 20px;
+    width: 70%;
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* General */
+  .catalogo-view {
+    padding-top: 50px;
+  }
+  .movie-card {
+    flex: 1 1 calc(50% - 16px); /* 3 tarjetas por línea */
+    max-width: calc(48% - 16px);
+  }
+
+  .movie-card-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+  }
+
+  .movie-card-info {
+    width: 70%;
+  }
+}
+
+/* Telefono */
+@media (max-width: 767px) {
+  /* General */
+  .catalogo-view {
+    padding-top: 50px;
+  }
+
+  .filter-select,
+  .filter-input {
+    width: 210px;
+    height: 60px;
+  }
+  .movie-card {
+    flex: 1 1 calc(100% - 16px); /* 3 tarjetas por línea */
+    max-width: calc(90% - 16px);
+    height: 200px;
+  }
+
+  .movie-card-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+  }
+
+  .movie-card-info {
+    width: 70%;
+  }
+  .movie-card-status {
+    font-size: 25px;
+    padding: 10px;
+    margin-top: 5px;
+  }
+  .movie-card-text {
+    font-size: 25px;
+  }
+
+  .duration,
+  .starts-in {
+    font-size: 20px;
+  }
+
+  .status-container {
+    font-size: 25px;
+  }
+
+  .status-icon {
+    font-size: 25px;
+  }
+}
+
+/* iPhone 14 Pro Max */
+@media only screen 
+        and (device-width: 430px) 
+        and (device-height: 932px) 
+        and (-webkit-device-pixel-ratio: 3) {
+  .logo-img {
+    width: 200px;
+  }
+  .filters-container {
+    display: flex;
+    flex-direction: column; /* Apila los elementos verticalmente */
+    gap: 16px; /* Espaciado entre los elementos */
+    justify-content: center !important;
+  }
+
+  .filter-select {
+    width: 100% !important; /* Ajusta el ancho de los elementos si es necesario */
+  }
+  .filter-input {
+    width: 100% !important;
+  }
+
+  /* General */
+  .catalogo-view {
+    padding-top: 50px;
+  }
+
+  .filter-select,
+  .filter-input {
+    width: 210px;
+    height: 60px;
+  }
+  .movie-card {
+    flex: 1 1 calc(100% - 16px); /* 3 tarjetas por línea */
+    max-width: calc(100% - 16px);
+    height: auto;
+  }
+
+  .movie-card-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+  }
+
+  .movie-card-info {
+    width: 70%;
+  }
+  .movie-card-status {
+    font-size: 15px;
+    padding: 5px;
+    margin-top: 5px;
+  }
+  .movie-card-text {
+    font-size: 15px;
+  }
+
+  .movie-card-footer {
+    display: grid;
+    justify-content: center;
+    margin-top: 15px;
+  }
+
+  .duration,
+  .starts-in {
+    font-size: 15px;
+    width: 100%;
+  }
+
+  .status-container {
+    font-size: 15px;
+  }
+
+  .status-icon {
+    font-size: 15px;
+  }
+}
+
+/* iphone XR */
+@media (max-width: 414px) {
+  .filters-container {
+    display: flex;
+    flex-direction: column; /* Apila los elementos verticalmente */
+    gap: 16px; /* Espaciado entre los elementos */
+    justify-content: center !important;
+  }
+
+  .filter-select {
+    width: 100% !important; /* Ajusta el ancho de los elementos si es necesario */
+  }
+  .filter-input {
+    width: 100% !important;
+  }
+
+  /* General */
+  .catalogo-view {
+    padding-top: 50px;
+  }
+
+  .filter-select,
+  .filter-input {
+    width: 210px;
+    height: 60px;
+  }
+  .movie-card {
+    flex: 1 1 calc(100% - 16px); /* 3 tarjetas por línea */
+    max-width: calc(100% - 16px);
+    height: auto;
+  }
+
+  .movie-card-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+  }
+
+  .movie-card-info {
+    width: 70%;
+  }
+  .movie-card-status {
+    font-size: 15px;
+    padding: 5px;
+    margin-top: 5px;
+  }
+  .movie-card-text {
+    font-size: 15px;
+  }
+
+  .movie-card-footer {
+    display: grid;
+    justify-content: center;
+    margin-top: 15px;
+  }
+
+  .duration,
+  .starts-in {
+    font-size: 15px;
+    width: 100%;
+  }
+
+  .status-container {
+    font-size: 15px;
+  }
+
+  .status-icon {
+    font-size: 15px;
+  }
+}
+
+/* iphone 12 Pro */
+@media (max-width: 390px) {
+  .logo-img {
+    width: 200px;
+  }
+  .filter-select,
+  .filter-input {
+    width: 210px;
+    height: 50px;
+  }
+}
+
+/* iphone SE */
+@media (max-width: 375px) {
+  .logo-img {
+    width: 150px;
+  }
+  .filter-select,
+  .filter-input {
+    width: 210px;
+    height: 40px;
+  }
+}
+
+/* Querys Ordenadas */
