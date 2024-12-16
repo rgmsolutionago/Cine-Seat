@@ -1,64 +1,73 @@
-<div class="login-view">
-  <app-sidebar-menu></app-sidebar-menu>
-  <div class="login-container">
-    <!-- Formulario -->
-    <div class="logo">
-      <img src="./images/cinestar_logo.png" alt="Logo de la empresa" />
-    </div>
+ 
+<div class="login-container">
 
-    <div class="form-container">
-      <div class="error-box" *ngIf="showError" @fadeInOut>
-        <img class="error-x fs-3" src="assets/icons/Vector-x.svg">
-        <span>Error al intentar ingresar</span>
+  <div class="error-box bh-ligth d-none"
+   [ngClass]="{'box-transition' : !showError, 'd-none': !isInitialized}">
+    <img class="error-x fs-3 position-absolute" src="assets/icons/Vector-x.svg">
+    <span>Error al intentar ingresar</span>
+  </div>
+  
+  <div class="logo">
+    <img src="./images/cinestar_logo.png" alt="Logo de la empresa" />
+  </div>
+
+  <div class="form-container shadow-none">
+      
+    <div class="form-group" [ngClass]="{'error': isUserError}">
+      <label for="usuario" class="form-label">Usuario</label>
+      <span class="input-icon">
+        
+        <img *ngIf="!isUserError" src="assets/icons/solar_user-bold.svg">
+        
+        <img *ngIf="isUserError" src="assets/icons/solar_user-error.svg">
+      </span>
+      <input
+        type="text"
+        id="usuario"
+        name="username"
+        placeholder="Ingresa tu usuario"
+        class="form-control"
+        [(ngModel)]="username"
+        (input)="resetError()"
+        autocomplete="off"
+      />
+      <div class="error-message"
+        [ngClass]="{'text-transparent': !isUserError }"
+      >
+        Usuario Incorrecto
       </div>
 
-      <form (submit)="onSubmit($event)">
-        <!-- Campo de Usuario -->
-        <div class="form-group" [ngClass]="{'error': isUserError}">
-          <label for="usuario" class="form-label">Usuario</label>
-          <span class="input-icon">
-            <!-- Icono normal -->
-            <img *ngIf="!isUserError" src="assets/icons/solar_user-bold.svg">
-            <!-- Icono de error -->
-            <img *ngIf="isUserError" src="assets/icons/solar_user-error.svg">
-          </span>
-          <input
-            type="text"
-            id="usuario"
-            name="username"
-            placeholder="Ingresa tu usuario"
-            class="form-control"
-            [(ngModel)]="username"
-            (input)="resetError()"
-          />
-          <div class="error-message" *ngIf="isUserError">Usuario Incorrecto</div>
-        </div>
+    </div>
 
-        <!-- Campo de Clave -->
-        <div class="form-group" [ngClass]="{'error': isPasswordError}">
-          <label for="clave" class="form-label">Clave</label>
-          <span class="input-icon">
-            <!-- Icono normal -->
-            <img *ngIf="!isPasswordError" src="assets/icons/uis_padlock.svg">
-            <!-- Icono de error -->
-            <img *ngIf="isPasswordError" src="assets/icons/uis_padlock-error.svg">
-          </span>
-          <input
-            type="password"
-            id="clave"
-            name="password"
-            placeholder="Ingresa tu clave"
-            class="form-control"
-            [(ngModel)]="password"
-            (input)="resetError()"
-          />
-          <div class="error-message" *ngIf="isPasswordError">Clave Incorrecta</div>
-        </div>
+    <div class="form-group" [ngClass]="{'error': isPasswordError}">
+      <label for="clave" class="form-label">Clave</label>
+      <span class="input-icon">
+        
+        <img *ngIf="!isPasswordError" src="assets/icons/uis_padlock.svg">
+        
+        <img *ngIf="isPasswordError" src="assets/icons/uis_padlock-error.svg">
+      </span>
+      <input
+        type="password"
+        id="clave"
+        name="password"
+        placeholder="Ingresa tu clave"
+        class="form-control"
+        [(ngModel)]="password"
+        (input)="resetError()"
+        autocomplete="off"
+      />
 
-        <!-- Botón Ingresar -->
-        <button type="submit" class="btn-ingresar">Ingresar</button>
-      </form>
+      <div class="error-message"
+        [ngClass]="{'text-transparent': !isPasswordError }"
+      >
+        Clave Incorrecta
+      </div>
 
     </div>
+
   </div>
+
+  <button type="button" class="btn-ingresar" (click)="LoginVal()">Ingresar</button>
+
 </div>

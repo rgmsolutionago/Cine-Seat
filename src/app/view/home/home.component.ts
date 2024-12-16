@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { SidebarMenuComponent } from '../../shared/sidebar-menu/sidebar-menu.component';
+import { LoadingComponent } from '../../shared/loading/loading.component';
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SidebarMenuComponent, LoadingComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent extends LoadingComponent {
   peliculas = [
     {
       imagen: 'https://i.imgur.com/JANnvbE.png',
@@ -59,4 +62,13 @@ export class HomeComponent {
       duracion: '2h 42min'
     }
   ];
+
+  ngOnInit(){
+    this.openModal();
+
+    setTimeout( ()=>{
+      console.log("aqui")
+      this.closeModal();
+    }, 5000)
+  }
 }
