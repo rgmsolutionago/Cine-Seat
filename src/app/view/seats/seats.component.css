@@ -1,0 +1,108 @@
+.card-movie{
+    height: 200px;
+    background-color: transparent;
+    border-color: transparent;
+}
+  
+.img-card{
+    width: 70px;
+    height: auto;
+    border-radius: 5px;
+}
+  
+.cont-inf{
+    display: grid;
+    left: calc(80px + 1rem);
+}
+  
+.text-sala{
+    font-size: 18px;
+    font-weight: 700;
+    color: rgba(0, 56, 255, 1);
+}
+  
+.text-movie{
+    font-size: 18px;
+    color: rgba(106, 106, 106, 1);
+}
+  
+.text-hora{
+    font-size: 13px;
+    color: rgba(154, 154, 154, 1);
+}
+  
+.cont-type{
+    right: 1rem;
+}
+  
+.badge-1{
+    font-size: 13px;
+    background-color: rgba(0, 56, 255, 1) !important;
+}
+  
+.badge-2{
+    font-size: 13px;
+    background-color: rgba(170, 179, 208, 1) !important;
+}
+  
+.badge-3{
+    font-size: 13px;
+    background-color: rgba(82, 105, 187, 1) !important;
+}
+  
+.cont-inf-2{
+    left: calc(0px + 1rem);
+    bottom: calc(1rem + 20px);
+}
+  
+.cont-inf-3{
+    right: calc(0px + 1rem);
+    bottom: calc(1rem + 20px);
+}
+  
+  
+.cont-inf-2 > span,
+.cont-inf-3 > span{
+    font-size: 13px;
+    color: rgba(154, 154, 154, 1);
+}
+  
+.cont-inf-2 > span + span,
+.cont-inf-3 > span + span{
+    color: rgba(106, 106, 106, 1);
+}
+  
+.cont-loading{
+    position: absolute;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    bottom: 1rem;
+    left: 0;
+    width: 100%;
+}
+
+.loading-movie {
+    width: 100%;
+    background-color: rgba(217, 222, 240, 1); /* Color de fondo para la parte no completada */
+    border-radius: 10px; /* Bordes redondeados opcionales */
+    overflow: hidden; /* Asegura que la barra de carga no se desborde */
+}
+
+.loading-bar {
+    height: 10px;
+    background: linear-gradient(to right, rgba(0, 56, 255, 1), rgba(0, 220, 249, 1)); /* Degradado de color para la barra de carga */
+    border-radius: 10px;
+    transition: width 0.1s linear;
+}
+
+.sold{
+    border: solid 1px rgba(172, 187, 241, 1);
+    color: white;
+    background: rgba(172, 187, 241, 1);
+}
+
+.available{
+    border: solid 1px rgba(225, 227, 236, 1);
+    color: #7F859C;
+    background: white;
+}

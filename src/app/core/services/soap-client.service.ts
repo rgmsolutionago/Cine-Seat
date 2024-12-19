@@ -173,7 +173,7 @@ export class SoapClientService {
   }
 
   //Obtiene las funciones de las peliculas
-  async getShows(FeatureID: any) {
+  async getShows(FeatureID: any, Date: string) {
 
     const soapRequest = `
       <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/CSwsInfo/Info">
@@ -181,8 +181,8 @@ export class SoapClientService {
         <soapenv:Body>
           <tem:ShowTimeByDateAndMovie>
             <tem:TheatreGroupId>191</tem:TheatreGroupId>
-            <tem:SDate>20241210</tem:SDate>
-            <tem:FeatureId>`+ FeatureID +`</tem:FeatureId>
+            <tem:SDate>${Date}</tem:SDate>
+            <tem:FeatureId>${FeatureID}</tem:FeatureId>
             <tem:FilterId></tem:FilterId>
           </tem:ShowTimeByDateAndMovie>
         </soapenv:Body>
@@ -221,7 +221,7 @@ export class SoapClientService {
 
   //---------------------Seats---------------------//
 
-  async getSeats(session: string) {
+  async getSeats(session: string, ScheduleId: string) {
 
     const soapRequest = `
       <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/CSwsTrans/Trans">
@@ -229,7 +229,7 @@ export class SoapClientService {
         <soapenv:Body>
           <tem:GetSeats>
             <tem:pTheatreID>191</tem:pTheatreID>
-            <tem:pScheduleID>4022</tem:pScheduleID>
+            <tem:pScheduleID>${ScheduleId}</tem:pScheduleID>
             <tem:pSessionID>${session}</tem:pSessionID>
             <tem:pWorkstation>91</tem:pWorkstation>
           </tem:GetSeats>

@@ -24,7 +24,7 @@ export class HomeComponent extends LoadingComponent {
   toFinish: any[] = [];
 
   // fecha actual
-  now: Date = new Date("2024-12-10T20:02:00");
+  now: Date = new Date();//"2024-12-10T20:02:00"
 
   constructor(private soapClient: SoapClientService){
     super();
@@ -47,7 +47,7 @@ export class HomeComponent extends LoadingComponent {
     const promises = pelis.map(async (peli: any) => {
 
         const poster = await this.soapClient.getPoster(peli.FeatureId);
-        const shows = await this.soapClient.getShows(peli.FeatureId);
+        const shows = await this.soapClient.getShows(peli.FeatureId, this.formatDateToString(this.now));
 
         if (shows.length > 0) {
         
@@ -72,13 +72,23 @@ export class HomeComponent extends LoadingComponent {
     await Promise.all(promises);
 
     console.log(this.movies);
+
+    const filtro = await this.filterMovies();
+    await this.OrdingMovies(filtro);
     
     this.closeModal();
 
-    const filtro = this.filterMovies();
-    // console.log(filtro);
+    setInterval(async() => {
 
-    this.OrdingMovies(filtro);
+      this.now = new Date();
+      const filtro = await this.filterMovies();
+      await this.OrdingMovies(filtro);
+
+      console.log("toStart", this.toStart);
+      console.log("inProgress", this.inProgress);
+      console.log("toFinish", this.toFinish);
+      
+    }, 1000);
 
     console.log("toStart", this.toStart);
     console.log("inProgress", this.inProgress);
@@ -107,10 +117,7 @@ export class HomeComponent extends LoadingComponent {
         ScheduleDate: show.ScheduleDate,
         ScheduleId: show.ScheduleId,
         StartDate: startDate,
-        EndDate: endDate,
-        Elapsed: this.convertMinutesAndHours(diffInMinutes),
-        Remaining: this.convertMinutesAndHours(adjustedDiff),
-        TotalMinutes: this.convertMinutesAndHours(totalMinutes)
+        EndDate: endDate
       };
 
     });
@@ -123,15 +130,34 @@ export class HomeComponent extends LoadingComponent {
     return `${hours > 0 ? hours + "h" : ""} ${Math.abs(minutes)}min`;
   }
 
+  calculateProgress(startDate: Date, endDate: Date): number {
+    
+    const totalDuration = endDate.getTime() - startDate.getTime();
+    const elapsed = this.now.getTime() - startDate.getTime();
+    return (elapsed / totalDuration) * 100;
+  }
+
   filterMovies() {
 
     const pelis = this.movies;
 
     return pelis.map(movie => {
+
+      const totalMinutes = parseInt(movie.TotalRuntime, 10);
+
       const relevantShow = movie.Show.find((show: any) => {
         const startTime = new Date(show.StartDate);
         const endTime = new Date(show.EndDate);
         const endThreshold = new Date(endTime.getTime() - 20 * 60 * 1000); // EndDate - 20 minutos
+
+        // Calcular la diferencia en minutos
+        const diffInMinutes = Math.floor((this.now.getTime() - startTime.getTime()) / 60000);
+        const adjustedDiff = totalMinutes - diffInMinutes;
+        
+        show.Elapsed = this.convertMinutesAndHours(diffInMinutes),
+        show.Remaining = this.convertMinutesAndHours(adjustedDiff),
+        show.TotalMinutes = this.convertMinutesAndHours(totalMinutes)
+        show.Progress = this.calculateProgress(startTime, endTime);
 
         return (
           (this.now >= startTime && this.now < endThreshold) || // Ya comenzó
@@ -182,4 +208,10 @@ export class HomeComponent extends LoadingComponent {
     });
   }
 
+  formatDateToString(date: Date): string {
+    const year = date.getFullYear().toString();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}${month}${day}`;
+  }
 }
