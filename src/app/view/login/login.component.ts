@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SidebarMenuComponent } from '../../shared/sidebar-menu/sidebar-menu.component';
+import { SoapClientService } from '../../core/services/soap-client.service';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -20,6 +22,8 @@ export class LoginComponent {
   showError: boolean = false;
 
   isInitialized: boolean = false;
+
+  constructor(private soapClient: SoapClientService){}
 
   onSubmit(event: Event): void {
     event.preventDefault();
@@ -52,6 +56,12 @@ export class LoginComponent {
     if(!this.showError){
       console.log("valido");
     }
+
+    this.Login();
     
+  }
+
+  Login(){
+    this.soapClient.getUSer();
   }
 }

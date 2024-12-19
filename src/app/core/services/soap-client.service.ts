@@ -48,6 +48,46 @@ export class SoapClientService {
     return sesion;
   }
 
+  async getUSer() {
+
+    const soapRequest = `
+      <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/CSwsTrans/Trans">
+        <soapenv:Header/>
+        <soapenv:Body>
+          <tem:GetUser>
+            <tem:pTheatreID>191</tem:pTheatreID>
+            <tem:pUserID>1010</tem:pUserID>
+            <tem:pPass>1010</tem:pPass>
+          </tem:GetUser>
+        </soapenv:Body>
+      </soapenv:Envelope>
+    `;
+
+    var sesion = '';
+    
+    try {
+
+      const response = await axios.post(this.trans, soapRequest, {
+        headers: {
+          'Content-Type': 'text/xml',
+          'SOAPAction': 'http://tempuri.org/CSwsTrans/Trans/GetUser'
+        },
+      });
+
+      const result = await parseStringPromise(response.data, { explicitArray: false });
+
+      console.log(result);
+
+      // sesion = result['soap:Envelope']['soap:Body']['GetSessionResponse']['GetSessionResult'];
+      
+    } catch (error) {
+
+      console.error('Error al llamar al método SOAP:', error);
+    }
+
+    return sesion;
+  }
+
   //---------------------Home---------------------//
 
   //Obtiene las peliculas
@@ -162,7 +202,7 @@ export class SoapClientService {
 
       const result = await parseStringPromise(response.data, { explicitArray: false });
 
-      console.log(result);
+      // console.log(result);
 
       if(result['soap:Envelope']['soap:Body']['ShowTimeByDateAndMovieResponse']['ShowTimeByDateAndMovieResult']['root']['Show']){
         show = result['soap:Envelope']['soap:Body']['ShowTimeByDateAndMovieResponse']['ShowTimeByDateAndMovieResult']['root']['Show'];
@@ -178,7 +218,6 @@ export class SoapClientService {
   }
 
   //---------------------Home---------------------//
-
 
   //---------------------Seats---------------------//
 
