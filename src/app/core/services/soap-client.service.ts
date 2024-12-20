@@ -48,6 +48,46 @@ export class SoapClientService {
     return sesion;
   }
 
+  async getUSer() {
+
+    const soapRequest = `
+      <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/CSwsTrans/Trans">
+        <soapenv:Header/>
+        <soapenv:Body>
+          <tem:GetUser>
+            <tem:pTheatreID>191</tem:pTheatreID>
+            <tem:pUserID>1010</tem:pUserID>
+            <tem:pPass>1010</tem:pPass>
+          </tem:GetUser>
+        </soapenv:Body>
+      </soapenv:Envelope>
+    `;
+
+    var sesion = '';
+    
+    try {
+
+      const response = await axios.post(this.trans, soapRequest, {
+        headers: {
+          'Content-Type': 'text/xml',
+          'SOAPAction': 'http://tempuri.org/CSwsTrans/Trans/GetUser'
+        },
+      });
+
+      const result = await parseStringPromise(response.data, { explicitArray: false });
+
+      console.log(result);
+
+      // sesion = result['soap:Envelope']['soap:Body']['GetSessionResponse']['GetSessionResult'];
+      
+    } catch (error) {
+
+      console.error('Error al llamar al método SOAP:', error);
+    }
+
+    return sesion;
+  }
+
   //---------------------Home---------------------//
 
   //Obtiene las peliculas
@@ -133,7 +173,7 @@ export class SoapClientService {
   }
 
   //Obtiene las funciones de las peliculas
-  async getShows(FeatureID: any) {
+  async getShows(FeatureID: any, Date: string) {
 
     const soapRequest = `
       <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/CSwsInfo/Info">
@@ -141,8 +181,8 @@ export class SoapClientService {
         <soapenv:Body>
           <tem:ShowTimeByDateAndMovie>
             <tem:TheatreGroupId>191</tem:TheatreGroupId>
-            <tem:SDate>20241210</tem:SDate>
-            <tem:FeatureId>`+ FeatureID +`</tem:FeatureId>
+            <tem:SDate>${Date}</tem:SDate>
+            <tem:FeatureId>${FeatureID}</tem:FeatureId>
             <tem:FilterId></tem:FilterId>
           </tem:ShowTimeByDateAndMovie>
         </soapenv:Body>
@@ -162,7 +202,7 @@ export class SoapClientService {
 
       const result = await parseStringPromise(response.data, { explicitArray: false });
 
-      console.log(result);
+      // console.log(result);
 
       if(result['soap:Envelope']['soap:Body']['ShowTimeByDateAndMovieResponse']['ShowTimeByDateAndMovieResult']['root']['Show']){
         show = result['soap:Envelope']['soap:Body']['ShowTimeByDateAndMovieResponse']['ShowTimeByDateAndMovieResult']['root']['Show'];
@@ -179,10 +219,9 @@ export class SoapClientService {
 
   //---------------------Home---------------------//
 
-
   //---------------------Seats---------------------//
 
-  async getSeats(session: string) {
+  async getSeats(session: string, ScheduleId: string) {
 
     const soapRequest = `
       <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/CSwsTrans/Trans">
@@ -190,7 +229,7 @@ export class SoapClientService {
         <soapenv:Body>
           <tem:GetSeats>
             <tem:pTheatreID>191</tem:pTheatreID>
-            <tem:pScheduleID>4022</tem:pScheduleID>
+            <tem:pScheduleID>${ScheduleId}</tem:pScheduleID>
             <tem:pSessionID>${session}</tem:pSessionID>
             <tem:pWorkstation>91</tem:pWorkstation>
           </tem:GetSeats>

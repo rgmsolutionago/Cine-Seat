@@ -1,104 +1,184 @@
-<div class="catalogo-view">
-  <!-- Logo de la empresa -->
-  <div class="logo">
-    <img
-      src="./images/cinestar_logo.png"
-      alt="Logo de la empresa"
-      class="logo-img"
-    />
-  </div>
+<div class="col-12 col-md-10 col-lg-10 pt-5 mx-auto" style="min-height: 100vh;">
 
-  <!-- Filtros -->
-  <div class="filters-container">
-    <div class="filter">
-      <select
-        class="form-select filter-select"
-        aria-label="Selecciona una fecha"
-      >
-        <option selected disabled>Fecha</option>
-        <option value="1">10/12/2024</option>
-        <option value="2">11/12/2024</option>
-        <option value="3">12/12/2024</option>
-      </select>
-      <i class="bi bi-calendar3 filter-icon"></i>
-    </div>
-    <div class="filter">
-      <select
-        class="form-select filter-select"
-        aria-label="Selecciona una hora"
-      >
-        <option selected disabled>Hora</option>
-        <option value="1">10:00 AM</option>
-        <option value="2">12:30 PM</option>
-        <option value="3">03:45 PM</option>
-      </select>
-      <i class="bi bi-clock filter-icon"></i>
-    </div>
-    <div class="filter">
-      <input
-        type="text"
-        class="form-control filter-input"
-        placeholder="Película"
+  <!-- Logo -->
+  <div class="row mx-0 mb-3">
+    <div class="col-12 text-center">
+      <img
+        src="./images/cinestar_logo.png"
+        alt="Logo de la empresa"
+        class="img-logo"
       />
-      <i class="bi bi-film filter-icon"></i>
     </div>
   </div>
 
-  <!-- Indicadores de estado -->
-  <div class="status-container">
-    <div class="status">
-      <i class="bi bi-circle-fill status-icon start"></i>
-      <span>Por Empezar</span>
-    </div>
-    <div class="status">
-      <i class="bi bi-circle-fill status-icon ongoing"></i>
-      <span>En Transcurso</span>
-    </div>
-    <div class="status">
-      <i class="bi bi-circle-fill status-icon end"></i>
-      <span>Por Terminar</span>
-    </div>
-  </div>
+  <!-- Peliculas -->
+  <div class="row mx-0 justify-content-center" >
 
-  <!-- Contenedor de tarjetas -->
-  <div class="movies-container">
-    <div *ngFor="let pelicula of peliculas" class="movie-card">
-      <!-- Parte superior de la tarjeta -->
-      <div class="movie-card-header">
-        <div class="movie-card-info">
-          <img [src]="pelicula.imagen" alt="Póster" class="movie-card-img" />
-          <div class="movie-card-text">
-            <div class="room" [style.color]="'#0139ff'">
-              Sala {{ pelicula.sala }}
-            </div>
-            <div class="title" [style.color]="'#787879'">
-              {{ pelicula.nombre }}
-            </div>
-            <div class="time" [style.color]="'#787879'">
-              Hora {{ pelicula.hora }}
+    <!-- Por Empezar -->
+    <div class="col-12 col-md-6 col-lg-4 mb-3 px-0" *ngIf="toStart.length > 0">
+      <div class="row mx-0">
+
+        <div class="col-12 text-center mb-4">
+          <div class="rounded-circle d-inline-flex me-3 circle" style="background-color: rgba(0, 56, 255, 1);"></div>
+          <span>
+            Por empezar
+          </span>
+        </div>
+
+        <div class="col-12">
+
+          <div class="card w-100 card-movie mb-3" *ngFor="let movie of toStart">
+            <div class="card-body position-relative">
+
+              <div class="cont-img position-absolute">
+
+                <img src="data:img/png;base64,{{movie.Poster}}" alt="" class="img-card">
+
+              </div>
+              
+              <div class="cont-inf position-absolute">
+                <span class="text-sala">{{movie.Show.ScreenName}}</span>
+                <span class="text-movie">{{movie.Title}}</span>
+                <span class="text-hora">Hora {{movie.Show.StartTime}}</span>
+              </div>
+
+              <div class="cont-type position-absolute">
+                <span class="badge rounded-pill text-bg-primary badge-1">Por empezar</span>
+              </div>
+              
+              <div class="cont-inf-2 position-absolute">
+                <span>Duración </span>
+                <span>{{movie.Show.TotalMinutes}}</span>
+              </div>
+
+              <div class="cont-inf-3 position-absolute">
+                <span>Comienza en </span>
+                <span>{{movie.Show.Elapsed}}</span>
+              </div>
+              
             </div>
           </div>
+
         </div>
-        <div
-          class="movie-card-status"
-          [ngStyle]="{
-            'background-color':
-              pelicula.estado === 'Por Empezar' ? '#0139ff' : '#aab3d0'
-          }"
-        >
-          <div class="movie-card-status-text">{{ pelicula.estado }}</div>
-        </div>
+
       </div>
 
-      <!-- Parte inferior de la tarjeta -->
-      <div class="movie-card-footer">
-        <div class="duration">
-          Duración: <strong>{{ pelicula.duracion }}</strong>
+    </div>
+
+    <!-- En Transcurso -->
+    <div class="col-12 col-md-6 col-lg-4 mb-3 px-0"  *ngIf="inProgress.length > 0">
+      <div class="row mx-0">
+
+        <div class="col-12 text-center mb-4">
+          <div class="rounded-circle d-inline-flex me-3 circle" style="background-color: rgba(170, 179, 208, 1);"></div>
+          <span>
+            En transcurso
+          </span>
         </div>
-        <div class="starts-in">Comienza en <strong>1h 35min</strong></div>
+
+        <div class="col-12">
+
+          <div class="card w-100 card-movie mb-3" *ngFor="let movie of inProgress">
+            <div class="card-body position-relative">
+
+              <div class="cont-img position-absolute">
+
+                <img src="data:img/png;base64,{{movie.Poster}}" alt="" class="img-card">
+
+              </div>
+              
+              <div class="cont-inf position-absolute">
+                <span class="text-sala">{{movie.Show.ScreenName}}</span>
+                <span class="text-movie">{{movie.Title}}</span>
+                <span class="text-hora">Hora {{movie.Show.StartTime}}</span>
+              </div>
+
+              <div class="cont-type position-absolute">
+                <span class="badge rounded-pill text-bg-primary badge-2">En Transcurso</span>
+              </div>
+              
+              <div class="cont-loading">
+                <div class="loading-movie">
+                  <div class="loading-bar" [ngStyle]="{'width': movie.Show.Progress + '%'}"></div>
+                </div>
+              </div>
+
+              <div class="cont-inf-2 position-absolute">
+                <span>Transcurrido </span>
+                <span>{{movie.Show.Elapsed}}</span>
+              </div>
+
+              <div class="cont-inf-3 position-absolute">
+                <span>Restante </span>
+                <span>{{movie.Show.Remaining}}</span>
+              </div>
+              
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </div>
+
+    <!-- Por Terminar -->
+    <div class="col-12 col-md-6 col-lg-4 mb-3 px-0"  *ngIf="toFinish.length > 0">
+      <div class="row mx-0">
+
+        <div class="col-12 text-center mb-4">
+          <div class="rounded-circle d-inline-flex me-3 circle" style="background-color: rgba(82, 105, 187, 1);"></div>
+          <span>
+            Por terminar
+          </span>
+        </div>
+
+        <div class="col-12">
+
+          <div class="card w-100 card-movie mb-3" *ngFor="let movie of toFinish">
+            <div class="card-body position-relative">
+
+              <div class="cont-img position-absolute">
+
+                <img src="data:img/png;base64,{{movie.Poster}}" alt="" class="img-card">
+
+              </div>
+              
+              <div class="cont-inf position-absolute">
+                <span class="text-sala">{{movie.Show.ScreenName}}</span>
+                <span class="text-movie">{{movie.Title}}</span>
+                <span class="text-hora">Hora {{movie.Show.StartTime}}</span>
+              </div>
+
+              <div class="cont-type position-absolute">
+                <span class="badge rounded-pill text-bg-primary badge-3">Por Terminar</span>
+              </div>
+
+              <div class="cont-loading">
+                <div class="loading-movie">
+                  <div class="loading-bar" [ngStyle]="{'width': movie.Show.Progress + '%'}"></div>
+                </div>
+              </div>
+              
+              <div class="cont-inf-2 position-absolute">
+                <span>Transcurrido </span>
+                <span>{{movie.Show.Elapsed}}</span>
+              </div>
+
+              <div class="cont-inf-3 position-absolute">
+                <span>Restante </span>
+                <span>{{movie.Show.Remaining}}</span>
+              </div>
+              
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
   </div>
+
 </div>
 
 <app-sidebar-menu></app-sidebar-menu>

@@ -7,6 +7,6 @@ export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, // Redirección inicial
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'seats', component: SeatsComponent },
+  { path: 'seats/:movie', component: SeatsComponent },
   { path: '**', redirectTo: 'login' } // Ruta comodín
 ];

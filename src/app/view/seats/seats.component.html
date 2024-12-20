@@ -1,31 +1,109 @@
 
-<div class="col-10 col-sm-10 col-md-9 mx-auto">
+<div class="col-12 col-md-10 col-lg-7 pt-3 mx-auto" style="min-height: 100vh;">
 
-    <div style="overflow: hidden; position: relative; z-index: 1;">
+    <div class="col-12">
 
-        <div #seatContainer style="position: absolute; content-visibility: hidden;"
-            [ngStyle]="{'width.px': maxX, 'height.px': maxY}">
-    
-            <div *ngFor="let seat of seatsPrint"
-                style="width: 20px; height: 26px; border: solid 1px #E1E3EC; position: absolute; font-size: 7px; text-align: center; align-content: center; border-radius: 3px; color: #7F859C;"
-                [ngStyle]="{'top.px': seat.Y, 'left.px': seat.X}"
-            >
-                {{seat.SeatNumber}}
+        <div class="card w-100 card-movie">
+          <div class="card-body position-relative">
+
+            <div class="cont-img position-absolute">
+
+              <img src="data:img/png;base64,{{peliAcutal.Poster}}" alt="" class="img-card">
+
             </div>
-    
-            <div *ngFor="let letter of letters"
-                style="width: 20px; height: 26px; border: solid 1px transparent; position: absolute; font-size: 10px; font-weight: 400; text-align: center; align-content: center; border-radius: 3px; color: #7F859C;"
-                [ngStyle]="{'top.px': letter.Y, 'left.px': letter.X}"
-            >
-                {{letter.letter}}
+            
+            <div class="cont-inf position-absolute">
+              <span class="text-sala">{{showActual.ScreenName}}</span>
+              <span class="text-movie">{{peliAcutal.Title}}</span>
+              <span class="text-hora">Hora {{showActual.StartTime}}</span>
             </div>
+
+            <div class="cont-type position-absolute" *ngIf="showActual.StatusPeli == 1">
+                <span class="badge rounded-pill text-bg-primary badge-1">Por empezar</span>
+            </div>
+
+            <div class="cont-type position-absolute" *ngIf="showActual.StatusPeli == 2">
+                <span class="badge rounded-pill text-bg-primary badge-2">En Transcurso</span>
+            </div>
+            
+            <div class="cont-type position-absolute" *ngIf="showActual.StatusPeli == 3">
+              <span class="badge rounded-pill text-bg-primary badge-3">Por Terminar</span>
+            </div>
+
+            <div class="cont-loading" *ngIf="showActual.StatusPeli == 2 || showActual.StatusPeli == 3">
+              <div class="loading-movie">
+                <div class="loading-bar" [ngStyle]="{'width': showActual.Progress + '%'}"></div>
+              </div>
+            </div>
+
+            <ng-container *ngIf="showActual.StatusPeli == 1">
+
+                <div class="cont-inf-2 position-absolute">
+                    <span>Duración </span>
+                    <span>{{showActual.TotalMinutes}}</span>
+                  </div>
     
+                <div class="cont-inf-3 position-absolute">
+                    <span>Comienza en </span>
+                    <span>{{showActual.Elapsed}}</span>
+                </div>
+
+            </ng-container>
+
+            <ng-container *ngIf="showActual.StatusPeli == 2 || showActual.StatusPeli == 3">
+            
+                <div class="cont-inf-2 position-absolute">
+                <span>Transcurrido </span>
+                <span>{{showActual.Elapsed}}</span>
+                </div>
+
+                <div class="cont-inf-3 position-absolute">
+                <span>Restante </span>
+                <span>{{showActual.Remaining}}</span>
+                </div>
+
+            </ng-container>
+
+            
+            
+          </div>
         </div>
-    
+
     </div>
-    
-    <div *ngIf="seatImage" style="position: relative; z-index: 2;">
-        <img [src]="seatImage" alt="Seat Layout" style="width: auto; height: 100vh; max-width: 100%; object-fit: contain;"/>
+
+    <div class="col-12">
+
+        <div style="overflow: hidden; position: relative; z-index: 1;">
+
+            <div #seatContainer style="position: absolute; content-visibility: hidden; background: transparent;"
+                [ngStyle]="{'width.px': maxX, 'height.px': maxY}">
+        
+                <div *ngFor="let seat of seatsPrint"
+                    style="width: 20px; height: 26px; position: absolute; font-size: 7px; text-align: center; align-content: center; border-radius: 3px;"
+                    [ngStyle]="{'top.px': seat.Y, 'left.px': seat.X}"
+                    [ngClass]="{'available': seat.Status === 'available', 'sold': seat.Status === 'sold'}"
+                >
+                    {{seat.SeatNumber}}
+                </div>
+        
+                <div *ngFor="let letter of letters"
+                    style="width: 20px; height: 26px; border: solid 1px transparent; position: absolute; font-size: 10px; font-weight: 400; text-align: center; align-content: center; border-radius: 3px; color: #7F859C;"
+                    [ngStyle]="{'top.px': letter.Y, 'left.px': letter.X}"
+                >
+                    {{letter.letter}}
+                </div>
+        
+            </div>
+        
+        </div>
+        
+        <div *ngIf="seatImage" style="z-index: 2;" class="position-relative text-center">
+            <img [src]="seatImage" alt="Seat Layout" style="width: auto; max-width: 100%; object-fit: contain;"/>
+        </div>
+
     </div>
 
 </div>
+
+<app-sidebar-menu></app-sidebar-menu>
+<app-loading></app-loading>
