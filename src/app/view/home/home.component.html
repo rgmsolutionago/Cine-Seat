@@ -11,6 +11,66 @@
     </div>
   </div>
 
+  <!-- Inputs -->
+  <div class="row mx-0 mb-3">
+
+    <div class="col-12 col-md-4">
+      
+      <div class="form-group position-relative">
+        <input
+          id="dateInput"
+          type="text"
+          class="form-control"
+          placeholder="dd/mm/yyyy"
+          (input)="onDateInput($event)"
+          autocomplete="off"
+          #dateInput
+        >
+        <button
+          class="btn btn-outline-primary position-absolute top-0 end-0"
+          type="button"
+          [disabled]="!isDateValid"
+          (click)="searchDate(dateInput.value)"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+
+    <div class="col-4">
+
+      <div class="form-group">
+        <input
+          id="timeInput"
+          type="text"
+          class="form-control"
+          placeholder="hh:mm"
+          (input)="onTimeInput($event)"
+          autocomplete="off"
+          [(ngModel)]="searchTime"
+        >
+      </div>
+
+    </div>
+
+    <div class="col-4">
+
+      <div class="form-group">
+        <input
+          id="movieInput"
+          type="text"
+          class="form-control"
+          autocomplete="off"
+          [(ngModel)]="searchTerm"
+        >
+      </div>
+
+    </div>
+  </div>
+
   <!-- Peliculas -->
   <div class="row mx-0 justify-content-center" >
 
@@ -42,7 +102,7 @@
                 <span class="text-hora">Hora {{movie.Show.StartTime}}</span>
               </div>
 
-              <div class="cont-type position-absolute">
+              <div class="cont-type position-absolute" *ngIf="isBadge">
                 <span class="badge rounded-pill text-bg-primary badge-1">Por empezar</span>
               </div>
               
@@ -53,7 +113,7 @@
 
               <div class="cont-inf-3 position-absolute">
                 <span>Comienza en </span>
-                <span>{{movie.Show.Elapsed}}</span>
+                <span>{{movie.Show.Starts}}</span>
               </div>
               
             </div>
@@ -121,7 +181,7 @@
       </div>
     </div>
 
-    <!-- Por Terminar -->
+    <!-- Por Terminar --> 
     <div class="col-12 col-md-6 col-lg-4 mb-3 px-0"  *ngIf="toFinish.length > 0">
       <div class="row mx-0">
 
