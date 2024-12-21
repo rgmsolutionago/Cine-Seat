@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 import { SidebarMenuComponent } from '../../shared/sidebar-menu/sidebar-menu.component';
 import { LoadingComponent } from '../../shared/loading/loading.component';
@@ -42,7 +43,10 @@ export class HomeComponent extends LoadingComponent {
 
   filterTime: boolean = false;
 
-  constructor(private soapClient: SoapClientService){
+  constructor(
+    private soapClient: SoapClientService,
+    private router: Router
+  ){
     super();
     // this.openModal();
   }
@@ -362,5 +366,10 @@ export class HomeComponent extends LoadingComponent {
       const matchStartTime = movie.Show.some((show: any) => show.StartTime.includes(this.searchTime));
       return matchStartTime;
     });
+  }
+
+  // Función para redireccionar
+  redirectToSeats(movieId: string): void {
+    this.router.navigate([`seats`, movieId]); // Redirige a la ruta con el ID de la película
   }
 }

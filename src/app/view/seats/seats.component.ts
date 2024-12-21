@@ -49,6 +49,8 @@ export class SeatsComponent extends LoadingComponent {
   
   async ngOnInit() {
 
+    this.openModal();
+
     this.route.paramMap.subscribe(params => {
       this.MovieId = params.get('movie');
       console.log(this.MovieId);
@@ -101,6 +103,8 @@ export class SeatsComponent extends LoadingComponent {
 
     // console.log("pelis", this.peliAcutal);
     // console.log("showActual", this.showActual);
+
+    
   }
 
   filterShows() {
@@ -320,6 +324,7 @@ export class SeatsComponent extends LoadingComponent {
     this.seatImage = canvas.toDataURL('image/png');
 
     // console.log(this.seatImage);
+    this.closeModal();
   }
 
   formatDateToString(date: Date): string {
@@ -328,4 +333,6 @@ export class SeatsComponent extends LoadingComponent {
     const day = date.getDate().toString().padStart(2, '0');
     return `${year}${month}${day}`;
   }
+  
+  
 }
