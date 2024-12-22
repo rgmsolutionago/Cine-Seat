@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SidebarMenuComponent } from '../../shared/sidebar-menu/sidebar-menu.component';
 import { SoapClientService } from '../../core/services/soap-client.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -21,16 +22,12 @@ export class LoginComponent {
   isPasswordError: boolean = false;
   showError: boolean = false;
 
-  isInitialized: boolean = false;
+  errorMsg: string = '';
 
-  constructor(private soapClient: SoapClientService){}
+  constructor(private soapClient: SoapClientService, private router: Router){}
 
-  onSubmit(event: Event): void {
-    event.preventDefault();
-
-    this.isUserError = !this.username.trim();
-    this.isPasswordError = !this.password.trim();
-    this.showError = this.isUserError || this.isPasswordError;
+  ngOnInit(){
+    localStorage.removeItem('userSession');
   }
 
   resetError(): void {
@@ -39,29 +36,38 @@ export class LoginComponent {
     this.showError = false;
   }
 
-  LoginVal(){
+  async LoginVal(){
 
-    this.isInitialized = true;
-
+    this.errorMsg = "Error al intentar ingresar";
     this.isUserError = !this.username.trim();
     this.isPasswordError = !this.password.trim();
     this.showError = this.isUserError || this.isPasswordError;
+
+    if(!this.showError){
+
+      await this.Login();
+    }
 
     setTimeout(()=>{
       this.showError = false;
       this.isUserError = false;
       this.isPasswordError = false;
     }, 5000);
-
-    if(!this.showError){
-      console.log("valido");
-    }
-
-    this.Login();
     
   }
 
-  Login(){
-    this.soapClient.getUSer();
+  async Login(){
+
+    const res = await this.soapClient.getUSer(this.username, this.password);
+
+    if(!res.status){
+      this.errorMsg = res.msg;
+      this.showError = true;
+      return;
+    }
+
+    localStorage.setItem('userSession', JSON.stringify(res.data));
+    this.router.navigate(['/home']);
+
   }
 }

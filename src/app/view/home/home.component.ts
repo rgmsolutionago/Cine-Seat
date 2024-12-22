@@ -47,10 +47,10 @@ export class HomeComponent extends LoadingComponent {
     // this.openModal();
   }
 
-  ngOnInit(){
+  async ngOnInit(){
     this.openModal();
 
-    this.GetMovies();
+    await this.GetMovies();
 
     this.startInterval();
   }
@@ -98,10 +98,6 @@ export class HomeComponent extends LoadingComponent {
     await this.OrdingMovies(filtro);
     
     this.closeModal();
-
-    console.log("toStart", this.toStart);
-    console.log("inProgress", this.inProgress);
-    console.log("toFinish", this.toFinish);
     
   }
 

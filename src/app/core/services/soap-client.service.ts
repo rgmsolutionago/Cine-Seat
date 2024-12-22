@@ -48,7 +48,7 @@ export class SoapClientService {
     return sesion;
   }
 
-  async getUSer() {
+  async getUSer(user: string, pass: string) {
 
     const soapRequest = `
       <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/CSwsTrans/Trans">
@@ -56,8 +56,8 @@ export class SoapClientService {
         <soapenv:Body>
           <tem:GetUser>
             <tem:pTheatreID>191</tem:pTheatreID>
-            <tem:pUserID>1010</tem:pUserID>
-            <tem:pPass>1010</tem:pPass>
+            <tem:pUserID>${user}</tem:pUserID>
+            <tem:pPass>${pass}</tem:pPass>
           </tem:GetUser>
         </soapenv:Body>
       </soapenv:Envelope>
@@ -65,6 +65,8 @@ export class SoapClientService {
 
     var sesion = '';
     
+    var res = {status: false, msg: "", data: {}};
+
     try {
 
       const response = await axios.post(this.trans, soapRequest, {
@@ -76,16 +78,26 @@ export class SoapClientService {
 
       const result = await parseStringPromise(response.data, { explicitArray: false });
 
-      console.log(result);
+      // console.log(result);
 
-      // sesion = result['soap:Envelope']['soap:Body']['GetSessionResponse']['GetSessionResult'];
-      
-    } catch (error) {
+      const data = result['soap:Envelope']['soap:Body']['GetUserResponse']['GetUserResult']['root'];
 
-      console.error('Error al llamar al método SOAP:', error);
+      if(data['Error']){
+        throw new Error(data['Error']['Message']);
+      }
+
+      res.status = true;
+      res.data = data['User'];
+
+    } catch (error: any) {
+
+      // console.error('Error al llamar al método SOAP:', error);
+
+      res.status = false;
+      res.msg = error;
     }
 
-    return sesion;
+    return res;
   }
 
   //---------------------Home---------------------//
