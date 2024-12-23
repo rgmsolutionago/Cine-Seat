@@ -106,3 +106,15 @@
     color: #7F859C;
     background: white;
 }
+
+.blocked{
+    border: solid 1px rgba(255, 124, 124, 1);
+    color: white;
+    background: rgba(255, 124, 124, 1);
+}
+
+/* .available{
+    border: solid 1px rgba(225, 227, 236, 1);
+    color: #7F859C;
+    background: white;
+} */
