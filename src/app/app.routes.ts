@@ -4,7 +4,7 @@ import { HomeComponent } from './view/home/home.component';
 import { SeatsComponent } from './view/seats/seats.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' }, // Redirección inicial
+  // { path: '', redirectTo: 'login', pathMatch: 'full' }, // Redirección inicial
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
   { path: 'seats/:movie', component: SeatsComponent },

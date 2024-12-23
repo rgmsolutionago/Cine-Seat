@@ -52,6 +52,14 @@ export class HomeComponent extends LoadingComponent {
   }
 
   async ngOnInit(){
+
+    const sessionValid = await this.ValSession();
+
+    if (!sessionValid) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
     this.openModal();
 
     await this.GetMovies();
@@ -367,5 +375,17 @@ export class HomeComponent extends LoadingComponent {
   // Función para redireccionar
   redirectToSeats(movieId: string): void {
     this.router.navigate([`seats`, movieId]); // Redirige a la ruta con el ID de la película
+  }
+
+  async ValSession(){
+    const userSession = localStorage.getItem('userSession');
+
+    console.log("userSession", userSession?.trim());
+
+    if (!userSession || userSession.trim() == '') {
+      return false;
+    }
+
+    return true;
   }
 }

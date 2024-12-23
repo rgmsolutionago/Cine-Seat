@@ -67,7 +67,9 @@ export class LoginComponent {
     }
 
     localStorage.setItem('userSession', JSON.stringify(res.data));
-    this.router.navigate(['/home']);
+    setTimeout(()=>{
+      this.router.navigate(['/home'])
+    }, 500);
 
   }
 }

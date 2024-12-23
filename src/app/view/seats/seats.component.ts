@@ -7,7 +7,7 @@ import html2canvas from 'html2canvas';
 import { SidebarMenuComponent } from '../../shared/sidebar-menu/sidebar-menu.component';
 import { LoadingComponent } from '../../shared/loading/loading.component';
 
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-seats',
@@ -42,12 +42,21 @@ export class SeatsComponent extends LoadingComponent {
 
   constructor(
     private soapClient: SoapClientService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     super();
   }
   
   async ngOnInit() {
+
+
+    const sessionValid = await this.ValSession();
+
+    if (!sessionValid) {
+      this.router.navigate(['/login']);
+      return;
+    }
 
     this.openModal();
 
@@ -65,6 +74,21 @@ export class SeatsComponent extends LoadingComponent {
 
     var peliculas = await this.soapClient.getMovies();
 
+    const movieFound = peliculas.some((peli: any) => peli.FeatureId === this.MovieId);
+
+    if (!movieFound) {
+
+      setTimeout(()=>{
+        this.closeModal();
+      }, 200);
+      
+      setTimeout(()=>{
+        this.router.navigate(['/home']);
+      }, 300);
+      
+      return;
+    }
+
     const promises = peliculas.map(async (peli: any) => {
 
       if (peli.FeatureId === this.MovieId) {
@@ -72,6 +96,8 @@ export class SeatsComponent extends LoadingComponent {
         const poster = await this.soapClient.getPoster(peli.FeatureId);
         const show = await this.soapClient.getShows(peli.FeatureId, this.formatDateToString(this.now));
 
+        console.log(show)
+        
         if (show.length > 0) {
 
           const show_new = await this.dataShowSort(show, peli.TotalRuntime);
@@ -86,6 +112,7 @@ export class SeatsComponent extends LoadingComponent {
           };
 
           this.peliAcutal = data; // Agrega los datos al array
+          console.log(this.peliAcutal)
         }
       }
     });
@@ -99,7 +126,7 @@ export class SeatsComponent extends LoadingComponent {
       this.now = new Date();
       await this.filterShows();
       await this.DataSeats();
-    }, 1000);
+    }, 5000);
 
     // console.log("pelis", this.peliAcutal);
     // console.log("showActual", this.showActual);
@@ -121,11 +148,13 @@ export class SeatsComponent extends LoadingComponent {
       // Calcular la diferencia en minutos
       const diffInMinutes = Math.floor((this.now.getTime() - startTime.getTime()) / 60000);
       const adjustedDiff = totalMinutes - diffInMinutes;
+      const starts = Math.floor((startTime.getTime() - this.now.getTime()) / 60000);
       
       show.Elapsed = this.convertMinutesAndHours(diffInMinutes),
       show.Remaining = this.convertMinutesAndHours(adjustedDiff),
       show.TotalMinutes = this.convertMinutesAndHours(totalMinutes)
       show.Progress = this.calculateProgress(startTime, endTime);
+      show.Starts = this.convertMinutesAndHours(starts);
 
       return (
         (this.now >= startTime && this.now < endThreshold) || // Ya comenzó
@@ -154,7 +183,7 @@ export class SeatsComponent extends LoadingComponent {
       }
       // Devolver solo una película con un show relevante
       this.showActual =  relevantShow;
-      console.log(this.showActual);
+      // console.log(this.showActual);
     }
   }
 
@@ -229,6 +258,7 @@ export class SeatsComponent extends LoadingComponent {
 
     this.seatsPrint = seats;
 
+    console.log(this.seatsPrint);
     setTimeout(()=>{
       this.captureSeatsAsImage();
     }, 100);
@@ -334,5 +364,16 @@ export class SeatsComponent extends LoadingComponent {
     return `${year}${month}${day}`;
   }
   
-  
+  async ValSession(){
+    const userSession = localStorage.getItem('userSession');
+
+    console.log("userSession", userSession?.trim());
+
+    if (!userSession || userSession.trim() == '') {
+      return false;
+    }
+
+    return true;
+  }
+
 }

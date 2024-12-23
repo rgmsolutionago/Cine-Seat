@@ -2,14 +2,21 @@ import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { parseStringPromise } from 'xml2js';
 
+import config from '../../../assets/js/config.json';
+
 @Injectable({
   providedIn: 'root',
 })
 export class SoapClientService {
 
-  private info = 'http://atmcinestar.sytes.net/cswsinfo/info.asmx?wsdl';
-  private trans = 'http://atmcinestar.sytes.net/cswstrans/trans.asmx?wsdl';
+  // private info = 'http://atmcinestar.sytes.net/cswsinfo/info.asmx?wsdl';
+  // private trans = 'http://atmcinestar.sytes.net/cswstrans/trans.asmx?wsdl';
 
+  private info = config.Info;
+  private trans = config.Trans;
+
+  private TheatreID = config.TheatreId;
+  private WorkStation = config.WorkStation;
 
   async getSession() {
 
@@ -55,7 +62,7 @@ export class SoapClientService {
         <soapenv:Header/>
         <soapenv:Body>
           <tem:GetUser>
-            <tem:pTheatreID>191</tem:pTheatreID>
+            <tem:pTheatreID>${this.TheatreID}</tem:pTheatreID>
             <tem:pUserID>${user}</tem:pUserID>
             <tem:pPass>${pass}</tem:pPass>
           </tem:GetUser>
@@ -110,7 +117,7 @@ export class SoapClientService {
         <soapenv:Header/>
         <soapenv:Body>
           <tem:Moviesv2>
-            <tem:TheatreGroupId>191</tem:TheatreGroupId>
+            <tem:TheatreGroupId>${this.TheatreID}</tem:TheatreGroupId>
             <tem:FilterId>MWITHSCHEDULE</tem:FilterId>
           </tem:Moviesv2>
         </soapenv:Body>
@@ -152,7 +159,7 @@ export class SoapClientService {
         <soapenv:Header/>
         <soapenv:Body>
           <tem:GetPoster>
-            <tem:TheatreGroupId>191</tem:TheatreGroupId>
+            <tem:TheatreGroupId>${this.TheatreID}</tem:TheatreGroupId>
             <tem:FeatureID>` + FeatureID + `</tem:FeatureID>
           </tem:GetPoster>
         </soapenv:Body>
@@ -192,7 +199,7 @@ export class SoapClientService {
         <soapenv:Header/>
         <soapenv:Body>
           <tem:ShowTimeByDateAndMovie>
-            <tem:TheatreGroupId>191</tem:TheatreGroupId>
+            <tem:TheatreGroupId>${this.TheatreID}</tem:TheatreGroupId>
             <tem:SDate>${Date}</tem:SDate>
             <tem:FeatureId>${FeatureID}</tem:FeatureId>
             <tem:FilterId></tem:FilterId>
@@ -240,10 +247,10 @@ export class SoapClientService {
         <soapenv:Header/>
         <soapenv:Body>
           <tem:GetSeats>
-            <tem:pTheatreID>191</tem:pTheatreID>
+            <tem:pTheatreID>${this.TheatreID}</tem:pTheatreID>
             <tem:pScheduleID>${ScheduleId}</tem:pScheduleID>
             <tem:pSessionID>${session}</tem:pSessionID>
-            <tem:pWorkstation>91</tem:pWorkstation>
+            <tem:pWorkstation>${this.WorkStation}</tem:pWorkstation>
           </tem:GetSeats>
         </soapenv:Body>
       </soapenv:Envelope>
