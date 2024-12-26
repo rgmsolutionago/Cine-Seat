@@ -113,8 +113,8 @@
     background: rgba(255, 124, 124, 1);
 }
 
-/* .available{
-    border: solid 1px rgba(225, 227, 236, 1);
-    color: #7F859C;
-    background: white;
-} */
+.entered{
+    border: solid 1px rgba(0, 56, 255, 1);
+    color: white;
+    background: rgba(0, 56, 255, 1);
+}

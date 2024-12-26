@@ -72,8 +72,20 @@ export class HomeComponent extends LoadingComponent {
     this.movies = [];
     this.moviesOri = [];
 
-    const pelis = await this.soapClient.getMovies();
+    const movie_arr = await this.soapClient.getMovies();
 
+    var pelis: any = [];
+
+    if (Array.isArray(movie_arr)) {
+
+      pelis = movie_arr;
+
+    } else if (movie_arr) {
+
+      pelis.push(movie_arr);
+    }
+
+    console.log("pelis",pelis)
     // Crear un array de promesas para los posters y shows
     const promises = pelis.map(async (peli: any) => {
 
@@ -373,8 +385,9 @@ export class HomeComponent extends LoadingComponent {
   }
 
   // Función para redireccionar
-  redirectToSeats(movieId: string): void {
-    this.router.navigate([`seats`, movieId]); // Redirige a la ruta con el ID de la película
+  redirectToSeats(movieId: string, ScheduleId: string): void {
+    console.log(" ScheduleId",  ScheduleId);
+    this.router.navigate([`seats`, movieId, ScheduleId]); // Redirige a la ruta con el ID de la película
   }
 
   async ValSession(){

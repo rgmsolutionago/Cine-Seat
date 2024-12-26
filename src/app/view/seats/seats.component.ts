@@ -38,6 +38,8 @@ export class SeatsComponent extends LoadingComponent {
 
   MovieId: string | null = "";
 
+  ScheduleId: any = "";
+
   movieShow: any = {};
 
   constructor(
@@ -63,6 +65,8 @@ export class SeatsComponent extends LoadingComponent {
     this.route.paramMap.subscribe(params => {
       this.MovieId = params.get('movie');
       console.log(this.MovieId);
+      this.ScheduleId = params.get('date');
+      console.log(this.ScheduleId);
     });
 
     await this.DataPeli();
@@ -72,7 +76,22 @@ export class SeatsComponent extends LoadingComponent {
 
   async DataPeli(){
 
-    var peliculas = await this.soapClient.getMovies();
+    const movie = await this.soapClient.getMovies();
+
+    console.log("movie", movie);
+
+    var peliculas: any = [];
+
+    if (Array.isArray(movie)) {
+
+      peliculas = movie;
+
+    } else if (peliculas) {
+
+      peliculas.push(movie);
+    }
+    
+    // var peliculas = await this.soapClient.getMovies();
 
     const movieFound = peliculas.some((peli: any) => peli.FeatureId === this.MovieId);
 
@@ -94,7 +113,7 @@ export class SeatsComponent extends LoadingComponent {
       if (peli.FeatureId === this.MovieId) {
 
         const poster = await this.soapClient.getPoster(peli.FeatureId);
-        const show = await this.soapClient.getShows(peli.FeatureId, this.formatDateToString(this.now));
+        const show = await this.soapClient.getShows(peli.FeatureId, this.ScheduleId);
 
         console.log(show)
         
@@ -140,28 +159,34 @@ export class SeatsComponent extends LoadingComponent {
 
     const totalMinutes = parseInt(movie.TotalRuntime, 10);
 
-    const relevantShow = movie.Show.find((show: any) => {
-      const startTime = new Date(show.StartDate);
-      const endTime = new Date(show.EndDate);
-      const endThreshold = new Date(endTime.getTime() - 20 * 60 * 1000); // EndDate - 20 minutos
+    let relevantShow: any = {};
+    if (movie.length > 0) {
 
-      // Calcular la diferencia en minutos
-      const diffInMinutes = Math.floor((this.now.getTime() - startTime.getTime()) / 60000);
-      const adjustedDiff = totalMinutes - diffInMinutes;
-      const starts = Math.floor((startTime.getTime() - this.now.getTime()) / 60000);
-      
-      show.Elapsed = this.convertMinutesAndHours(diffInMinutes),
-      show.Remaining = this.convertMinutesAndHours(adjustedDiff),
-      show.TotalMinutes = this.convertMinutesAndHours(totalMinutes)
-      show.Progress = this.calculateProgress(startTime, endTime);
-      show.Starts = this.convertMinutesAndHours(starts);
+      relevantShow = movie.Show.find((show: any) => {
+        const startTime = new Date(show.StartDate);
+        const endTime = new Date(show.EndDate);
+        const endThreshold = new Date(endTime.getTime() - 20 * 60 * 1000); // EndDate - 20 minutos
+  
+        // Calcular la diferencia en minutos
+        const diffInMinutes = Math.floor((this.now.getTime() - startTime.getTime()) / 60000);
+        const adjustedDiff = totalMinutes - diffInMinutes;
+        const starts = Math.floor((startTime.getTime() - this.now.getTime()) / 60000);
+        
+        show.Elapsed = this.convertMinutesAndHours(diffInMinutes),
+        show.Remaining = this.convertMinutesAndHours(adjustedDiff),
+        show.TotalMinutes = this.convertMinutesAndHours(totalMinutes)
+        show.Progress = this.calculateProgress(startTime, endTime);
+        show.Starts = this.convertMinutesAndHours(starts);
+  
+        return (
+          (this.now >= startTime && this.now < endThreshold) || // Ya comenzó
+          (this.now >= endThreshold && this.now <= endTime) || // Terminando
+          (this.now < startTime) // Por empezar
+        );
+      });
 
-      return (
-        (this.now >= startTime && this.now < endThreshold) || // Ya comenzó
-        (this.now >= endThreshold && this.now <= endTime) || // Terminando
-        (this.now < startTime) // Por empezar
-      );
-    });
+    }
+    
 
     if (relevantShow) {
 
@@ -228,7 +253,7 @@ export class SeatsComponent extends LoadingComponent {
 
     const session = await this.soapClient.getSession();
 
-    var seats = await this.soapClient.getSeats(session, this.showActual.ScheduleId);
+    var seats = await this.soapClient.getSeats(session, this.ScheduleId);
 
     const coordinates = await this.findMinCoordinates(seats);
 

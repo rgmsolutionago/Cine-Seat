@@ -81,7 +81,12 @@
                 <div *ngFor="let seat of seatsPrint"
                     style="width: 20px; height: 26px; position: absolute; font-size: 7px; text-align: center; align-content: center; border-radius: 3px;"
                     [ngStyle]="{'top.px': seat.Y, 'left.px': seat.X}"
-                    [ngClass]="{'available': seat.Status === 'available', 'sold': seat.Status === 'blocked', 'blocked': seat.Status === 'blocked'}"
+                    [ngClass]="{
+                      'available': seat.Status.toLowerCase() === 'available',
+                      'sold': seat.Status.toLowerCase() === 'blocked',
+                      'blocked': seat.Status.toLowerCase() === 'blocked',
+                      'entered': seat.Status.toLowerCase() === 'entered'
+                    }"
                 >
                     {{seat.SeatNumber}}
                 </div>

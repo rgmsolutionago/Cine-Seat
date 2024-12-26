@@ -246,12 +246,12 @@ export class SoapClientService {
       <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/CSwsTrans/Trans">
         <soapenv:Header/>
         <soapenv:Body>
-          <tem:GetSeats>
+          <tem:GetSeatsv2>
             <tem:pTheatreID>${this.TheatreID}</tem:pTheatreID>
             <tem:pScheduleID>${ScheduleId}</tem:pScheduleID>
             <tem:pSessionID>${session}</tem:pSessionID>
             <tem:pWorkstation>${this.WorkStation}</tem:pWorkstation>
-          </tem:GetSeats>
+          </tem:GetSeatsv2>
         </soapenv:Body>
       </soapenv:Envelope>
     `;
@@ -263,13 +263,13 @@ export class SoapClientService {
       const response = await axios.post(this.trans, soapRequest, {
         headers: {
           'Content-Type': 'text/xml',
-          'SOAPAction': 'http://tempuri.org/CSwsTrans/Trans/GetSeats'
+          'SOAPAction': 'http://tempuri.org/CSwsTrans/Trans/GetSeatsv2'
         },
       });
 
       const result = await parseStringPromise(response.data, { explicitArray: false });
 
-      const seatsDistribution = result['soap:Envelope']['soap:Body']['GetSeatsResponse']['GetSeatsResult']['root']['Distribution'];
+      const seatsDistribution = result['soap:Envelope']['soap:Body']['GetSeatsv2Response']['GetSeatsv2Result']['root']['Distribution'];
 
       seats = seatsDistribution.Zones.Zone.Seats.Seat
       
