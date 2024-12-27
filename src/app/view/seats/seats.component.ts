@@ -42,6 +42,8 @@ export class SeatsComponent extends LoadingComponent {
 
   movieShow: any = {};
 
+  ScheduleDate: any = "";
+
   constructor(
     private soapClient: SoapClientService,
     private route: ActivatedRoute,
@@ -65,8 +67,9 @@ export class SeatsComponent extends LoadingComponent {
     this.route.paramMap.subscribe(params => {
       this.MovieId = params.get('movie');
       console.log(this.MovieId);
-      this.ScheduleId = params.get('date');
+      this.ScheduleId = params.get('schedule');
       console.log(this.ScheduleId);
+      this.ScheduleDate = params.get('date');
     });
 
     await this.DataPeli();
@@ -113,9 +116,12 @@ export class SeatsComponent extends LoadingComponent {
       if (peli.FeatureId === this.MovieId) {
 
         const poster = await this.soapClient.getPoster(peli.FeatureId);
-        const show = await this.soapClient.getShows(peli.FeatureId, this.ScheduleId);
 
-        console.log(show)
+        console.log("this.ScheduleDate", this.ScheduleDate);
+
+        const show = await this.soapClient.getShows(peli.FeatureId, this.ScheduleDate);
+
+        console.log("show", show)
         
         if (show.length > 0) {
 
@@ -147,8 +153,8 @@ export class SeatsComponent extends LoadingComponent {
       await this.DataSeats();
     }, 5000);
 
-    // console.log("pelis", this.peliAcutal);
-    // console.log("showActual", this.showActual);
+    console.log("peliActual", this.peliAcutal);
+    console.log("showActual", this.showActual);
 
     
   }
@@ -160,7 +166,8 @@ export class SeatsComponent extends LoadingComponent {
     const totalMinutes = parseInt(movie.TotalRuntime, 10);
 
     let relevantShow: any = {};
-    if (movie.length > 0) {
+
+    if (movie) {
 
       relevantShow = movie.Show.find((show: any) => {
         const startTime = new Date(show.StartDate);
@@ -186,7 +193,8 @@ export class SeatsComponent extends LoadingComponent {
       });
 
     }
-    
+
+    console.log(relevantShow)
 
     if (relevantShow) {
 
@@ -283,7 +291,7 @@ export class SeatsComponent extends LoadingComponent {
 
     this.seatsPrint = seats;
 
-    console.log(this.seatsPrint);
+    // console.log(this.seatsPrint);
     setTimeout(()=>{
       this.captureSeatsAsImage();
     }, 100);

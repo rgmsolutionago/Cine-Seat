@@ -269,9 +269,18 @@ export class SoapClientService {
 
       const result = await parseStringPromise(response.data, { explicitArray: false });
 
+      // console.log(result)
+
       const seatsDistribution = result['soap:Envelope']['soap:Body']['GetSeatsv2Response']['GetSeatsv2Result']['root']['Distribution'];
 
-      seats = seatsDistribution.Zones.Zone.Seats.Seat
+      let zone;
+
+      if(Array.isArray(seatsDistribution.Zones.Zone)){
+        zone = seatsDistribution.Zones.Zone[0];
+      }else{
+        zone = seatsDistribution.Zones.Zone;
+      }
+      seats = zone.Seats.Seat
       
     } catch (error) {
 

@@ -385,9 +385,9 @@ export class HomeComponent extends LoadingComponent {
   }
 
   // Función para redireccionar
-  redirectToSeats(movieId: string, ScheduleId: string): void {
+  redirectToSeats(movieId: string, ScheduleId: string, ScheduleDate: string): void {
     console.log(" ScheduleId",  ScheduleId);
-    this.router.navigate([`seats`, movieId, ScheduleId]); // Redirige a la ruta con el ID de la película
+    this.router.navigate([`seats`, movieId, ScheduleId, ScheduleDate]); // Redirige a la ruta con el ID de la película, ScheduleId, y ScheduleDate
   }
 
   async ValSession(){
@@ -400,5 +400,10 @@ export class HomeComponent extends LoadingComponent {
     }
 
     return true;
+  }
+
+  ngOnDestroy() {
+    console.log('Componente Home destruido.');
+    this.stopInterval();
   }
 }
