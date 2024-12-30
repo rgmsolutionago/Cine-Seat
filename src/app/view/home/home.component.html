@@ -79,7 +79,7 @@
 
         <div class="col-12">
 
-          <div class="card w-100 card-movie mb-3" *ngFor="let movie of toStart" (click)="redirectToSeats(movie.Id, movie.ScheduleId, movie.ScheduleDate)">
+          <div class="card w-100 card-movie mb-3" *ngFor="let movie of toStart" (click)="redirectToSeats(movie.FeatureId, movie.ScheduleId, movie.ScheduleDate)">
 
             <div class="card-body position-relative">
 
@@ -131,7 +131,7 @@
 
         <div class="col-12">
 
-          <div class="card w-100 card-movie mb-3" *ngFor="let movie of inProgress" (click)="redirectToSeats(movie.Id, movie.ScheduleId, movie.ScheduleDate)">
+          <div class="card w-100 card-movie mb-3" *ngFor="let movie of inProgress" (click)="redirectToSeats(movie.FeatureId, movie.ScheduleId, movie.ScheduleDate)">
             <div class="card-body position-relative">
 
               <div class="cont-img position-absolute">
@@ -187,7 +187,7 @@
 
         <div class="col-12">
 
-          <div class="card w-100 card-movie mb-3" *ngFor="let movie of toFinish" (click)="redirectToSeats(movie.Id, movie.ScheduleId, movie.ScheduleDate)">
+          <div class="card w-100 card-movie mb-3" *ngFor="let movie of toFinish" (click)="redirectToSeats(movie.FeatureId, movie.ScheduleId, movie.ScheduleDate)">
             <div class="card-body position-relative">
 
               <div class="cont-img position-absolute">

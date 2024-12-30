@@ -590,7 +590,9 @@ export class HomeComponent extends LoadingComponent {
 
   // Función para redireccionar
   redirectToSeats(movieId: string, ScheduleId: string, ScheduleDate: string): void {
+    console.log(" movieId",  movieId);
     console.log(" ScheduleId",  ScheduleId);
+    console.log(" ScheduleDate",  ScheduleDate);
     this.router.navigate([`seats`, movieId, ScheduleId, ScheduleDate]); // Redirige a la ruta con el ID de la película, ScheduleId, y ScheduleDate
   }
 
