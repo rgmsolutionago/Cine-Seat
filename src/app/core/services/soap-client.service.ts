@@ -236,6 +236,51 @@ export class SoapClientService {
     return show;
   }
 
+  //Obtiene las funciones de las peliculas
+  async getScreen(Date: string) {
+
+    const soapRequest = `
+      <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/CSwsInfo/Info">
+        <soapenv:Header/>
+        <soapenv:Body>
+          <tem:ShowTimeByDateAndScreen>
+            <tem:TheatreGroupId>${this.TheatreID}</tem:TheatreGroupId>
+            <tem:SDate>${Date}</tem:SDate>
+            <tem:ScreenId>0</tem:ScreenId>
+            <tem:FilterId></tem:FilterId>
+          </tem:ShowTimeByDateAndScreen>
+        </soapenv:Body>
+      </soapenv:Envelope>
+    `;
+
+    var screen : any = [];
+    
+    try {
+
+      const response = await axios.post(this.info, soapRequest, {
+        headers: {
+          'Content-Type': 'text/xml',
+          'SOAPAction': 'http://tempuri.org/CSwsInfo/Info/ShowTimeByDateAndScreen'
+        },
+      });
+
+      const result = await parseStringPromise(response.data, { explicitArray: false });
+
+      // console.log(result);
+
+      if(result['soap:Envelope']['soap:Body']['ShowTimeByDateAndScreenResponse']['ShowTimeByDateAndScreenResult']['root']['Screen']){
+        screen = result['soap:Envelope']['soap:Body']['ShowTimeByDateAndScreenResponse']['ShowTimeByDateAndScreenResult']['root']['Screen'];
+      }
+      
+
+    } catch (error) {
+
+      console.error('Error al llamar al método SOAP:', error);
+    }
+
+    return screen;
+  }
+
   //---------------------Home---------------------//
 
   //---------------------Seats---------------------//

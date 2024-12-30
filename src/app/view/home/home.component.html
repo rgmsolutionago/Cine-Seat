@@ -15,44 +15,34 @@
   <div class="row mx-0 mb-3">
 
     <div class="col-12 col-md-4 mb-3">
-      
-      <div class="form-group position-relative">
-        <input
-          id="dateInput"
-          type="text"
-          class="form-control"
-          placeholder="dd/mm/yyyy"
-          (input)="onDateInput($event)"
-          autocomplete="off"
-          #dateInput
-        >
-        <button
-          class="btn btn-outline-primary position-absolute top-0 end-0"
-          type="button"
-          [disabled]="!isDateValid"
-          (click)="searchDate(dateInput.value)"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
-          </svg>
-        </button>
-      </div>
 
+      <input
+				class="form-control"
+				placeholder="yyyy-mm-dd"
+				name="dp"
+				[(ngModel)]="model"
+				ngbDatepicker
+				[footerTemplate]="footerTemplate"
+				#d="ngbDatepicker"
+        (ngModelChange)="DateInput($event)"
+        hidden
+			/>
+			<button class="btn btn-outline-secondary bi bi-calendar3 w-100" id="calendarPicker" (click)="d.toggle()" type="button">{{model.day < 10 ? "0" + model.day : model.day }}/{{model.month < 10 ? "0" + model.month : model.month }}/{{model.year}}</button>
+
+
+      <ng-template #footerTemplate>
+        <!-- <hr class="my-0" />
+        <button class="btn btn-primary btn-sm m-2 float-start" (click)="model = today; d.close()">Today</button>
+        <button class="btn btn-secondary btn-sm m-2 float-end" (click)="d.close()">Close</button> -->
+      </ng-template>
     </div>
 
     <div class="col-12 col-md-4 mb-3">
 
-      <div class="form-group">
-        <input
-          id="timeInput"
-          type="text"
-          class="form-control"
-          placeholder="hh:mm"
-          (input)="onTimeInput($event)"
-          autocomplete="off"
-          [(ngModel)]="searchTime"
-        >
-      </div>
+      <select class="form-select" aria-label="Default select example" (change)="FilterTime($event)">
+        <option selected value="">Todas</option>
+        <option *ngFor="let time of times_movie" [value]="time">{{time}}</option>
+      </select>
 
     </div>
 
@@ -66,6 +56,7 @@
           autocomplete="off"
           [(ngModel)]="searchTerm"
           placeholder="Pelicula"
+          (input)="SearchTermMovie()"
         >
       </div>
 
@@ -79,7 +70,7 @@
     <div class="col-12 col-md-6 col-lg-4 mb-3 px-0" *ngIf="toStart.length > 0">
       <div class="row mx-0">
 
-        <div class="col-12 text-center mb-4">
+        <div class="col-12 text-center mb-4" *ngIf="!isPast">
           <div class="rounded-circle d-inline-flex me-3 circle" style="background-color: rgba(0, 56, 255, 1);"></div>
           <span>
             Por empezar
@@ -88,7 +79,7 @@
 
         <div class="col-12">
 
-          <div class="card w-100 card-movie mb-3" *ngFor="let movie of toStart" (click)="redirectToSeats(movie.Id, movie.Show.ScheduleId, movie.Show.ScheduleDate)">
+          <div class="card w-100 card-movie mb-3" *ngFor="let movie of toStart" (click)="redirectToSeats(movie.Id, movie.ScheduleId, movie.ScheduleDate)">
 
             <div class="card-body position-relative">
 
@@ -99,23 +90,23 @@
               </div>
               
               <div class="cont-inf position-absolute">
-                <span class="text-sala">{{movie.Show.ScreenName}}</span>
+                <span class="text-sala">{{movie.ScreenName}}</span>
                 <span class="text-movie">{{movie.Title}}</span>
-                <span class="text-hora">Hora {{movie.Show.StartTime}}</span>
+                <span class="text-hora">Hora {{movie.StartTime}}</span>
               </div>
 
-              <div class="cont-type position-absolute" *ngIf="isBadge">
+              <div class="cont-type position-absolute"*ngIf="!isPast">
                 <span class="badge rounded-pill text-bg-primary badge-1">Por empezar</span>
               </div>
               
               <div class="cont-inf-2 position-absolute">
                 <span>Duración </span>
-                <span>{{movie.Show.TotalMinutes}}</span>
+                <span>{{movie.TotalMinutes}}</span>
               </div>
 
-              <div class="cont-inf-3 position-absolute">
+              <div class="cont-inf-3 position-absolute" *ngIf="!isPast">
                 <span>Comienza en </span>
-                <span>{{movie.Show.Starts}}</span>
+                <span>{{movie.Starts}}</span>
               </div>
               
             </div>
@@ -140,7 +131,7 @@
 
         <div class="col-12">
 
-          <div class="card w-100 card-movie mb-3" *ngFor="let movie of inProgress" (click)="redirectToSeats(movie.Id, movie.Show.ScheduleId, movie.Show.ScheduleDate)">
+          <div class="card w-100 card-movie mb-3" *ngFor="let movie of inProgress" (click)="redirectToSeats(movie.Id, movie.ScheduleId, movie.ScheduleDate)">
             <div class="card-body position-relative">
 
               <div class="cont-img position-absolute">
@@ -150,9 +141,9 @@
               </div>
               
               <div class="cont-inf position-absolute">
-                <span class="text-sala">{{movie.Show.ScreenName}}</span>
+                <span class="text-sala">{{movie.ScreenName}}</span>
                 <span class="text-movie">{{movie.Title}}</span>
-                <span class="text-hora">Hora {{movie.Show.StartTime}}</span>
+                <span class="text-hora">Hora {{movie.StartTime}}</span>
               </div>
 
               <div class="cont-type position-absolute">
@@ -161,18 +152,18 @@
               
               <div class="cont-loading">
                 <div class="loading-movie">
-                  <div class="loading-bar" [ngStyle]="{'width': movie.Show.Progress + '%'}"></div>
+                  <div class="loading-bar" [ngStyle]="{'width': movie.Progress + '%'}"></div>
                 </div>
               </div>
 
               <div class="cont-inf-2 position-absolute">
                 <span>Transcurrido </span>
-                <span>{{movie.Show.Elapsed}}</span>
+                <span>{{movie.Elapsed}}</span>
               </div>
 
               <div class="cont-inf-3 position-absolute">
                 <span>Restante </span>
-                <span>{{movie.Show.Remaining}}</span>
+                <span>{{movie.Remaining}}</span>
               </div>
               
             </div>
@@ -196,7 +187,7 @@
 
         <div class="col-12">
 
-          <div class="card w-100 card-movie mb-3" *ngFor="let movie of toFinish" (click)="redirectToSeats(movie.Id, movie.Show.ScheduleId, movie.Show.ScheduleDate)">
+          <div class="card w-100 card-movie mb-3" *ngFor="let movie of toFinish" (click)="redirectToSeats(movie.Id, movie.ScheduleId, movie.ScheduleDate)">
             <div class="card-body position-relative">
 
               <div class="cont-img position-absolute">
@@ -206,9 +197,9 @@
               </div>
               
               <div class="cont-inf position-absolute">
-                <span class="text-sala">{{movie.Show.ScreenName}}</span>
+                <span class="text-sala">{{movie.ScreenName}}</span>
                 <span class="text-movie">{{movie.Title}}</span>
-                <span class="text-hora">Hora {{movie.Show.StartTime}}</span>
+                <span class="text-hora">Hora {{movie.StartTime}}</span>
               </div>
 
               <div class="cont-type position-absolute">
@@ -217,18 +208,18 @@
 
               <div class="cont-loading">
                 <div class="loading-movie">
-                  <div class="loading-bar" [ngStyle]="{'width': movie.Show.Progress + '%'}"></div>
+                  <div class="loading-bar" [ngStyle]="{'width': movie.Progress + '%'}"></div>
                 </div>
               </div>
               
               <div class="cont-inf-2 position-absolute">
                 <span>Transcurrido </span>
-                <span>{{movie.Show.Elapsed}}</span>
+                <span>{{movie.Elapsed}}</span>
               </div>
 
               <div class="cont-inf-3 position-absolute">
                 <span>Restante </span>
-                <span>{{movie.Show.Remaining}}</span>
+                <span>{{movie.Remaining}}</span>
               </div>
               
             </div>

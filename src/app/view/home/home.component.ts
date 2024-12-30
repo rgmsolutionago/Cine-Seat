@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -9,14 +9,26 @@ import { SoapClientService } from '../../core/services/soap-client.service';
 
 import { FormsModule } from '@angular/forms';
 
+import { NgbCalendar, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, SidebarMenuComponent, LoadingComponent,FormsModule],
+  imports: [
+    CommonModule,
+    SidebarMenuComponent,
+    LoadingComponent,
+    FormsModule,
+    NgbModule
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent extends LoadingComponent {
+  
+  today = inject(NgbCalendar).getToday();
+  model: NgbDateStruct;
   
   // array principal con las peliculas y sus funciones.
   movies: any[] = [];
@@ -43,11 +55,24 @@ export class HomeComponent extends LoadingComponent {
 
   filterTime: boolean = false;
 
+  screen: any = [];
+  movies_arr: any = [];
+  movie_screen: any = [];
+  movie_screen_original: any = [];
+
+  selectedDate: Date = new Date();
+  isPast: boolean = false;
+  movie_times: any = [];
+  dateTime: string = "";
+  times_movie: any = [];
+
   constructor(
     private soapClient: SoapClientService,
     private router: Router
   ){
     super();
+    this.selectedDate = new Date();
+    this.model = {year: this.selectedDate.getFullYear(), month: this.selectedDate.getMonth() + 1, day: this.selectedDate.getDate() }
     // this.openModal();
   }
 
@@ -62,9 +87,172 @@ export class HomeComponent extends LoadingComponent {
 
     this.openModal();
 
-    await this.GetMovies();
+    await this.GetScreen();
+
+    this.updateTimes()
+    // await this.GetMovies();
 
     this.startInterval();
+  }
+
+  async GetScreen(){
+
+    this.movies_arr = await this.soapClient.getMovies();
+    this.screen = await this.soapClient.getScreen(this.formatDateToString(this.now));
+    this.movie_screen = await this.getCurrentOrUpcomingShows(this.screen);
+
+    this.movie_screen_original = this.movie_screen;
+    await this.DataMovie();
+
+    // console.log(this.movie_times)
+
+    // console.log(this.movie_screen)
+
+    await this.OrdingMovies(this.movie_screen);
+
+    setTimeout(()=>{
+      this.closeModal();  
+    }, 500);
+
+    // console.log(this.toStart)
+    // console.log(this.inProgress)
+    // console.log(this.toFinish)
+  }
+
+  async DataMovie(){
+
+    this.movie_screen.forEach(async (show: any) => {
+
+      const scheduleDate = `${show.ScheduleDate.slice(0, 4)}-${show.ScheduleDate.slice(4, 6)}-${show.ScheduleDate.slice(6, 8)}`;
+      const startTime = new Date(`${scheduleDate}T${show.StartTime}:00`);
+      const endTime = new Date(startTime.getTime() + parseInt(show.TotalRuntime) * 60000);
+      const endThreshold = new Date(endTime.getTime() - 20 * 60 * 1000);// EndDate - 20 minutos
+
+      // Calcular la diferencia en minutos
+      const diffInMinutes = Math.floor((this.date.getTime() - startTime.getTime()) / 60000);
+      const adjustedDiff = parseInt(show.TotalRuntime) - diffInMinutes;
+      const starts = Math.floor((startTime.getTime() - this.date.getTime()) / 60000);
+      
+      // Agregar propiedades al objeto show
+      show.Elapsed = this.convertMinutesAndHours(diffInMinutes);
+      show.Remaining = this.convertMinutesAndHours(adjustedDiff);
+      show.TotalMinutes = this.convertMinutesAndHours(parseInt(show.TotalRuntime));
+      show.Progress = this.calculateProgress(startTime, endTime);
+      show.Starts = this.convertMinutesAndHours(starts);
+      show.Poster = await this.soapClient.getPoster(show.FeatureId);
+    });
+
+  }
+
+  async getCurrentOrUpcomingShows(shows: any[], marginMinutes: number = 15) {
+    
+    let now = new Date();
+
+    const result: any = {};
+
+    for (let screen of shows) {
+
+      for (const show of screen.Show) {
+        
+        const timeStr = `${screen.ScheduleDate.slice(0, 4)}-${screen.ScheduleDate.slice(4, 6)}-${screen.ScheduleDate.slice(6, 8)}T${show.StartTime}`;
+
+        const startTime = new Date(timeStr);
+
+        if (this.isPast) {
+          now = new Date(timeStr);
+        }
+
+        const filteredMovies = this.movies_arr.filter((movie: any) => movie.FeatureId === show.FeatureId);
+        
+        if (filteredMovies.length === 0) {
+          console.error(`No se encontró la película con FeatureId: ${show.FeatureId}`);
+          continue;
+        }
+
+        const movie = filteredMovies[0];
+
+        const endTime = new Date(startTime.getTime() + parseInt(filteredMovies[0].TotalRuntime) * 60000);
+        const marginStartTime = new Date(startTime.getTime() - marginMinutes * 60000);
+
+        if ((now >= marginStartTime && now <= endTime) || (startTime > now)) {
+          if (!result[screen.ScreenID] || startTime < result[screen.ScreenID].startTime) {
+            result[screen.ScreenID] = {
+              screen,
+              show,
+              movie,
+              startTime,
+              endTime,
+              marginStartTime
+            };
+          }
+        }
+
+        const exists = this.movie_times.some((time: any) => time === show.StartTime);
+        if (!exists) {
+          this.movie_times.push(show.StartTime);
+        }
+      }
+    }
+    
+    // Convertir el resultado a un array
+    const showsArray = Object.keys(result).map(key => ({
+      // screen: result[key].screen,
+      // show: result[key].show,
+      // movie: result[key].movie,
+
+      FeatureId: result[key].movie.FeatureId,
+      Title: result[key].movie.Title,
+      TotalRuntime: result[key].movie.TotalRuntime,
+      ScheduleId: result[key].show.ScheduleId,
+      StartTime: result[key].show.StartTime,
+      ScreenName: result[key].screen.ScreenName,
+      ScheduleDate: result[key].screen.ScheduleDate,
+      
+    }));
+    
+    return showsArray;
+  }
+
+  updateTimes() {
+
+    // console.log(this.movie_times);
+
+    const newTimes = this.filterPastTimes(this.movie_times);
+
+    this.times_movie = newTimes;
+
+    // console.log("aca", this.times_movie)
+
+    this.times_movie.sort((a: any, b: any) => {
+      const [hourA, minuteA] = a.split(':').map(Number);
+      const [hourB, minuteB] = b.split(':').map(Number);
+      
+      if (hourA < hourB) return -1;
+      if (hourA > hourB) return 1;
+      if (minuteA < minuteB) return -1;
+      if (minuteA > minuteB) return 1;
+      return 0;
+    });
+  }
+  
+  filterPastTimes(times: string[]): string[] {
+    const now = new Date();
+    const nowHours = now.getHours();
+    const nowMinutes = now.getMinutes();
+
+    const dia = now;
+    dia.setHours(0, 0, 0, 0);
+
+    const fecha = this.now;
+    fecha.setHours(0, 0, 0, 0);
+
+    return times.filter(time => {
+      const [hour, minute] = time.split(':').map(Number);
+      if (hour > nowHours) return true;
+      if (hour === nowHours && minute >= nowMinutes) return true;
+      if (fecha.getTime() > dia.getTime()) return true;
+      return false;
+    });
   }
 
   async GetMovies() {
@@ -125,29 +313,40 @@ export class HomeComponent extends LoadingComponent {
     
   }
 
-  async dataShowSort(shows: any[], timeTotal:string){
-
-    const totalMinutes = parseInt(timeTotal, 10);
+  async dataShowSort(shows: any[], screen: any){
 
     shows.sort((a, b) => a.StartTime.localeCompare(b.StartTime));
 
     return shows.map(show => {
 
-      const startDate = new Date(`${show.ScheduleDate.slice(0, 4)}-${show.ScheduleDate.slice(4, 6)}-${show.ScheduleDate.slice(6, 8)}T${show.StartTime}`);
+      const movie = this.movies_arr.filter((movie: any) => movie.FeatureId === show.FeatureId);
+      const totalMinutes = parseInt(movie.TotalRuntime, 10);
+
+      const startDate = new Date(`${screen.ScheduleDate.slice(0, 4)}-${screen.ScheduleDate.slice(4, 6)}-${screen.ScheduleDate.slice(6, 8)}T${show.StartTime}`);
       const endDate = new Date(startDate.getTime() + totalMinutes * 60000);
 
       // Calcular la diferencia en minutos
       const diffInMinutes = Math.floor((this.date.getTime() - startDate.getTime()) / 60000);
       const adjustedDiff = totalMinutes - diffInMinutes;
-      
-      return {
-        StartTime: show.StartTime,
-        ScreenName: show.ScreenName,
-        ScheduleDate: show.ScheduleDate,
+
+      return{
+        FeatureId: movie[0].FeatureId,
+        Title: movie[0].Title,
+        TotalRuntime: movie[0].TotalRuntime,
         ScheduleId: show.ScheduleId,
-        StartDate: startDate,
-        EndDate: endDate
+        StartTime: show.StartTime,
+        ScreenName: screen.ScreenName,
+        ScheduleDate: screen.ScheduleDate
       };
+
+      // return {
+      //   StartTime: show.StartTime,
+      //   ScreenName: show.ScreenName,
+      //   ScheduleDate: show.ScheduleDate,
+      //   ScheduleId: show.ScheduleId,
+      //   StartDate: startDate,
+      //   EndDate: endDate
+      // };
 
     });
   }
@@ -171,6 +370,7 @@ export class HomeComponent extends LoadingComponent {
     const pelis = this.movies;
 
     console.log(pelis);
+
     return pelis.map(movie => {
 
       const totalMinutes = parseInt(movie.TotalRuntime, 10);
@@ -192,7 +392,6 @@ export class HomeComponent extends LoadingComponent {
         show.Progress = this.calculateProgress(startTime, endTime);
         show.Starts = this.convertMinutesAndHours(starts);
 
-        
         if(this.filterTime){
           return (show.StartTime == this.searchTime);
         }
@@ -232,9 +431,11 @@ export class HomeComponent extends LoadingComponent {
     this.toFinish = [];
 
     filtro.forEach((movie: any) => {
-      const show = movie.Show;
-      const startTime = new Date(show.StartDate);
-      const endTime = new Date(show.EndDate);
+      const show = movie;
+
+      const scheduleDate = `${show.ScheduleDate.slice(0, 4)}-${show.ScheduleDate.slice(4, 6)}-${show.ScheduleDate.slice(6, 8)}`;
+      const startTime = new Date(`${scheduleDate}T${show.StartTime}:00`);
+      const endTime = new Date(startTime.getTime() + parseInt(show.TotalRuntime) * 60000);
       const endThreshold = new Date(endTime.getTime() - 20 * 60 * 1000); // EndDate - 20 minutos
 
       if (this.date < startTime) {
@@ -248,6 +449,10 @@ export class HomeComponent extends LoadingComponent {
         this.toFinish.push(movie);
       }
 
+      if(this.isPast){
+        this.toStart.push(movie);
+      }
+
     });
   }
 
@@ -256,17 +461,6 @@ export class HomeComponent extends LoadingComponent {
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
     return `${year}${month}${day}`;
-  }
-
-  onDateInput(event: any) {
-    let input = event.target.value;
-    input = input.replace(/\D/g, '');
-    // Eliminar caracteres no numéricos
-    if (input.length > 2) input = `${input.slice(0, 2)}/${input.slice(2)}`;
-    if (input.length > 5) input = `${input.slice(0, 5)}/${input.slice(5, 9)}`;
-    event.target.value = input;
-
-    this.isDateValid = this.validateDate(event.target.value);
   }
 
   validateDate(date: string): boolean {
@@ -345,20 +539,30 @@ export class HomeComponent extends LoadingComponent {
 
     this.intervalId = setInterval(async() => {
 
+
       this.date = new Date();
-      let filtro = await this.filterMovies();
 
-      console.log("filtro", filtro);
+      this.updateTimes();
 
-      filtro = this.filterSearchMovies(filtro);
+      // let filtro = await this.filterMovies();
 
-      filtro = filtro.sort((a, b) => this.timeToMinutes(a?.Show.StartTime) - this.timeToMinutes(b?.Show.StartTime));
+      // console.log("filtro", filtro);
 
-      await this.OrdingMovies(filtro);
+      // filtro = this.filterSearchMovies(filtro);
 
-      console.log("toStart", this.toStart);
-      console.log("inProgress", this.inProgress);
-      console.log("toFinish", this.toFinish);
+      // filtro = filtro.sort((a, b) => this.timeToMinutes(a?.Show.StartTime) - this.timeToMinutes(b?.Show.StartTime));
+
+      // this.screen
+
+      // console.log(this.movie_screen);
+
+      await this.DataMovie();
+      await this.OrdingMovies(this.movie_screen);
+      // await this.OrdingMovies(filtro);
+
+      // console.log("toStart", this.toStart);
+      // console.log("inProgress", this.inProgress);
+      // console.log("toFinish", this.toFinish);
       
     }, 1000);
   }
@@ -405,5 +609,140 @@ export class HomeComponent extends LoadingComponent {
   ngOnDestroy() {
     console.log('Componente Home destruido.');
     this.stopInterval();
+  }
+
+  async DateInput(newDate: any){
+
+    this.isPast = false;
+    this.now = new Date(`${newDate.year}-${ newDate.month < 10 ? "0" + newDate.month : newDate.month }-${ newDate.day < 10 ? "0" + newDate.day : newDate.day}T00:00:00`);
+
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+
+    // Establecer la hora a medianoche
+    // console.log(this.now);
+    // console.log(hoy);
+
+    if (this.now.getTime() < hoy.getTime()) {
+      this.isPast = true;
+    }
+
+    this.screen = await this.soapClient.getScreen(this.formatDateToString(this.now));
+
+    // console.log(screen);
+
+    this.movie_screen_original = await this.getCurrentOrUpcomingShows(this.screen);
+
+    this.movie_screen = this.movie_screen_original;
+
+    // console.log(this.movie_screen)
+
+    await this.DataMovie();
+    
+    await this.OrdingMovies(this.movie_screen);
+  }
+
+  async FilterTime(event: any) {
+    const selectedTime = event.target.value;
+    this.dateTime = selectedTime;
+
+    if(selectedTime != ""){
+      this.filterTime = true;
+    }else{
+      this.filterTime = false;
+      this.movie_screen = this.movie_screen_original;
+    }
+    
+    await this.FilterMovie();
+  }
+
+  FilterMovie(){
+
+    let now = new Date();
+    const marginMinutes = 15;
+    const result: any = {};
+
+    for (let screen of this.screen) {
+
+      for (const show of screen.Show) {
+        
+        const timeStr = `${screen.ScheduleDate.slice(0, 4)}-${screen.ScheduleDate.slice(4, 6)}-${screen.ScheduleDate.slice(6, 8)}T${show.StartTime}`;
+
+        const startTime = new Date(timeStr);
+
+        let filteredMovies = this.movies_arr.filter((movie: any) => movie.FeatureId === show.FeatureId);
+        
+        if(this.searchTerm){
+          filteredMovies = this.movies_arr.filter((movie: any) => movie.FeatureId === show.FeatureId && movie.Title.toLowerCase().includes(this.searchTerm.toLowerCase()));
+        }
+
+
+        if (filteredMovies.length === 0) {
+          console.error(`No se encontró la película con FeatureId: ${show.FeatureId}`);
+          continue;
+        }
+
+        const movie = filteredMovies[0];
+
+        const endTime = new Date(startTime.getTime() + parseInt(filteredMovies[0].TotalRuntime) * 60000);
+        const marginStartTime = new Date(startTime.getTime() - marginMinutes * 60000);
+
+        if(this.dateTime){
+
+          if (this.dateTime == show.StartTime) {
+            result[screen.ScreenID] = {
+              screen,
+              show,
+              movie,
+              startTime,
+              endTime,
+              marginStartTime
+            };
+          }
+
+        }else{
+
+          if ((now >= marginStartTime && now <= endTime) || (startTime > now)) {
+            if (!result[screen.ScreenID] || startTime < result[screen.ScreenID].startTime) {
+              result[screen.ScreenID] = {
+                screen,
+                show,
+                movie,
+                startTime,
+                endTime,
+                marginStartTime
+              };
+            }
+          }
+
+        }
+        
+      }
+    }
+    
+    // Convertir el resultado a un array
+    const showsArray = Object.keys(result).map(key => ({
+      // screen: result[key].screen,
+      // show: result[key].show,
+      // movie: result[key].movie,
+
+      FeatureId: result[key].movie.FeatureId,
+      Title: result[key].movie.Title,
+      TotalRuntime: result[key].movie.TotalRuntime,
+      ScheduleId: result[key].show.ScheduleId,
+      StartTime: result[key].show.StartTime,
+      ScreenName: result[key].screen.ScreenName,
+      ScheduleDate: result[key].screen.ScheduleDate,
+    }));
+
+    this.movie_screen = showsArray;
+  }
+
+  async SearchTermMovie(){
+
+    console.log("this.searchTerm", this.searchTerm);
+
+    await this.FilterMovie();
+
   }
 }
