@@ -122,3 +122,61 @@
   top: 10px;
   left: 15px;
 }
+
+.text-loading{
+  width: 65px;
+  height: 20px;
+  background-color: rgba(82, 105, 187, 1);
+  margin-bottom: 8px;
+  border-radius: 5px;
+}
+
+.text-2-loading{
+  width: 100px;
+  height: 20px;
+  background-color: rgba(82, 105, 187, 1);
+  border-radius: 5px;
+}
+
+.card-loading{
+  /* background: linear-gradient(80deg, #c0c0c0 25%, #e0e0e0 50%, #  75%); */
+  animation: loadingGradient 1.5s infinite;
+  cursor: default;
+}
+
+ /* rgba(192,192,192,11) */
+@keyframes loadingGradient {
+  0% {
+    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 0%,white 100%);
+  }
+  10%{
+    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 10%,white 100%);
+  }
+  20% {
+    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 20%,white 100%);
+  }
+  30%{
+    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 30%,white 100%);
+  }
+  40% {
+    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 40%,white 100%);
+  }
+  50%{
+    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 50%,white 100%);
+  }
+  60%{
+    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 60%,white 100%);
+  }
+  70% {
+    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 70%,white 100%);
+  }
+  80%{
+    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 80%,white 100%);
+  }
+  90% {
+    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 90%,white 100%);
+  }
+  100%{
+    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 100%,white 100%);
+  }
+}

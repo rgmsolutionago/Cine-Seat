@@ -14,7 +14,7 @@
   <!-- Inputs -->
   <div class="row mx-0 mb-3">
 
-    <div class="col-12 col-md-4 mb-3">
+    <div class="col-12 col-md-4 mb-3 position-relative">
 
       <input
 				class="form-control"
@@ -22,19 +22,14 @@
 				name="dp"
 				[(ngModel)]="model"
 				ngbDatepicker
-				[footerTemplate]="footerTemplate"
 				#d="ngbDatepicker"
+        placement="bottom"
         (ngModelChange)="DateInput($event)"
-        hidden
 			/>
-			<button class="btn btn-outline-secondary bi bi-calendar3 w-100" id="calendarPicker" (click)="d.toggle()" type="button">{{model.day < 10 ? "0" + model.day : model.day }}/{{model.month < 10 ? "0" + model.month : model.month }}/{{model.year}}</button>
+      <div class="position-relative" style="top: -38px;">
+        <button class="btn btn-outline-secondary bi bi-calendar3 w-100 position-absolute" id="calendarPicker" (click)="d.toggle()" type="button">{{model.day < 10 ? "0" + model.day : model.day }}/{{model.month < 10 ? "0" + model.month : model.month }}/{{model.year}}</button>
+      </div>
 
-
-      <ng-template #footerTemplate>
-        <!-- <hr class="my-0" />
-        <button class="btn btn-primary btn-sm m-2 float-start" (click)="model = today; d.close()">Today</button>
-        <button class="btn btn-secondary btn-sm m-2 float-end" (click)="d.close()">Close</button> -->
-      </ng-template>
     </div>
 
     <div class="col-12 col-md-4 mb-3">
@@ -64,167 +59,335 @@
   </div>
 
   <!-- Peliculas -->
-  <div class="row mx-0 justify-content-center" >
+  <div class="row mx-0" >
 
-    <!-- Por Empezar -->
-    <div class="col-12 col-md-6 col-lg-4 mb-3 px-0" *ngIf="toStart.length > 0">
+    <div class="col-12 px-0" *ngIf="cardLoading">
       <div class="row mx-0">
 
-        <div class="col-12 text-center mb-4" *ngIf="!isPast">
-          <div class="rounded-circle d-inline-flex me-3 circle" style="background-color: rgba(0, 56, 255, 1);"></div>
-          <span>
-            Por empezar
-          </span>
-        </div>
-
-        <div class="col-12">
-
-          <div class="card w-100 card-movie mb-3" *ngFor="let movie of toStart" (click)="redirectToSeats(movie.FeatureId, movie.ScheduleId, movie.ScheduleDate)">
-
-            <div class="card-body position-relative">
-
-              <div class="cont-img position-absolute">
-
-                <img src="data:img/png;base64,{{movie.Poster}}" alt="" class="img-card">
-
-              </div>
-              
-              <div class="cont-inf position-absolute">
-                <span class="text-sala">{{movie.ScreenName}}</span>
-                <span class="text-movie">{{movie.Title}}</span>
-                <span class="text-hora">Hora {{movie.StartTime}}</span>
-              </div>
-
-              <div class="cont-type position-absolute"*ngIf="!isPast">
-                <span class="badge rounded-pill text-bg-primary badge-1">Por empezar</span>
-              </div>
-              
-              <div class="cont-inf-2 position-absolute">
-                <span>Duración </span>
-                <span>{{movie.TotalMinutes}}</span>
-              </div>
-
-              <div class="cont-inf-3 position-absolute" *ngIf="!isPast">
-                <span>Comienza en </span>
-                <span>{{movie.Starts}}</span>
-              </div>
-              
+        <div class="col-12 col-md-6 col-lg-4 mb-3 px-0">
+          <div class="row mx-0">
+    
+            <div class="col-12 text-center mb-4">
+              <div class="rounded-circle d-inline-flex me-3 circle" style="background-color: rgba(0, 56, 255, 1);"></div>
+              <span>
+                Por empezar
+              </span>
             </div>
+    
+            <div class="col-12">
+    
+              <div class="card w-100 card-movie card-loading mb-3">
+    
+                <div class="card-body position-relative">
+    
+                  <div class="cont-img position-absolute">
+    
+                    <div class="img-card" style="background-color: rgba(82, 105, 187, 1); height: 90px;"></div>
+    
+                  </div>
+                  
+                  <div class="cont-inf position-absolute">
+    
+                    <div class="text-loading"></div>
+                    <div class="text-loading"></div>
+                    <div class="text-loading"></div>
+    
+                  </div>
+    
+                  <div class="cont-type position-absolute">
+                    <div class="text-loading"></div>
+                  </div>
+    
+                  <div class="cont-inf-3 position-absolute">
+                    <div class="text-2-loading"></div>
+                  </div>
+                  
+                  <div class="cont-inf-2 position-absolute">
+                    <div class="text-2-loading"></div>
+                  </div>
+                  
+                </div>
+              </div>
+    
+            </div>
+    
           </div>
-
+    
+        </div>
+    
+        <div class="col-12 col-md-6 col-lg-4 mb-3 px-0">
+          <div class="row mx-0">
+    
+            <div class="col-12 text-center mb-4">
+              <div class="rounded-circle d-inline-flex me-3 circle" style="background-color: rgba(170, 179, 208, 1);"></div>
+              <span>
+                En Transcurso
+              </span>
+            </div>
+    
+            <div class="col-12">
+    
+              <div class="card w-100 card-movie card-loading mb-3">
+    
+                <div class="card-body position-relative">
+    
+                  <div class="cont-img position-absolute">
+    
+                    <div class="img-card" style="background-color: rgba(82, 105, 187, 1); height: 90px;"></div>
+    
+                  </div>
+                  
+                  <div class="cont-inf position-absolute">
+    
+                    <div class="text-loading"></div>
+                    <div class="text-loading"></div>
+                    <div class="text-loading"></div>
+    
+                  </div>
+    
+                  <div class="cont-type position-absolute">
+                    <div class="text-loading"></div>
+                  </div>
+    
+                  <div class="cont-inf-3 position-absolute">
+                    <div class="text-2-loading"></div>
+                  </div>
+                  
+                  <div class="cont-inf-2 position-absolute">
+                    <div class="text-2-loading"></div>
+                  </div>
+                  
+                </div>
+              </div>
+    
+            </div>
+    
+          </div>
+    
+        </div>
+    
+        <div class="col-12 col-md-6 col-lg-4 mb-3 px-0">
+          <div class="row mx-0">
+    
+            <div class="col-12 text-center mb-4">
+              <div class="rounded-circle d-inline-flex me-3 circle" style="background-color: rgba(82, 105, 187, 1);"></div>
+              <span>
+                Por Terminar
+              </span>
+            </div>
+    
+            <div class="col-12">
+    
+              <div class="card w-100 card-movie card-loading mb-3">
+    
+                <div class="card-body position-relative">
+    
+                  <div class="cont-img position-absolute">
+    
+                    <div class="img-card" style="background-color: rgba(82, 105, 187, 1); height: 90px;"></div>
+    
+                  </div>
+                  
+                  <div class="cont-inf position-absolute">
+    
+                    <div class="text-loading"></div>
+                    <div class="text-loading"></div>
+                    <div class="text-loading"></div>
+    
+                  </div>
+    
+                  <div class="cont-type position-absolute">
+                    <div class="text-loading"></div>
+                  </div>
+    
+                  <div class="cont-inf-3 position-absolute">
+                    <div class="text-2-loading"></div>
+                  </div>
+                  
+                  <div class="cont-inf-2 position-absolute">
+                    <div class="text-2-loading"></div>
+                  </div>
+                  
+                </div>
+              </div>
+    
+            </div>
+    
+          </div>
+    
         </div>
 
       </div>
 
     </div>
+    
 
-    <!-- En Transcurso -->
-    <div class="col-12 col-md-6 col-lg-4 mb-3 px-0"  *ngIf="inProgress.length > 0">
-      <div class="row mx-0">
+    <div class="col-12 px-0" *ngIf="!cardLoading">
 
-        <div class="col-12 text-center mb-4">
-          <div class="rounded-circle d-inline-flex me-3 circle" style="background-color: rgba(170, 179, 208, 1);"></div>
-          <span>
-            En transcurso
-          </span>
-        </div>
+      <div class="row mx-0 justify-content-center">
 
-        <div class="col-12">
+        <!-- Por Empezar -->
+        <div class="col-12 col-md-6 col-lg-4 mb-3 px-0" *ngIf="toStart.length > 0">
+          <div class="row mx-0">
 
-          <div class="card w-100 card-movie mb-3" *ngFor="let movie of inProgress" (click)="redirectToSeats(movie.FeatureId, movie.ScheduleId, movie.ScheduleDate)">
-            <div class="card-body position-relative">
+            <div class="col-12 text-center mb-4" *ngIf="!isPast">
+              <div class="rounded-circle d-inline-flex me-3 circle" style="background-color: rgba(0, 56, 255, 1);"></div>
+              <span>
+                Por empezar
+              </span>
+            </div>
 
-              <div class="cont-img position-absolute">
+            <div class="col-12">
 
-                <img src="data:img/png;base64,{{movie.Poster}}" alt="" class="img-card">
+              <div class="card w-100 card-movie mb-3" *ngFor="let movie of toStart" (click)="redirectToSeats(movie.FeatureId, movie.ScheduleId, movie.ScheduleDate)">
 
-              </div>
-              
-              <div class="cont-inf position-absolute">
-                <span class="text-sala">{{movie.ScreenName}}</span>
-                <span class="text-movie">{{movie.Title}}</span>
-                <span class="text-hora">Hora {{movie.StartTime}}</span>
-              </div>
+                <div class="card-body position-relative">
 
-              <div class="cont-type position-absolute">
-                <span class="badge rounded-pill text-bg-primary badge-2">En Transcurso</span>
-              </div>
-              
-              <div class="cont-loading">
-                <div class="loading-movie">
-                  <div class="loading-bar" [ngStyle]="{'width': movie.Progress + '%'}"></div>
+                  <div class="cont-img position-absolute">
+
+                    <img src="data:img/png;base64,{{movie.Poster}}" alt="" class="img-card">
+
+                  </div>
+                  
+                  <div class="cont-inf position-absolute">
+                    <span class="text-sala">{{movie.ScreenName}}</span>
+                    <span class="text-movie">{{movie.Title}}</span>
+                    <span class="text-hora">Hora {{movie.StartTime}}</span>
+                  </div>
+
+                  <div class="cont-type position-absolute"*ngIf="!isPast">
+                    <span class="badge rounded-pill text-bg-primary badge-1">Por empezar</span>
+                  </div>
+                  
+                  <div class="cont-inf-2 position-absolute">
+                    <span>Duración </span>
+                    <span>{{movie.TotalMinutes}}</span>
+                  </div>
+
+                  <div class="cont-inf-3 position-absolute" *ngIf="!isPast">
+                    <span>Comienza en </span>
+                    <span>{{movie.Starts}}</span>
+                  </div>
+                  
                 </div>
               </div>
 
-              <div class="cont-inf-2 position-absolute">
-                <span>Transcurrido </span>
-                <span>{{movie.Elapsed}}</span>
-              </div>
-
-              <div class="cont-inf-3 position-absolute">
-                <span>Restante </span>
-                <span>{{movie.Remaining}}</span>
-              </div>
-              
             </div>
+
           </div>
 
         </div>
 
-      </div>
-    </div>
+        <!-- En Transcurso -->
+        <div class="col-12 col-md-6 col-lg-4 mb-3 px-0"  *ngIf="inProgress.length > 0">
+          <div class="row mx-0">
 
-    <!-- Por Terminar --> 
-    <div class="col-12 col-md-6 col-lg-4 mb-3 px-0"  *ngIf="toFinish.length > 0">
-      <div class="row mx-0">
+            <div class="col-12 text-center mb-4">
+              <div class="rounded-circle d-inline-flex me-3 circle" style="background-color: rgba(170, 179, 208, 1);"></div>
+              <span>
+                En transcurso
+              </span>
+            </div>
 
-        <div class="col-12 text-center mb-4">
-          <div class="rounded-circle d-inline-flex me-3 circle" style="background-color: rgba(82, 105, 187, 1);"></div>
-          <span>
-            Por terminar
-          </span>
-        </div>
+            <div class="col-12">
 
-        <div class="col-12">
+              <div class="card w-100 card-movie mb-3" *ngFor="let movie of inProgress" (click)="redirectToSeats(movie.FeatureId, movie.ScheduleId, movie.ScheduleDate)">
+                <div class="card-body position-relative">
 
-          <div class="card w-100 card-movie mb-3" *ngFor="let movie of toFinish" (click)="redirectToSeats(movie.FeatureId, movie.ScheduleId, movie.ScheduleDate)">
-            <div class="card-body position-relative">
+                  <div class="cont-img position-absolute">
 
-              <div class="cont-img position-absolute">
+                    <img src="data:img/png;base64,{{movie.Poster}}" alt="" class="img-card">
 
-                <img src="data:img/png;base64,{{movie.Poster}}" alt="" class="img-card">
+                  </div>
+                  
+                  <div class="cont-inf position-absolute">
+                    <span class="text-sala">{{movie.ScreenName}}</span>
+                    <span class="text-movie">{{movie.Title}}</span>
+                    <span class="text-hora">Hora {{movie.StartTime}}</span>
+                  </div>
 
-              </div>
-              
-              <div class="cont-inf position-absolute">
-                <span class="text-sala">{{movie.ScreenName}}</span>
-                <span class="text-movie">{{movie.Title}}</span>
-                <span class="text-hora">Hora {{movie.StartTime}}</span>
-              </div>
+                  <div class="cont-type position-absolute">
+                    <span class="badge rounded-pill text-bg-primary badge-2">En Transcurso</span>
+                  </div>
+                  
+                  <div class="cont-loading">
+                    <div class="loading-movie">
+                      <div class="loading-bar" [ngStyle]="{'width': movie.Progress + '%'}"></div>
+                    </div>
+                  </div>
 
-              <div class="cont-type position-absolute">
-                <span class="badge rounded-pill text-bg-primary badge-3">Por Terminar</span>
-              </div>
+                  <div class="cont-inf-2 position-absolute">
+                    <span>Transcurrido </span>
+                    <span>{{movie.Elapsed}}</span>
+                  </div>
 
-              <div class="cont-loading">
-                <div class="loading-movie">
-                  <div class="loading-bar" [ngStyle]="{'width': movie.Progress + '%'}"></div>
+                  <div class="cont-inf-3 position-absolute">
+                    <span>Restante </span>
+                    <span>{{movie.Remaining}}</span>
+                  </div>
+                  
                 </div>
               </div>
-              
-              <div class="cont-inf-2 position-absolute">
-                <span>Transcurrido </span>
-                <span>{{movie.Elapsed}}</span>
-              </div>
 
-              <div class="cont-inf-3 position-absolute">
-                <span>Restante </span>
-                <span>{{movie.Remaining}}</span>
-              </div>
-              
             </div>
-          </div>
 
+          </div>
+        </div>
+
+        <!-- Por Terminar --> 
+        <div class="col-12 col-md-6 col-lg-4 mb-3 px-0"  *ngIf="toFinish.length > 0">
+          <div class="row mx-0">
+
+            <div class="col-12 text-center mb-4">
+              <div class="rounded-circle d-inline-flex me-3 circle" style="background-color: rgba(82, 105, 187, 1);"></div>
+              <span>
+                Por terminar
+              </span>
+            </div>
+
+            <div class="col-12">
+
+              <div class="card w-100 card-movie mb-3" *ngFor="let movie of toFinish" (click)="redirectToSeats(movie.FeatureId, movie.ScheduleId, movie.ScheduleDate)">
+                <div class="card-body position-relative">
+
+                  <div class="cont-img position-absolute">
+
+                    <img src="data:img/png;base64,{{movie.Poster}}" alt="" class="img-card">
+
+                  </div>
+                  
+                  <div class="cont-inf position-absolute">
+                    <span class="text-sala">{{movie.ScreenName}}</span>
+                    <span class="text-movie">{{movie.Title}}</span>
+                    <span class="text-hora">Hora {{movie.StartTime}}</span>
+                  </div>
+
+                  <div class="cont-type position-absolute">
+                    <span class="badge rounded-pill text-bg-primary badge-3">Por Terminar</span>
+                  </div>
+
+                  <div class="cont-loading">
+                    <div class="loading-movie">
+                      <div class="loading-bar" [ngStyle]="{'width': movie.Progress + '%'}"></div>
+                    </div>
+                  </div>
+                  
+                  <div class="cont-inf-2 position-absolute">
+                    <span>Transcurrido </span>
+                    <span>{{movie.Elapsed}}</span>
+                  </div>
+
+                  <div class="cont-inf-3 position-absolute">
+                    <span>Restante </span>
+                    <span>{{movie.Remaining}}</span>
+                  </div>
+                  
+                </div>
+              </div>
+
+            </div>
+
+          </div>
         </div>
 
       </div>

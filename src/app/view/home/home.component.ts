@@ -66,6 +66,8 @@ export class HomeComponent extends LoadingComponent {
   dateTime: string = "";
   times_movie: any = [];
 
+  cardLoading: boolean = false;
+
   constructor(
     private soapClient: SoapClientService,
     private router: Router
@@ -250,7 +252,7 @@ export class HomeComponent extends LoadingComponent {
       const [hour, minute] = time.split(':').map(Number);
       if (hour > nowHours) return true;
       if (hour === nowHours && minute >= nowMinutes) return true;
-      if (fecha.getTime() > dia.getTime()) return true;
+      if (fecha.getTime() != dia.getTime()) return true;
       return false;
     });
   }
@@ -590,9 +592,9 @@ export class HomeComponent extends LoadingComponent {
 
   // Función para redireccionar
   redirectToSeats(movieId: string, ScheduleId: string, ScheduleDate: string): void {
-    console.log(" movieId",  movieId);
-    console.log(" ScheduleId",  ScheduleId);
-    console.log(" ScheduleDate",  ScheduleDate);
+    // console.log(" movieId",  movieId);
+    // console.log(" ScheduleId",  ScheduleId);
+    // console.log(" ScheduleDate",  ScheduleDate);
     this.router.navigate([`seats`, movieId, ScheduleId, ScheduleDate]); // Redirige a la ruta con el ID de la película, ScheduleId, y ScheduleDate
   }
 
@@ -614,6 +616,12 @@ export class HomeComponent extends LoadingComponent {
   }
 
   async DateInput(newDate: any){
+
+    this.cardLoading = true;
+    
+    this.toStart = [];
+    this.inProgress = [];
+    this.toFinish = [];
 
     this.isPast = false;
     this.now = new Date(`${newDate.year}-${ newDate.month < 10 ? "0" + newDate.month : newDate.month }-${ newDate.day < 10 ? "0" + newDate.day : newDate.day}T00:00:00`);
@@ -642,6 +650,10 @@ export class HomeComponent extends LoadingComponent {
     await this.DataMovie();
     
     await this.OrdingMovies(this.movie_screen);
+
+    setTimeout(()=>{
+      this.cardLoading = false;
+    }, 500)
   }
 
   async FilterTime(event: any) {
