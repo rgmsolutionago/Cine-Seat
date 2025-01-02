@@ -100,15 +100,22 @@ export class HomeComponent extends LoadingComponent {
   async GetScreen(){
 
     this.movies_arr = await this.soapClient.getMovies();
+
+    await this.DataPoster();
+
+    console.log(this.movies_arr);
+
     this.screen = await this.soapClient.getScreen(this.formatDateToString(this.now));
+
     this.movie_screen = await this.getCurrentOrUpcomingShows(this.screen);
 
+    console.log("this.movie_screen",this.movie_screen);
+
     this.movie_screen_original = this.movie_screen;
+    
     await this.DataMovie();
 
     // console.log(this.movie_times)
-
-    // console.log(this.movie_screen)
 
     await this.OrdingMovies(this.movie_screen);
 
@@ -122,6 +129,8 @@ export class HomeComponent extends LoadingComponent {
   }
 
   async DataMovie(){
+
+    // console.log(this.movie_screen);
 
     this.movie_screen.forEach(async (show: any) => {
 
@@ -141,79 +150,168 @@ export class HomeComponent extends LoadingComponent {
       show.TotalMinutes = this.convertMinutesAndHours(parseInt(show.TotalRuntime));
       show.Progress = this.calculateProgress(startTime, endTime);
       show.Starts = this.convertMinutesAndHours(starts);
-      show.Poster = await this.soapClient.getPoster(show.FeatureId);
+      // show.Poster = await this.soapClient.getPoster(show.FeatureId);
     });
 
   }
 
+  async DataPoster(){
+
+   // Obtener los posters de forma asíncrona y esperar a que todas las promesas se completen
+    await Promise.all(this.movies_arr.map(async (movie: any) => {
+      movie.Poster = await this.soapClient.getPoster(movie.FeatureId);
+    }));
+
+  }
+
+  // async getCurrentOrUpcomingShows(shows: any[], marginMinutes: number = 15) {
+    
+  //   let now = new Date();
+
+  //   const result: any = {};
+
+  //   const promises = shows.map(screen => {
+
+  //     return Promise.all(screen.Show.map(async (show: any) => {
+        
+  //       const timeStr = `${screen.ScheduleDate.slice(0, 4)}-${screen.ScheduleDate.slice(4, 6)}-${screen.ScheduleDate.slice(6, 8)}T${show.StartTime}`;
+
+  //       const startTime = new Date(timeStr);
+
+  //       if (this.isPast) {
+  //         now = new Date(timeStr);
+  //       }
+
+  //       const filteredMovies = await this.movies_arr.filter((movie: any) => movie.FeatureId === show.FeatureId);
+
+  //       if (filteredMovies.length === 0) {
+  //         console.error(`No se encontró la película con FeatureId: ${show.FeatureId}`);
+  //         return;
+  //       }
+
+  //       const movie = filteredMovies[0];
+
+  //       // console.log(movie)
+
+  //       const endTime = new Date(startTime.getTime() + parseInt(filteredMovies[0].TotalRuntime) * 60000);
+  //       const marginStartTime = new Date(startTime.getTime() - marginMinutes * 60000);
+
+  //       if ((now >= marginStartTime && now <= endTime) || (startTime > now)) {
+  //         if (!result[screen.ScreenID] || startTime < result[screen.ScreenID].startTime) {
+  //           result[screen.ScreenID] = {
+  //             screen,
+  //             show,
+  //             movie,
+  //             startTime,
+  //             endTime,
+  //             marginStartTime
+  //           };
+  //         }
+  //       }
+
+  //       const exists = this.movie_times.some((time: any) => time === show.StartTime);
+  //       if (!exists) {
+  //         this.movie_times.push(show.StartTime);
+  //       }
+  //     }));
+      
+  //   });
+
+  //   await Promise.all(promises);
+
+  //   console.log(result);
+    
+  //   // Convertir el resultado a un array
+  //   const showsArray = Object.keys(result).map(key => ({
+  //     // screen: result[key].screen,
+  //     // show: result[key].show,  
+  //     // movie: result[key].movie,
+
+  //     FeatureId: result[key].movie.FeatureId,
+  //     Title: result[key].movie.Title,
+  //     Poster: result[key].movie.Poster,
+  //     TotalRuntime: result[key].movie.TotalRuntime,
+  //     ScheduleId: result[key].show.ScheduleId,
+  //     StartTime: result[key].show.StartTime,
+  //     ScreenName: result[key].screen.ScreenName,
+  //     ScheduleDate: result[key].screen.ScheduleDate,
+      
+  //   }));
+
+  //   console.log("showsArray", showsArray);
+    
+  //   return showsArray;
+  // }
+
   async getCurrentOrUpcomingShows(shows: any[], marginMinutes: number = 15) {
     
     let now = new Date();
-
     const result: any = {};
 
-    for (let screen of shows) {
+    const promises = shows.map(async (screen: any) => {
 
-      for (const show of screen.Show) {
-        
-        const timeStr = `${screen.ScheduleDate.slice(0, 4)}-${screen.ScheduleDate.slice(4, 6)}-${screen.ScheduleDate.slice(6, 8)}T${show.StartTime}`;
+        await Promise.all(screen.Show.map(async (show: any) => {
+            const timeStr = `${screen.ScheduleDate.slice(0, 4)}-${screen.ScheduleDate.slice(4, 6)}-${screen.ScheduleDate.slice(6, 8)}T${show.StartTime}`;
+            const startTime = new Date(timeStr);
 
-        const startTime = new Date(timeStr);
+            if (this.isPast) {
+                now = new Date(timeStr);
+            }
 
-        if (this.isPast) {
-          now = new Date(timeStr);
-        }
+            const filteredMovies = this.movies_arr.filter((movie: any) => movie.FeatureId === show.FeatureId);
 
-        const filteredMovies = this.movies_arr.filter((movie: any) => movie.FeatureId === show.FeatureId);
-        
-        if (filteredMovies.length === 0) {
-          console.error(`No se encontró la película con FeatureId: ${show.FeatureId}`);
-          continue;
-        }
+            if (filteredMovies.length === 0) {
+                console.error(`No se encontró la película con FeatureId: ${show.FeatureId}`);
+                return;
+            }
 
-        const movie = filteredMovies[0];
+            const movie = filteredMovies[0];
+            const endTime = new Date(startTime.getTime() + parseInt(movie.TotalRuntime) * 60000);
+            const marginStartTime = new Date(startTime.getTime() - marginMinutes * 60000);
 
-        const endTime = new Date(startTime.getTime() + parseInt(filteredMovies[0].TotalRuntime) * 60000);
-        const marginStartTime = new Date(startTime.getTime() - marginMinutes * 60000);
+            if ((now >= marginStartTime && now <= endTime) || (startTime > now)) {
+                if (!result[screen.ScreenID] || startTime < result[screen.ScreenID].startTime) {
+                    result[screen.ScreenID] = {
+                        screen,
+                        show,
+                        movie,
+                        startTime,
+                        endTime,
+                        marginStartTime
+                    };
+                }
+            }
 
-        if ((now >= marginStartTime && now <= endTime) || (startTime > now)) {
-          if (!result[screen.ScreenID] || startTime < result[screen.ScreenID].startTime) {
-            result[screen.ScreenID] = {
-              screen,
-              show,
-              movie,
-              startTime,
-              endTime,
-              marginStartTime
-            };
-          }
-        }
+            if (!this.movie_times.includes(show.StartTime)) {
+                this.movie_times.push(show.StartTime);
+            }
+        }));
+    });
 
-        const exists = this.movie_times.some((time: any) => time === show.StartTime);
-        if (!exists) {
-          this.movie_times.push(show.StartTime);
-        }
-      }
-    }
-    
-    // Convertir el resultado a un array
-    const showsArray = Object.keys(result).map(key => ({
-      // screen: result[key].screen,
-      // show: result[key].show,
-      // movie: result[key].movie,
+    await Promise.all(promises);
+    console.log(result);
 
-      FeatureId: result[key].movie.FeatureId,
-      Title: result[key].movie.Title,
-      TotalRuntime: result[key].movie.TotalRuntime,
-      ScheduleId: result[key].show.ScheduleId,
-      StartTime: result[key].show.StartTime,
-      ScreenName: result[key].screen.ScreenName,
-      ScheduleDate: result[key].screen.ScheduleDate,
-      
-    }));
-    
+    const showsArray = Object.keys(result).map(key =>
+    {
+
+      console.log(result[key]);
+
+      return({
+        FeatureId: result[key].movie.FeatureId,
+        Title: result[key].movie.Title,
+        Poster: result[key].movie.Poster,
+        TotalRuntime: result[key].movie.TotalRuntime,
+        ScheduleId: result[key].show.ScheduleId,
+        StartTime: result[key].show.StartTime,
+        ScreenName: result[key].screen.ScreenName,
+        ScheduleDate: result[key].screen.ScheduleDate,
+      })
+    });
+
+    console.log("showsArray", showsArray);
     return showsArray;
-  }
+}
+
 
   updateTimes() {
 
@@ -753,8 +851,6 @@ export class HomeComponent extends LoadingComponent {
   }
 
   async SearchTermMovie(){
-
-    console.log("this.searchTerm", this.searchTerm);
 
     await this.FilterMovie();
 
