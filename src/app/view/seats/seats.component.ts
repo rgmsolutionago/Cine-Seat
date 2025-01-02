@@ -172,16 +172,18 @@ export class SeatsComponent extends LoadingComponent {
           (startTime.getTime() - this.now.getTime()) / 60000
         );
 
-        (show.Elapsed = this.convertMinutesAndHours(diffInMinutes)),
-          (show.Remaining = this.convertMinutesAndHours(adjustedDiff)),
-          (show.TotalMinutes = this.convertMinutesAndHours(totalMinutes));
+        show.Elapsed = this.convertMinutesAndHours(diffInMinutes);
+        show.Remaining = this.convertMinutesAndHours(adjustedDiff);
+        show.TotalMinutes = this.convertMinutesAndHours(totalMinutes);
         show.Progress = this.calculateProgress(startTime, endTime);
         show.Starts = this.convertMinutesAndHours(starts);
 
+        console.log(show);
         return (
-          (this.now >= startTime && this.now < endThreshold) || // Ya comenzó
-          (this.now >= endThreshold && this.now <= endTime) || // Terminando
-          this.now < startTime // Por empezar
+          // (this.now >= startTime && this.now < endThreshold) || // Ya comenzó
+          // (this.now >= endThreshold && this.now <= endTime) || // Terminando
+          // this.now < startTime || // Por empezar
+          this.ScheduleId == show.ScheduleId
         );
       });
     }

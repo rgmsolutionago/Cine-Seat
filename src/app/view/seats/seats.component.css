@@ -34,7 +34,11 @@
 .cont-type{
     right: 1rem;
 }
-  
+
+.badge-0{
+    font-size: 13px;
+    background-color: #6a6a6a !important;
+}
 .badge-1{
     font-size: 13px;
     background-color: rgba(0, 56, 255, 1) !important;
@@ -96,9 +100,9 @@
 }
 
 .sold{
-    border: solid 1px rgba(172, 187, 241, 1);
+    border: solid 1px #4472c4;
     color: white;
-    background: rgba(172, 187, 241, 1);
+    background: #4472c4;
 }
 
 .available{
@@ -108,15 +112,22 @@
 }
 
 .blocked{
-    border: solid 1px rgba(255, 124, 124, 1);
+    border: solid 1px #ff0000;
     color: white;
-    background: rgba(255, 124, 124, 1);
+    background: #ff0000;
 }
 
 .entered{
-    border: solid 1px rgba(0, 56, 255, 1);
+    border: solid 1px black;
     color: white;
-    background: rgba(0, 56, 255, 1);
+    background: black;
+}
+
+.leyenda {
+    width: 12px;
+    height: 16px;
+    display: inline-block;
+    border-radius: 3px;
 }
 
 .seatState{

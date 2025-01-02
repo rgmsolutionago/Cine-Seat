@@ -3,7 +3,14 @@
 
 
     <div class="position-absolute top-0 end-0 mt-3 me-3 d-none d-lg-block">
-        <button class="goBackButton" (click)="goBack()">Volver</button>
+        <!-- <button class="goBackButton" (click)="goBack()">Volver</button> -->
+        <button
+          type="button"
+          class="btn btn-light rounded-pill d-inline-flex align-items-center"
+          (click)="goBack()"
+        >
+          <img src="assets/icons/iconamoon_arrow-up-2-duotone.svg" class="me-2"/> Volver
+        </button>
     </div>
 
     <div class="col-12">
@@ -33,6 +40,10 @@
             
             <div class="cont-type position-absolute" *ngIf="showActual.StatusPeli == 3">
               <span class="badge rounded-pill text-bg-primary badge-3">Por Terminar</span>
+            </div>
+
+            <div class="cont-type position-absolute" *ngIf="showActual.StatusPeli == 0">
+              <span class="badge rounded-pill text-bg-primary badge-0">Finalizada</span>
             </div>
 
             <div class="cont-loading" *ngIf="showActual.StatusPeli == 2 || showActual.StatusPeli == 3">
@@ -89,7 +100,7 @@
                     [ngStyle]="{'top.px': seat.Y, 'left.px': seat.X}"
                     [ngClass]="{
                       'available': seat.Status.toLowerCase() === 'available',
-                      'sold': seat.Status.toLowerCase() === 'blocked',
+                      'sold': seat.Status.toLowerCase() === 'sold',
                       'blocked': seat.Status.toLowerCase() === 'blocked',
                       'entered': seat.Status.toLowerCase() === 'entered'
                     }"
@@ -138,27 +149,23 @@
   <div class="seatState" style="text-align: center;">
     <div class="row justify-content-center my-3">
       <div class="col-6 col-sm-4 col-md-3 col-lg-2 d-flex align-items-center justify-content-center mb-2">
-        <span style="width: 15px; height: 15px; background-color: #FFFFFF; display: inline-block; border: 1px solid #ccc; border-radius: 20%;"></span>
+        <span class="leyenda available"></span>
         <span class="ms-2">Disponible</span>
       </div>
       <div class="col-6 col-sm-4 col-md-3 col-lg-2 d-flex align-items-center justify-content-center mb-2">
-        <span style="width: 15px; height: 15px; background-color: #adbaf1; display: inline-block; border-radius: 20%;"></span>
+        <span class="leyenda sold"></span>
         <span class="ms-2">Vendida</span>
       </div>
       <div class="col-6 col-sm-4 col-md-3 col-lg-2 d-flex align-items-center justify-content-center mb-2">
-        <span style="width: 15px; height: 15px; background-color: #ff7d7d; display: inline-block; border-radius: 20%;"></span>
+        <span class="leyenda blocked"></span>
         <span class="ms-2">Bloqueada</span>
       </div>
       <div class="col-6 col-sm-4 col-md-3 col-lg-2 d-flex align-items-center justify-content-center mb-2">
-        <span style="width: 15px; height: 15px; background-color: #0038ff; display: inline-block; border-radius: 20%;"></span>
+        <span class="leyenda entered"></span>
         <span class="ms-2">Ingresada</span>
       </div>
     </div>
   </div>
-  
-  
-
-    
 
 </div>
 
