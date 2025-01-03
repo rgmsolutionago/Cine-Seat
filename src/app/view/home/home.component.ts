@@ -164,85 +164,6 @@ export class HomeComponent extends LoadingComponent {
 
   }
 
-  // async getCurrentOrUpcomingShows(shows: any[], marginMinutes: number = 15) {
-    
-  //   let now = new Date();
-
-  //   const result: any = {};
-
-  //   const promises = shows.map(screen => {
-
-  //     return Promise.all(screen.Show.map(async (show: any) => {
-        
-  //       const timeStr = `${screen.ScheduleDate.slice(0, 4)}-${screen.ScheduleDate.slice(4, 6)}-${screen.ScheduleDate.slice(6, 8)}T${show.StartTime}`;
-
-  //       const startTime = new Date(timeStr);
-
-  //       if (this.isPast) {
-  //         now = new Date(timeStr);
-  //       }
-
-  //       const filteredMovies = await this.movies_arr.filter((movie: any) => movie.FeatureId === show.FeatureId);
-
-  //       if (filteredMovies.length === 0) {
-  //         console.error(`No se encontró la película con FeatureId: ${show.FeatureId}`);
-  //         return;
-  //       }
-
-  //       const movie = filteredMovies[0];
-
-  //       // console.log(movie)
-
-  //       const endTime = new Date(startTime.getTime() + parseInt(filteredMovies[0].TotalRuntime) * 60000);
-  //       const marginStartTime = new Date(startTime.getTime() - marginMinutes * 60000);
-
-  //       if ((now >= marginStartTime && now <= endTime) || (startTime > now)) {
-  //         if (!result[screen.ScreenID] || startTime < result[screen.ScreenID].startTime) {
-  //           result[screen.ScreenID] = {
-  //             screen,
-  //             show,
-  //             movie,
-  //             startTime,
-  //             endTime,
-  //             marginStartTime
-  //           };
-  //         }
-  //       }
-
-  //       const exists = this.movie_times.some((time: any) => time === show.StartTime);
-  //       if (!exists) {
-  //         this.movie_times.push(show.StartTime);
-  //       }
-  //     }));
-      
-  //   });
-
-  //   await Promise.all(promises);
-
-  //   console.log(result);
-    
-  //   // Convertir el resultado a un array
-  //   const showsArray = Object.keys(result).map(key => ({
-  //     // screen: result[key].screen,
-  //     // show: result[key].show,  
-  //     // movie: result[key].movie,
-
-  //     FeatureId: result[key].movie.FeatureId,
-  //     Title: result[key].movie.Title,
-  //     Poster: result[key].movie.Poster,
-  //     TotalRuntime: result[key].movie.TotalRuntime,
-  //     ScheduleId: result[key].show.ScheduleId,
-  //     StartTime: result[key].show.StartTime,
-  //     ScreenName: result[key].screen.ScreenName,
-  //     ScheduleDate: result[key].screen.ScheduleDate,
-      
-  //   }));
-
-  //   console.log("showsArray", showsArray);
-    
-  //   return showsArray;
-  // }
-
   async getCurrentOrUpcomingShows(shows: any[], marginMinutes: number = 15) {
     
     let now = new Date();
@@ -289,29 +210,22 @@ export class HomeComponent extends LoadingComponent {
     });
 
     await Promise.all(promises);
-    console.log(result);
+    // console.log(result);
 
-    const showsArray = Object.keys(result).map(key =>
-    {
-
-      console.log(result[key]);
-
-      return({
-        FeatureId: result[key].movie.FeatureId,
-        Title: result[key].movie.Title,
-        Poster: result[key].movie.Poster,
-        TotalRuntime: result[key].movie.TotalRuntime,
-        ScheduleId: result[key].show.ScheduleId,
-        StartTime: result[key].show.StartTime,
-        ScreenName: result[key].screen.ScreenName,
-        ScheduleDate: result[key].screen.ScheduleDate,
-      })
-    });
+    const showsArray = Object.keys(result).map(key =>({
+      FeatureId: result[key].movie.FeatureId,
+      Title: result[key].movie.Title,
+      Poster: result[key].movie.Poster,
+      TotalRuntime: result[key].movie.TotalRuntime,
+      ScheduleId: result[key].show.ScheduleId,
+      StartTime: result[key].show.StartTime,
+      ScreenName: result[key].screen.ScreenName,
+      ScheduleDate: result[key].screen.ScheduleDate,
+    }));
 
     console.log("showsArray", showsArray);
     return showsArray;
-}
-
+  }
 
   updateTimes() {
 
@@ -373,7 +287,7 @@ export class HomeComponent extends LoadingComponent {
       pelis.push(movie_arr);
     }
 
-    console.log("pelis",pelis)
+    // console.log("pelis",pelis)
     // Crear un array de promesas para los posters y shows
     const promises = pelis.map(async (peli: any) => {
 
@@ -768,15 +682,15 @@ export class HomeComponent extends LoadingComponent {
     await this.FilterMovie();
   }
 
-  FilterMovie(){
+  async FilterMovie(){
 
     let now = new Date();
     const marginMinutes = 15;
     const result: any = {};
 
-    for (let screen of this.screen) {
+    const promises = this.screen.map(async (screen: any) => {
 
-      for (const show of screen.Show) {
+      await Promise.all(screen.Show.map(async (show: any) => {
         
         const timeStr = `${screen.ScheduleDate.slice(0, 4)}-${screen.ScheduleDate.slice(4, 6)}-${screen.ScheduleDate.slice(6, 8)}T${show.StartTime}`;
 
@@ -791,7 +705,7 @@ export class HomeComponent extends LoadingComponent {
 
         if (filteredMovies.length === 0) {
           console.error(`No se encontró la película con FeatureId: ${show.FeatureId}`);
-          continue;
+          return;
         }
 
         const movie = filteredMovies[0];
@@ -829,15 +743,19 @@ export class HomeComponent extends LoadingComponent {
 
         }
         
-      }
-    }
+      }));
+    });
     
+    await Promise.all(promises);
+    // console.log(result);
+
     // Convertir el resultado a un array
     const showsArray = Object.keys(result).map(key => ({
       // screen: result[key].screen,
       // show: result[key].show,
       // movie: result[key].movie,
 
+      Poster: result[key].movie.Poster,
       FeatureId: result[key].movie.FeatureId,
       Title: result[key].movie.Title,
       TotalRuntime: result[key].movie.TotalRuntime,
