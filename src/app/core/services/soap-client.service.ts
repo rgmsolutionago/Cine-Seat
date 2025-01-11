@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { parseStringPromise } from 'xml2js';
 
-import config from '../../../assets/js/config.json';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,11 +12,20 @@ export class SoapClientService {
   // private info = 'http://atmcinestar.sytes.net/cswsinfo/info.asmx?wsdl';
   // private trans = 'http://atmcinestar.sytes.net/cswstrans/trans.asmx?wsdl';
 
-  private info = config.Info;
-  private trans = config.Trans;
+  private info: string;
+  private trans: string;
+  private TheatreID: number | undefined;
+  private WorkStation: number | undefined;
 
-  private TheatreID = config.TheatreId;
-  private WorkStation = config.WorkStation;
+  constructor(private configService: ConfigService){
+    this.configService.loadConfig();
+    const config = this.configService.configValue;
+
+    this.info = config.Info;
+    this.trans = config.Trans;
+    this.TheatreID = config.TheatreId;
+    this.WorkStation = config.WorkStation;
+  }
 
   async getSession() {
 
