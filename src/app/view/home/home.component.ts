@@ -171,7 +171,17 @@ export class HomeComponent extends LoadingComponent {
 
     const promises = shows.map(async (screen: any) => {
 
-      await Promise.all(screen.Show.map(async (show: any) => {
+      let shows_array = [];
+
+      console.log("array", Array.isArray(screen.Show));
+
+      if(Array.isArray(screen.Show)){
+        shows_array = screen.Show;
+      }else{
+        shows_array.push(screen.Show);
+      }
+
+      await Promise.all(shows_array.map(async (show: any) => {
 
         // console.log("show", show);
         const timeStr = `${screen.ScheduleDate.slice(0, 4)}-${screen.ScheduleDate.slice(4, 6)}-${screen.ScheduleDate.slice(6, 8)}T${show.StartTime}`;
@@ -209,6 +219,8 @@ export class HomeComponent extends LoadingComponent {
           this.movie_times.push(show.StartTime);
         }
       }));
+
+          
     });
 
     await Promise.all(promises);
@@ -668,7 +680,7 @@ export class HomeComponent extends LoadingComponent {
 
     this.screen = await this.soapClient.getScreen(this.formatDateToString(this.now));
 
-    // console.log(screen);
+    console.log(this.screen);
 
     this.movie_screen_original = await this.getCurrentOrUpcomingShows(this.screen);
 
