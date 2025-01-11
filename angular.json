@@ -61,17 +61,19 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "configurations": {
-            "production": {
-              "buildTarget": "cine-seat-manager:build:production"
-            },
-            "development": {
-              "buildTarget": "cine-seat-manager:build:development"
-            }
+        "builder": "@angular-devkit/build-angular:dev-server",
+        "configurations": {
+          "production": {
+            "buildTarget": "cine-seat-manager:build:production"
           },
-          "defaultConfiguration": "development"
+          "development": {
+            "buildTarget": "cine-seat-manager:build:development",
+            "proxyConfig": "proxy.conf.json"
+          }
         },
+        "defaultConfiguration": "development"
+      }
+      ,
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
         },

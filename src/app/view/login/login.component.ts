@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule,SidebarMenuComponent],
+  imports: [CommonModule, FormsModule, SidebarMenuComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   animations: []
@@ -24,9 +24,9 @@ export class LoginComponent {
 
   errorMsg: string = '';
 
-  constructor(private soapClient: SoapClientService, private router: Router){}
+  constructor(private soapClient: SoapClientService, private router: Router) { }
 
-  ngOnInit(){
+  ngOnInit() {
     localStorage.removeItem('userSession');
   }
 
@@ -36,31 +36,32 @@ export class LoginComponent {
     this.showError = false;
   }
 
-  async LoginVal(){
+  async LoginVal() {
 
     this.errorMsg = "Error al intentar ingresar";
     this.isUserError = !this.username.trim();
     this.isPasswordError = !this.password.trim();
     this.showError = this.isUserError || this.isPasswordError;
 
-    if(!this.showError){
+    if (!this.showError) {
 
       await this.Login();
     }
 
-    setTimeout(()=>{
+    setTimeout(() => {
       this.showError = false;
       this.isUserError = false;
       this.isPasswordError = false;
     }, 5000);
-    
+
   }
 
-  async Login(){
+  async Login() {
+    console.log('LoginVal ejecutado'); // Agregar este log para confirmar
 
     const res = await this.soapClient.getUSer(this.username, this.password);
 
-    if(!res.status){
+    if (!res.status) {
       this.errorMsg = res.msg;
       this.showError = true;
       return;

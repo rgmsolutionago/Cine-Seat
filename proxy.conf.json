@@ -1,0 +1,9 @@
+{
+    "/cswstrans": {
+      "target": "http://atmcinestar.sytes.net",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    }
+  }
+  

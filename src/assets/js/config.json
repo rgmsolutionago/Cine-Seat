@@ -1,12 +1,12 @@
 {
-    "TheatreId": 191,
-    "WorkStation": 91,
+    "TheatreId": 201,
+    "WorkStation": 1,
     "Colors": {
         "primary": "",
         "secondary": ""
     },
     "Logo": "",
-    "Info": "http://atmcinestar.sytes.net/cswsinfo/info.asmx?wsdl",
-    "Trans": "http://atmcinestar.sytes.net/cswstrans/trans.asmx?wsdl"
+    "Info": "http://gestion.jiiff.com/cswsinfo/info.asmx?wsdl",
+    "Trans": "http://gestion.jiiff.com/cswstranspromo/trans.asmx?wsdl"
 
 }

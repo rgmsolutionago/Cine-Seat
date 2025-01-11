@@ -9,6 +9,8 @@ import { LoadingComponent } from "../../shared/loading/loading.component";
 
 import { ActivatedRoute, Router } from "@angular/router";
 
+import { environment } from '../../environment/environment';
+
 @Component({
   selector: "app-seats",
   standalone: true,
@@ -55,7 +57,7 @@ export class SeatsComponent extends LoadingComponent {
     const sessionValid = await this.ValSession();
 
     if (!sessionValid) {
-      this.router.navigate(["/login"]);
+      this.router.navigate([`${environment.baseUrl}/login`]);
       return;
     }
 
@@ -98,7 +100,7 @@ export class SeatsComponent extends LoadingComponent {
       }, 200);
 
       setTimeout(() => {
-        this.router.navigate(["/home"]);
+        this.router.navigate([`${environment.baseUrl}/home`]);
       }, 300);
 
       return;
@@ -400,6 +402,7 @@ export class SeatsComponent extends LoadingComponent {
   }
 
   goBack() {
-    this.router.navigate(["/home"]);
+    this.router.navigate([`${environment.baseUrl}/home`]);
   }
+
 }
