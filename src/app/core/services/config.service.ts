@@ -6,8 +6,8 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class ConfigService {
-  private configUrl = 'assets/config.js';  // Ruta del archivo de configuración
-  // private configUrl = 'assets/js/config.js';
+  private configUrl = 'assets/js/config.js';  // Ruta del archivo de configuración
+  // private configUrl = 'cine-butacas/assets/js/config.js';
   private configSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(private http: HttpClient) {}
