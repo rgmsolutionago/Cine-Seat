@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SidebarMenuComponent } from '../../shared/sidebar-menu/sidebar-menu.component';
 import { SoapClientService } from '../../core/services/soap-client.service';
+import { environment } from '../../environment/environment';
+
 import { Router } from '@angular/router';
 
 @Component({
@@ -68,9 +70,9 @@ export class LoginComponent {
     }
 
     localStorage.setItem('userSession', JSON.stringify(res.data));
-    setTimeout(()=>{
-      this.router.navigate(['/home'])
-    }, 500);
+    setTimeout(() => {
+      this.router.navigate([`${environment.baseUrl}/dashboard`]);
+  } , 500);
 
   }
 }

@@ -6,7 +6,7 @@ import { SeatsComponent } from './view/seats/seats.component';
 export const routes: Routes = [
   // { path: '', redirectTo: 'login', pathMatch: 'full' }, // Redirección inicial
   { path: 'login', component: LoginComponent },
-  { path: 'home', component: HomeComponent },
+  { path: 'dashboard', component: HomeComponent },
   { path: 'seats/:movie/:schedule/:date', component: SeatsComponent },
   { path: '**', redirectTo: 'login' } // Ruta comodín
 ];

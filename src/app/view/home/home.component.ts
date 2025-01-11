@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { environment } from '../../environment/environment';
 
 import { SidebarMenuComponent } from '../../shared/sidebar-menu/sidebar-menu.component';
 import { LoadingComponent } from '../../shared/loading/loading.component';
@@ -83,9 +84,9 @@ export class HomeComponent extends LoadingComponent {
     const sessionValid = await this.ValSession();
 
     if (!sessionValid) {
-      this.router.navigate(['/login']);
+      this.router.navigate([`${environment.baseUrl}/login`]);
       return;
-    }
+  }
 
     this.openModal();
 

@@ -60,48 +60,48 @@
 
 </div> -->
 
-<div class="sidebar-new d-none d-md-flex" >
+<!-- Sidebar nuevo -->
+<div class="sidebar-new d-none d-md-flex">
   <div class="top-links">
-    <a href="/home" class="position-relative">
+    <a (click)="home()" class="position-relative cursor-pointer">
       <img src="assets/icons/fluent_home-20-filled.svg">
       <span>Inicio</span>
     </a>
-    <!-- <a href="#" class="position-relative">
+    <!-- <a href="#" class="position-relative cursor-pointer">
       <img src="assets/icons/Mask-group.svg">
       <span>Configuración</span>
     </a> -->
   </div>
   <div class="bottom-links">
-    <!-- <a href="#" class="position-relative">
+    <!-- <a href="#" class="position-relative cursor-pointer">
       <img src="assets/icons/Vector.svg">
       <span>Ayuda</span>
     </a> -->
-    <a href="/login" class="position-relative">
+    <a (click)="logout()" class="position-relative cursor-pointer">
       <img src="assets/icons/solar_exit-bold.svg">
       <span>Salir</span>
     </a>
   </div>
 </div>
 
-
 <!-- Menú móvil inferior -->
 <div class="container-fluid d-md-none">
   <div class="row">
     <div class="col-12">
       <div class="mobile-menu">
-        <a href="home()" class="col d-flex flex-column align-items-center">
+        <a (click)="home()" class="col d-flex flex-column align-items-center cursor-pointer">
           <img src="assets/icons/fluent_home-20-filled.svg">
           <!-- <span>Inicio</span> -->
         </a>
-        <!-- <a href="#" class="col d-flex flex-column align-items-center">
+        <!-- <a href="#" class="col d-flex flex-column align-items-center cursor-pointer">
           <img src="assets/icons/Mask-group.svg">
           <span>Configuración</span>
         </a> -->
-        <!-- <a href="#" class="col d-flex flex-column align-items-center">
+        <!-- <a href="#" class="col d-flex flex-column align-items-center cursor-pointer">
           <img src="assets/icons/Vector.svg">
           <span>Ayuda</span>
         </a> -->
-        <a href="logout()" class="col d-flex flex-column align-items-center">
+        <a (click)="logout()" class="col d-flex flex-column align-items-center cursor-pointer">
           <img src="assets/icons/solar_exit-bold.svg">
           <!-- <span>Salir</span> -->
         </a>

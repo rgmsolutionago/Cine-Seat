@@ -100,7 +100,7 @@ export class SeatsComponent extends LoadingComponent {
       }, 200);
 
       setTimeout(() => {
-        this.router.navigate([`${environment.baseUrl}/home`]);
+        this.router.navigate([`${environment.baseUrl}/dashboard`]);
       }, 300);
 
       return;
@@ -404,7 +404,7 @@ export class SeatsComponent extends LoadingComponent {
   }
 
   goBack() {
-    this.router.navigate([`${environment.baseUrl}/home`]);
+    this.router.navigate([`${environment.baseUrl}/dashboard`]);
   }
 
 }

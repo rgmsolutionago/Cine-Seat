@@ -48,7 +48,10 @@
     white-space: nowrap; /* Evitar que el texto se envuelva */
 }
   
-
+.cursor-pointer {
+    cursor: pointer;
+  }
+  
 /* New Sidebar End */
 
 /* Moboile Init */
@@ -92,6 +95,9 @@
 .mobile-menu img {
     width: 24px;
     height: 24px;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 
 /* Mobile End */
