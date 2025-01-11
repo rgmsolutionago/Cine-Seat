@@ -71,6 +71,7 @@ export class LoginComponent {
 
     localStorage.setItem('userSession', JSON.stringify(res.data));
     setTimeout(() => {
+      console.log('LoginVal Time'); // Agregar este log para confirmar
       this.router.navigate([`${environment.baseUrl}/dashboard`]);
   } , 500);
 

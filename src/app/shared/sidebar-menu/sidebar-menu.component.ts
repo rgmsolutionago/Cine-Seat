@@ -47,8 +47,3 @@ export class SidebarMenuComponent {
   }
 
 }
-
-
-// http://gestion.jiiff.com/login
-// 
-// http://gestion.jiiff.com/home
