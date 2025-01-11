@@ -9,12 +9,13 @@ import { LoadingComponent } from "../../shared/loading/loading.component";
 
 import { ActivatedRoute, Router } from "@angular/router";
 
-import { environment } from '../../environment/environment';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { ConfigService } from '../../core/services/config.service';  // Asegúrate de tener la ruta correcta para el servicio
 
 @Component({
   selector: "app-seats",
   standalone: true,
-  imports: [CommonModule, SidebarMenuComponent, LoadingComponent],
+  imports: [CommonModule, SidebarMenuComponent, LoadingComponent,HttpClientModule],
   templateUrl: "./seats.component.html",
   styleUrl: "./seats.component.css",
 })
@@ -47,19 +48,30 @@ export class SeatsComponent extends LoadingComponent {
 
   intervalId: any;
 
+  baseUrl: string = ''; // Propiedad para almacenar baseUrl
+  config: any;
+
   constructor(
     private soapClient: SoapClientService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private configService: ConfigService
+    
   ) {
     super();
   }
 
   async ngOnInit() {
+
+    this.configService.configValue$.subscribe((data) => {
+      this.config = data;
+      console.log(this.config);  // Accede a la configuración cargada
+    });
+
     const sessionValid = await this.ValSession();
 
     if (!sessionValid) {
-      this.router.navigate([`${environment.baseUrl}/login`]);
+      this.router.navigate([`${this.config.baseUrl}/login`]);
       return;
     }
 
@@ -102,7 +114,7 @@ export class SeatsComponent extends LoadingComponent {
       }, 200);
 
       setTimeout(() => {
-        this.router.navigate([`${environment.baseUrl}/dashboard`]);
+        this.router.navigate([`${this.config.baseUrl}/dashboard`]);
       }, 300);
 
       return;
@@ -395,7 +407,7 @@ export class SeatsComponent extends LoadingComponent {
   }
 
   goBack() {
-    this.router.navigate([`${environment.baseUrl}/dashboard`]);
+    this.router.navigate([`${this.config.baseUrl}/dashboard`]);
   }
 
   startInterval() {

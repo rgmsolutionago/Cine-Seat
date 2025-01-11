@@ -11,7 +11,8 @@ import { SoapClientService } from '../../core/services/soap-client.service';
 import { FormsModule } from '@angular/forms';
 
 import { NgbCalendar, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { ConfigService } from '../../core/services/config.service';  // Asegúrate de tener la ruta correcta para el servicio
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,8 @@ import { NgbCalendar, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstra
     SidebarMenuComponent,
     LoadingComponent,
     FormsModule,
-    NgbModule
+    NgbModule,
+    HttpClientModule
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
@@ -68,10 +70,12 @@ export class HomeComponent extends LoadingComponent {
   times_movie: any = [];
 
   cardLoading: boolean = false;
+  config: any;
 
   constructor(
     private soapClient: SoapClientService,
-    private router: Router
+    private router: Router,
+    private configService: ConfigService
   ) {
     super();
     this.selectedDate = new Date();
@@ -80,6 +84,10 @@ export class HomeComponent extends LoadingComponent {
   }
 
   async ngOnInit() {
+    this.configService.configValue$.subscribe((data) => {
+      this.config = data;
+      console.log(this.config);  // Accede a la configuración cargada
+    });
 
     const sessionValid = await this.ValSession();
 
@@ -165,17 +173,16 @@ export class HomeComponent extends LoadingComponent {
 
   }
 
-  async getCurrentOrUpcomingShows(shows: any[]) {
+  async getCurrentOrUpcomingShows(shows: any[], marginMinutes: number = 15) {
 
     let now = new Date();
     const result: any = {};
-    this.movie_times = [];
 
     const promises = shows.map(async (screen: any) => {
 
       let shows_array = [];
 
-      // console.log(screen.Show);
+      console.log("array", Array.isArray(screen.Show));
 
       if(Array.isArray(screen.Show)){
         shows_array = screen.Show;
@@ -240,6 +247,7 @@ export class HomeComponent extends LoadingComponent {
       IsSold: result[key].show.Habilitadas == result[key].show.Seats
     }));
 
+    console.log("showsArray", showsArray);
     return showsArray;
   }
 
@@ -462,7 +470,7 @@ export class HomeComponent extends LoadingComponent {
 
     filtro.forEach((movie: any) => {
 
-      // console.log(movie);
+      console.log(movie);
 
       const show = movie;
 
@@ -581,6 +589,8 @@ export class HomeComponent extends LoadingComponent {
 
       this.movie_screen = this.movie_screen_original;
 
+      console.log("movie screen:", this.movie_screen);
+
       await this.FilterMovie();
 
       this.updateTimes();
@@ -641,7 +651,7 @@ export class HomeComponent extends LoadingComponent {
   async ValSession() {
     const userSession = localStorage.getItem('userSession');
 
-    // console.log("userSession", userSession?.trim());
+    console.log("userSession", userSession?.trim());
 
     if (!userSession || userSession.trim() == '') {
       return false;
@@ -711,19 +721,12 @@ export class HomeComponent extends LoadingComponent {
   async FilterMovie() {
 
     let now = new Date();
+    const marginMinutes = 15;
     const result: any = {};
     
     const promises = this.screen.map(async (screen: any) => {
 
-      let shows_array = [];
-
-      if(Array.isArray(screen.Show)){
-        shows_array = screen.Show;
-      }else{
-        shows_array.push(screen.Show);
-      }
-
-      await Promise.all(shows_array.map(async (show: any) => {
+      await Promise.all(screen.Show.map(async (show: any) => {
 
         const timeStr = `${screen.ScheduleDate.slice(0, 4)}-${screen.ScheduleDate.slice(4, 6)}-${screen.ScheduleDate.slice(6, 8)}T${show.StartTime}`;
 

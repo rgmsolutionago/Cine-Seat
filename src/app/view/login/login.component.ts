@@ -6,17 +6,20 @@ import { SoapClientService } from '../../core/services/soap-client.service';
 import { environment } from '../../environment/environment';
 
 import { Router } from '@angular/router';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { ConfigService } from '../../core/services/config.service';  // Asegúrate de tener la ruta correcta para el servicio
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, SidebarMenuComponent],
+  imports: [CommonModule, FormsModule, SidebarMenuComponent,HttpClientModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   animations: []
 })
 
 export class LoginComponent {
+  config: any;
 
   username: string = '';
   password: string = '';
@@ -26,9 +29,16 @@ export class LoginComponent {
 
   errorMsg: string = '';
 
-  constructor(private soapClient: SoapClientService, private router: Router) { }
+  constructor(private soapClient: SoapClientService, private router: Router,
+      private configService: ConfigService) { }
 
   ngOnInit() {
+    // Usar configValue$ directamente
+    this.configService.configValue$.subscribe((data) => {
+      this.config = data;
+      console.log(this.config);  // Accede a la configuración cargada
+    });
+
     localStorage.removeItem('userSession');
   }
 
@@ -59,6 +69,7 @@ export class LoginComponent {
   }
 
   async Login() {
+    console.log(`Aqui login 1` + `${this.config.baseUrl}/dashboard`);
     console.log('LoginVal ejecutado'); // Agregar este log para confirmar
 
     const res = await this.soapClient.getUSer(this.username, this.password);
@@ -71,8 +82,8 @@ export class LoginComponent {
 
     localStorage.setItem('userSession', JSON.stringify(res.data));
     setTimeout(() => {
-      console.log('LoginVal Time'); // Agregar este log para confirmar
-      this.router.navigate([`${environment.baseUrl}/dashboard`]);
+      console.log(`Aqui login 2` + `${this.config.baseUrl}/dashboard`); // Agregar este log para confirmar
+      this.router.navigate([`${this.config.baseUrl}/dashboard`]);
   } , 500);
 
   }

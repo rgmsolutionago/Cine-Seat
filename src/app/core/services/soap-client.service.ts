@@ -12,19 +12,22 @@ export class SoapClientService {
   // private info = 'http://atmcinestar.sytes.net/cswsinfo/info.asmx?wsdl';
   // private trans = 'http://atmcinestar.sytes.net/cswstrans/trans.asmx?wsdl';
 
-  private info: string;
-  private trans: string;
+  private info: string = ''; // Inicializado con un valor por defecto
+  private trans: string = ''; // Inicializado con un valor por defecto
   private TheatreID: number | undefined;
   private WorkStation: number | undefined;
 
-  constructor(private configService: ConfigService){
+  constructor(private configService: ConfigService) {
+    // Suscripción a la configuración
     this.configService.loadConfig();
-    const config = this.configService.configValue;
-
-    this.info = config.Info;
-    this.trans = config.Trans;
-    this.TheatreID = config.TheatreId;
-    this.WorkStation = config.WorkStation;
+    this.configService.configValue$.subscribe((config) => {
+      if (config) {
+        this.info = config.Info;
+        this.trans = config.Trans;
+        this.TheatreID = config.TheatreId;
+        this.WorkStation = config.WorkStation;
+      }
+    });
   }
 
   async getSession() {
