@@ -271,7 +271,7 @@ export class SoapClientService {
 
       const result = await parseStringPromise(response.data, { explicitArray: false });
 
-      console.log(result);
+      // console.log(result);
 
       if(result['soap:Envelope']['soap:Body']['ShowTimeByDateAndScreenResponse']['ShowTimeByDateAndScreenResult']['root']['Screen']){
 
@@ -288,6 +288,7 @@ export class SoapClientService {
       console.error('Error al llamar al método SOAP:', error);
     }
 
+    // console.log(screen);
     return screen;
   }
 
