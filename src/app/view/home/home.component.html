@@ -239,7 +239,7 @@
 
             <div class="col-12">
 
-              <div class="card w-100 card-movie mb-3" *ngFor="let movie of toStart" (click)="redirectToSeats(movie.FeatureId, movie.ScheduleId, movie.ScheduleDate)">
+              <div class="card w-100 card-movie mb-3" *ngFor="let movie of toStart" (click)="redirectToSeats(movie.FeatureId, movie.ScheduleId, movie.ScheduleDate)" [ngClass]="{ 'noSold': movie.IsSold }">
 
                 <div class="card-body position-relative">
 
@@ -268,6 +268,10 @@
                     <span>Comienza en </span>
                     <span>{{movie.Starts}}</span>
                   </div>
+
+                  <div class="no_sold text-center position-absolute bottom-0 start-0 w-100" *ngIf="movie.IsSold">
+                    <span>No hay entradas Vendidas</span>
+                  </div>
                   
                 </div>
               </div>
@@ -291,7 +295,7 @@
 
             <div class="col-12">
 
-              <div class="card w-100 card-movie mb-3" *ngFor="let movie of inProgress" (click)="redirectToSeats(movie.FeatureId, movie.ScheduleId, movie.ScheduleDate)">
+              <div class="card w-100 card-movie mb-3" *ngFor="let movie of inProgress" (click)="redirectToSeats(movie.FeatureId, movie.ScheduleId, movie.ScheduleDate)"  [ngClass]="{ 'noSold': movie.IsSold }">
                 <div class="card-body position-relative">
 
                   <div class="cont-img position-absolute">
@@ -325,6 +329,10 @@
                     <span>Restante </span>
                     <span>{{movie.Remaining}}</span>
                   </div>
+
+                  <div class="no_sold text-center position-absolute bottom-0 start-0 w-100" *ngIf="movie.IsSold">
+                    <span>No hay entradas Vendidas</span>
+                  </div>
                   
                 </div>
               </div>
@@ -347,7 +355,7 @@
 
             <div class="col-12">
 
-              <div class="card w-100 card-movie mb-3" *ngFor="let movie of toFinish" (click)="redirectToSeats(movie.FeatureId, movie.ScheduleId, movie.ScheduleDate)">
+              <div class="card w-100 card-movie mb-3" *ngFor="let movie of toFinish" (click)="redirectToSeats(movie.FeatureId, movie.ScheduleId, movie.ScheduleDate)"  [ngClass]="{ 'noSold': movie.IsSold }">
                 <div class="card-body position-relative">
 
                   <div class="cont-img position-absolute">
@@ -380,6 +388,10 @@
                   <div class="cont-inf-3 position-absolute">
                     <span>Restante </span>
                     <span>{{movie.Remaining}}</span>
+                  </div>
+                  
+                  <div class="no_sold text-center position-absolute bottom-0 start-0 w-100" *ngIf="movie.IsSold">
+                    <span>No hay entradas Vendidas</span>
                   </div>
                   
                 </div>

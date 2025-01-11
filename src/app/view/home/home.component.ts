@@ -94,7 +94,7 @@ export class HomeComponent extends LoadingComponent {
     this.updateTimes()
     // await this.GetMovies();
 
-    this.startInterval();
+    // this.startInterval();
   }
 
   async GetScreen() {
@@ -172,6 +172,8 @@ export class HomeComponent extends LoadingComponent {
     const promises = shows.map(async (screen: any) => {
 
       await Promise.all(screen.Show.map(async (show: any) => {
+
+        // console.log("show", show);
         const timeStr = `${screen.ScheduleDate.slice(0, 4)}-${screen.ScheduleDate.slice(4, 6)}-${screen.ScheduleDate.slice(6, 8)}T${show.StartTime}`;
         const startTime = new Date(timeStr);
 
@@ -221,6 +223,7 @@ export class HomeComponent extends LoadingComponent {
       StartTime: result[key].show.StartTime,
       ScreenName: result[key].screen.ScreenName,
       ScheduleDate: result[key].screen.ScheduleDate,
+      IsSold: result[key].show.Habilitadas == result[key].show.Seats
     }));
 
     console.log("showsArray", showsArray);
@@ -445,6 +448,9 @@ export class HomeComponent extends LoadingComponent {
     this.toFinish = [];
 
     filtro.forEach((movie: any) => {
+
+      console.log(movie);
+
       const show = movie;
 
       const scheduleDate = `${show.ScheduleDate.slice(0, 4)}-${show.ScheduleDate.slice(4, 6)}-${show.ScheduleDate.slice(6, 8)}`;
@@ -556,6 +562,14 @@ export class HomeComponent extends LoadingComponent {
 
       this.date = new Date();
 
+      this.screen = await this.soapClient.getScreen(this.formatDateToString(this.now));
+
+      this.movie_screen_original = await this.getCurrentOrUpcomingShows(this.screen);
+
+      this.movie_screen = this.movie_screen_original;
+
+      console.log("movie screen:", this.movie_screen);
+
       await this.FilterMovie();
 
       this.updateTimes();
@@ -570,7 +584,8 @@ export class HomeComponent extends LoadingComponent {
 
       // this.screen
 
-      console.log("movie screen:", this.movie_screen);
+    
+
 
       await this.DataMovie();
       await this.OrdingMovies(this.movie_screen);
@@ -659,8 +674,6 @@ export class HomeComponent extends LoadingComponent {
 
     this.movie_screen = this.movie_screen_original;
 
-    // console.log(this.movie_screen)
-
     await this.DataMovie();
 
     await this.OrdingMovies(this.movie_screen);
@@ -730,7 +743,7 @@ export class HomeComponent extends LoadingComponent {
 
         } else {
 
-          if ((now >= startTime && now <= endTime) || (startTime > now)){
+          if ((now >= startTime && now <= endTime) || (startTime > now) || this.isPast){
             if (!result[screen.ScreenID] || startTime < result[screen.ScreenID].startTime) {
               result[screen.ScreenID] = {
                 screen,
@@ -765,6 +778,7 @@ export class HomeComponent extends LoadingComponent {
       StartTime: result[key].show.StartTime,
       ScreenName: result[key].screen.ScreenName,
       ScheduleDate: result[key].screen.ScheduleDate,
+      IsSold: result[key].show.Habilitadas == result[key].show.Seats
     }));
 
     this.movie_screen = showsArray;
