@@ -94,7 +94,7 @@ export class HomeComponent extends LoadingComponent {
     this.updateTimes()
     // await this.GetMovies();
 
-    // this.startInterval();
+    this.startInterval();
   }
 
   async GetScreen() {

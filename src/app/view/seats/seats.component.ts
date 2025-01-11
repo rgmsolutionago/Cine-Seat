@@ -108,14 +108,10 @@ export class SeatsComponent extends LoadingComponent {
       if (peli.FeatureId === this.MovieId) {
         const poster = await this.soapClient.getPoster(peli.FeatureId);
 
-        console.log("this.ScheduleDate", this.ScheduleDate);
-
         const show = await this.soapClient.getShows(
           peli.FeatureId,
           this.ScheduleDate
         );
-
-        console.log("show", show);
 
         if (show.length > 0) {
           const show_new = await this.dataShowSort(show, peli.TotalRuntime);
@@ -130,7 +126,6 @@ export class SeatsComponent extends LoadingComponent {
           };
 
           this.peliAcutal = data; // Agrega los datos al array
-          console.log(this.peliAcutal);
         }
       }
     });
@@ -145,9 +140,6 @@ export class SeatsComponent extends LoadingComponent {
       await this.filterShows();
       await this.DataSeats();
     }, 5000);
-
-    console.log("peliActual", this.peliAcutal);
-    console.log("showActual", this.showActual);
   }
 
   filterShows() {
@@ -158,8 +150,6 @@ export class SeatsComponent extends LoadingComponent {
     let relevantShow: any = {};
 
     if (movie) {
-
-      console.log("movie---", movie);
       relevantShow = movie.Show.find((show: any) => {
         const startTime = new Date(show.StartDate);
         const endTime = new Date(show.EndDate);
@@ -180,7 +170,6 @@ export class SeatsComponent extends LoadingComponent {
         show.Progress = this.calculateProgress(startTime, endTime);
         show.Starts = this.convertMinutesAndHours(starts);
 
-        console.log("show--", show);
         return (
           // (this.now >= startTime && this.now < endThreshold) || // Ya comenzó
           // (this.now >= endThreshold && this.now <= endTime) || // Terminando
@@ -189,8 +178,6 @@ export class SeatsComponent extends LoadingComponent {
         );
       });
     }
-
-    console.log(relevantShow);
 
     if (relevantShow) {
       const startTime = new Date(relevantShow.StartDate);
