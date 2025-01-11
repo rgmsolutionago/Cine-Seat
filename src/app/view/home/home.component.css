@@ -1,91 +1,91 @@
-.img-logo{
+.img-logo {
   width: 300px;
   max-width: 60%;
 }
 
-.circle{
+.circle {
   width: 15px;
   height: 15px;
 }
 
-.circle + span{
+.circle+span {
   color: rgba(101, 109, 141, 1);
 }
 
-.card-movie{
+.card-movie {
   height: 200px;
   cursor: pointer;
 }
 
-.img-card{
+.img-card {
   width: 70px;
   height: auto;
   border-radius: 5px;
 }
 
-.cont-inf{
+.cont-inf {
   display: grid;
   left: calc(80px + 1rem);
 }
 
-.text-sala{
+.text-sala {
   font-size: 18px;
   font-weight: 700;
   color: rgba(0, 56, 255, 1);
 }
 
-.text-movie{
+.text-movie {
   font-size: 18px;
   color: rgba(106, 106, 106, 1);
 }
 
-.text-hora{
+.text-hora {
   font-size: 13px;
   color: rgba(154, 154, 154, 1);
 }
 
-.cont-type{
+.cont-type {
   right: 1rem;
 }
 
-.badge-1{
+.badge-1 {
   font-size: 13px;
   background-color: rgba(0, 56, 255, 1) !important;
 }
 
-.badge-2{
+.badge-2 {
   font-size: 13px;
   background-color: rgba(170, 179, 208, 1) !important;
 }
 
-.badge-3{
+.badge-3 {
   font-size: 13px;
   background-color: rgba(82, 105, 187, 1) !important;
 }
 
-.cont-inf-2{
+.cont-inf-2 {
   left: calc(0px + 1rem);
   bottom: 1rem;
 }
 
-.cont-inf-3{
+.cont-inf-3 {
   right: calc(0px + 1rem);
   bottom: 1rem;
 }
 
 
-.cont-inf-2 > span,
-.cont-inf-3 > span{
+.cont-inf-2>span,
+.cont-inf-3>span {
   font-size: 13px;
   color: rgba(154, 154, 154, 1);
 }
 
-.cont-inf-2 > span + span,
-.cont-inf-3 > span + span{
+.cont-inf-2>span+span,
+.cont-inf-3>span+span {
   color: rgba(106, 106, 106, 1);
 }
 
-.cont-loading{
+.cont-loading {
   position: absolute;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -96,19 +96,23 @@
 
 .loading-movie {
   width: 100%;
-  background-color: rgba(217, 222, 240, 1); /* Color de fondo para la parte no completada */
-  border-radius: 10px; /* Bordes redondeados opcionales */
-  overflow: hidden; /* Asegura que la barra de carga no se desborde */
+  background-color: rgba(217, 222, 240, 1);
+  /* Color de fondo para la parte no completada */
+  border-radius: 10px;
+  /* Bordes redondeados opcionales */
+  overflow: hidden;
+  /* Asegura que la barra de carga no se desborde */
 }
 
 .loading-bar {
   height: 10px;
-  background: linear-gradient(to right, rgba(0, 56, 255, 1), rgba(0, 220, 249, 1)); /* Degradado de color para la barra de carga */
+  background: linear-gradient(to right, rgba(0, 56, 255, 1), rgba(0, 220, 249, 1));
+  /* Degradado de color para la barra de carga */
   border-radius: 10px;
   transition: width 0.1s linear;
 }
 
-#calendarPicker{
+#calendarPicker {
   width: 100%;
   padding: .375rem .75rem;
   position: relative;
@@ -117,13 +121,13 @@
   color: #212529;
 }
 
-#calendarPicker::before{
+#calendarPicker::before {
   position: absolute;
   top: 10px;
   left: 15px;
 }
 
-.text-loading{
+.text-loading {
   width: 65px;
   height: 20px;
   background-color: rgba(82, 105, 187, 1);
@@ -131,52 +135,90 @@
   border-radius: 5px;
 }
 
-.text-2-loading{
+.text-2-loading {
   width: 100px;
   height: 20px;
   background-color: rgba(82, 105, 187, 1);
   border-radius: 5px;
 }
 
-.card-loading{
+.card-loading {
   /* background: linear-gradient(80deg, #c0c0c0 25%, #e0e0e0 50%, #  75%); */
   animation: loadingGradient 1.5s infinite;
   cursor: default;
 }
 
- /* rgba(192,192,192,11) */
+.noSold{
+  overflow: hidden;
+}
+.noSold .text-sala::before{
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-image: url('/assets/icons/rivet-icons_caution.svg');
+  background-size: cover;
+  top: 6px;
+  left: 0px;
+}
+
+.noSold .text-sala{
+  color: rgba(255, 124, 124, 1);
+  margin-left: 20px;
+}
+
+.noSold .no_sold{
+  background: linear-gradient(to right, rgba(255, 124, 124, 1), rgba(255, 25, 25, 1));
+  color: white;
+  font-size: 10px;
+}
+
+.noSold .cont-type .badge{
+  background-color: rgba(255, 86, 86, 1) !important;
+}
+
 @keyframes loadingGradient {
   0% {
-    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 0%,white 100%);
+    background: linear-gradient(90deg, white 0%, rgba(170, 179, 208, 1) 0%, white 100%);
   }
-  10%{
-    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 10%,white 100%);
+
+  10% {
+    background: linear-gradient(90deg, white 0%, rgba(170, 179, 208, 1) 10%, white 100%);
   }
+
   20% {
-    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 20%,white 100%);
+    background: linear-gradient(90deg, white 0%, rgba(170, 179, 208, 1) 20%, white 100%);
   }
-  30%{
-    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 30%,white 100%);
+
+  30% {
+    background: linear-gradient(90deg, white 0%, rgba(170, 179, 208, 1) 30%, white 100%);
   }
+
   40% {
-    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 40%,white 100%);
+    background: linear-gradient(90deg, white 0%, rgba(170, 179, 208, 1) 40%, white 100%);
   }
-  50%{
-    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 50%,white 100%);
+
+  50% {
+    background: linear-gradient(90deg, white 0%, rgba(170, 179, 208, 1) 50%, white 100%);
   }
-  60%{
-    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 60%,white 100%);
+
+  60% {
+    background: linear-gradient(90deg, white 0%, rgba(170, 179, 208, 1) 60%, white 100%);
   }
+
   70% {
-    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 70%,white 100%);
+    background: linear-gradient(90deg, white 0%, rgba(170, 179, 208, 1) 70%, white 100%);
   }
-  80%{
-    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 80%,white 100%);
+
+  80% {
+    background: linear-gradient(90deg, white 0%, rgba(170, 179, 208, 1) 80%, white 100%);
   }
+
   90% {
-    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 90%,white 100%);
+    background: linear-gradient(90deg, white 0%, rgba(170, 179, 208, 1) 90%, white 100%);
   }
-  100%{
-    background: linear-gradient(90deg,white 0%, rgba(170, 179, 208, 1) 100%,white 100%);
+
+  100% {
+    background: linear-gradient(90deg, white 0%, rgba(170, 179, 208, 1) 100%, white 100%);
   }
 }

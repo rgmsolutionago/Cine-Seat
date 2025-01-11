@@ -266,13 +266,18 @@ export class SoapClientService {
 
       const result = await parseStringPromise(response.data, { explicitArray: false });
 
-      // console.log(result);
+      console.log(result);
 
       if(result['soap:Envelope']['soap:Body']['ShowTimeByDateAndScreenResponse']['ShowTimeByDateAndScreenResult']['root']['Screen']){
-        screen = result['soap:Envelope']['soap:Body']['ShowTimeByDateAndScreenResponse']['ShowTimeByDateAndScreenResult']['root']['Screen'];
+
+        if (!Array.isArray(result['soap:Envelope']['soap:Body']['ShowTimeByDateAndScreenResponse']['ShowTimeByDateAndScreenResult']['root']['Screen'])) {
+          screen.push(result['soap:Envelope']['soap:Body']['ShowTimeByDateAndScreenResponse']['ShowTimeByDateAndScreenResult']['root']['Screen']);
+        }else{
+          screen = result['soap:Envelope']['soap:Body']['ShowTimeByDateAndScreenResponse']['ShowTimeByDateAndScreenResult']['root']['Screen'];
+        }
+        
       }
       
-
     } catch (error) {
 
       console.error('Error al llamar al método SOAP:', error);
