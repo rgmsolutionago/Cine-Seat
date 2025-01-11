@@ -43,6 +43,8 @@ export class SeatsComponent extends LoadingComponent {
 
   ScheduleDate: any = "";
 
+  intervalId: any;
+
   constructor(
     private soapClient: SoapClientService,
     private route: ActivatedRoute,
@@ -63,9 +65,9 @@ export class SeatsComponent extends LoadingComponent {
 
     this.route.paramMap.subscribe((params) => {
       this.MovieId = params.get("movie");
-      console.log(this.MovieId);
+      // console.log(this.MovieId);
       this.ScheduleId = params.get("schedule");
-      console.log(this.ScheduleId);
+      // console.log(this.ScheduleId);
       this.ScheduleDate = params.get("date");
     });
 
@@ -76,7 +78,7 @@ export class SeatsComponent extends LoadingComponent {
   async DataPeli() {
     const movie = await this.soapClient.getMovies();
 
-    console.log("movie", movie);
+    // console.log("movie", movie);
 
     var peliculas: any = [];
 
@@ -135,11 +137,13 @@ export class SeatsComponent extends LoadingComponent {
     await this.filterShows();
     await this.DataSeats();
 
-    setInterval(async () => {
-      this.now = new Date();
-      await this.filterShows();
-      await this.DataSeats();
-    }, 5000);
+    // setInterval(async () => {
+    //   this.now = new Date();
+    //   await this.filterShows();
+    //   await this.DataSeats();
+    // }, 1000);
+
+    this.startInterval();
   }
 
   filterShows() {
@@ -390,5 +394,27 @@ export class SeatsComponent extends LoadingComponent {
 
   goBack() {
     this.router.navigate(["/home"]);
+  }
+
+  startInterval() {
+
+    this.intervalId = setInterval(async () => {
+
+      this.now = new Date();
+      await this.filterShows();
+      await this.DataSeats();
+
+    }, 1000);
+  }
+
+  stopInterval() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
+
+  ngOnDestroy() {
+    console.log('Componente Home destruido.');
+    this.stopInterval();
   }
 }

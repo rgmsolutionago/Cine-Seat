@@ -174,7 +174,7 @@ export class HomeComponent extends LoadingComponent {
 
       let shows_array = [];
 
-      console.log(screen.Show);
+      // console.log(screen.Show);
 
       if(Array.isArray(screen.Show)){
         shows_array = screen.Show;
@@ -461,7 +461,7 @@ export class HomeComponent extends LoadingComponent {
 
     filtro.forEach((movie: any) => {
 
-      console.log(movie);
+      // console.log(movie);
 
       const show = movie;
 
@@ -640,7 +640,7 @@ export class HomeComponent extends LoadingComponent {
   async ValSession() {
     const userSession = localStorage.getItem('userSession');
 
-    console.log("userSession", userSession?.trim());
+    // console.log("userSession", userSession?.trim());
 
     if (!userSession || userSession.trim() == '') {
       return false;
