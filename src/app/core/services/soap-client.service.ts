@@ -224,7 +224,12 @@ export class SoapClientService {
       // console.log(result);
 
       if(result['soap:Envelope']['soap:Body']['ShowTimeByDateAndMovieResponse']['ShowTimeByDateAndMovieResult']['root']['Show']){
-        show = result['soap:Envelope']['soap:Body']['ShowTimeByDateAndMovieResponse']['ShowTimeByDateAndMovieResult']['root']['Show'];
+
+        if (!Array.isArray(result['soap:Envelope']['soap:Body']['ShowTimeByDateAndMovieResponse']['ShowTimeByDateAndMovieResult']['root']['Show'])) {
+          show.push(result['soap:Envelope']['soap:Body']['ShowTimeByDateAndMovieResponse']['ShowTimeByDateAndMovieResult']['root']['Show']);
+        }else{
+          show = result['soap:Envelope']['soap:Body']['ShowTimeByDateAndMovieResponse']['ShowTimeByDateAndMovieResult']['root']['Show'];
+        }
       }
       
 

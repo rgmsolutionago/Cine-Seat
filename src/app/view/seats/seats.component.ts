@@ -137,7 +137,7 @@ export class SeatsComponent extends LoadingComponent {
 
     await Promise.all(promises);
 
-    this.filterShows();
+    await this.filterShows();
     await this.DataSeats();
 
     setInterval(async () => {
@@ -158,6 +158,8 @@ export class SeatsComponent extends LoadingComponent {
     let relevantShow: any = {};
 
     if (movie) {
+
+      console.log("movie---", movie);
       relevantShow = movie.Show.find((show: any) => {
         const startTime = new Date(show.StartDate);
         const endTime = new Date(show.EndDate);
@@ -178,7 +180,7 @@ export class SeatsComponent extends LoadingComponent {
         show.Progress = this.calculateProgress(startTime, endTime);
         show.Starts = this.convertMinutesAndHours(starts);
 
-        console.log(show);
+        console.log("show--", show);
         return (
           // (this.now >= startTime && this.now < endThreshold) || // Ya comenzó
           // (this.now >= endThreshold && this.now <= endTime) || // Terminando
