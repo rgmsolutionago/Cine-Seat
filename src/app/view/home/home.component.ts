@@ -165,16 +165,17 @@ export class HomeComponent extends LoadingComponent {
 
   }
 
-  async getCurrentOrUpcomingShows(shows: any[], marginMinutes: number = 15) {
+  async getCurrentOrUpcomingShows(shows: any[]) {
 
     let now = new Date();
     const result: any = {};
+    this.movie_times = [];
 
     const promises = shows.map(async (screen: any) => {
 
       let shows_array = [];
 
-      console.log("array", Array.isArray(screen.Show));
+      console.log(screen.Show);
 
       if(Array.isArray(screen.Show)){
         shows_array = screen.Show;
@@ -239,7 +240,6 @@ export class HomeComponent extends LoadingComponent {
       IsSold: result[key].show.Habilitadas == result[key].show.Seats
     }));
 
-    console.log("showsArray", showsArray);
     return showsArray;
   }
 
@@ -581,8 +581,6 @@ export class HomeComponent extends LoadingComponent {
 
       this.movie_screen = this.movie_screen_original;
 
-      console.log("movie screen:", this.movie_screen);
-
       await this.FilterMovie();
 
       this.updateTimes();
@@ -713,12 +711,19 @@ export class HomeComponent extends LoadingComponent {
   async FilterMovie() {
 
     let now = new Date();
-    const marginMinutes = 15;
     const result: any = {};
     
     const promises = this.screen.map(async (screen: any) => {
 
-      await Promise.all(screen.Show.map(async (show: any) => {
+      let shows_array = [];
+
+      if(Array.isArray(screen.Show)){
+        shows_array = screen.Show;
+      }else{
+        shows_array.push(screen.Show);
+      }
+
+      await Promise.all(shows_array.map(async (show: any) => {
 
         const timeStr = `${screen.ScheduleDate.slice(0, 4)}-${screen.ScheduleDate.slice(4, 6)}-${screen.ScheduleDate.slice(6, 8)}T${show.StartTime}`;
 
