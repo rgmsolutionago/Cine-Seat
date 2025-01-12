@@ -151,18 +151,18 @@
 .noSold{
   overflow: hidden;
 }
-/* .noSold .text-sala::before{
+.noSold .text-sala::before{
   content: "";
   position: absolute;
   width: 15px;
   height: 15px;
-  background-image: url('/assets/icons/rivet-icons_caution.svg');
+  background-image: url('assets/icons/rivet-icons_caution.svg');
   background-size: cover;
   top: 6px;
   left: 0px;
-} */
+}
 
-.noSold .text-sala::before {
+/* .noSold .text-sala::before {
   content: '';
   position: absolute;
   width: 15px;
@@ -171,7 +171,7 @@
   background-size: cover;
   top: 6px;
   left: 0px;
-}
+} */
 
 .noSold .text-sala{
   color: rgba(255, 124, 124, 1);
