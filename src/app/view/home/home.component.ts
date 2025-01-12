@@ -89,7 +89,7 @@ export class HomeComponent extends LoadingComponent {
       console.log(this.config);  // Accede a la configuración cargada
 
       if (this.config) {
-        console.log('Configuración cargada en El componente:',  this.config);
+        console.log('Configuración cargada en El componente Icono home:',  this.config);
         // Inyectar baseUrl como variable CSS
         document.documentElement.style.setProperty('--base-url', this.config.baseUrl);
       }
