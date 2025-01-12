@@ -42,7 +42,9 @@ export class SidebarMenuComponent {
 
   home() {
     // Redirigir directamente a la URL externa
-    this.router.navigate([`${this.config.baseUrl}/dashboard`]);
+    console.log(`URL: Home` + `${this.config.baseUrl}/dashboard`);
+    // this.router.navigate([`${this.config.baseUrl}/dashboard`]);
+    this.router.navigate(['/dashboard']);
 
   }
   

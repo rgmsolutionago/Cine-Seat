@@ -1,6 +1,6 @@
 {
     "/cswstrans": {
-      "target": "http://atmcinestar.sytes.net",
+      "target": "http://gestion.jiiff.com",
       "secure": false,
       "changeOrigin": true,
       "logLevel": "debug"
