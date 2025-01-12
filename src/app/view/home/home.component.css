@@ -157,7 +157,7 @@
   position: absolute;
   width: 15px;
   height: 15px;
-  background-image: url('cine-butacas/assets/icons/rivet-icons_caution.svg');
+  background-image: url('/assets/icons/rivet-icons_caution.svg');
   background-size: cover;
   top: 6px;
   left: 0px;
