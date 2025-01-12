@@ -673,6 +673,7 @@ export class HomeComponent extends LoadingComponent {
     this.toStart = [];
     this.inProgress = [];
     this.toFinish = [];
+    this.filterTime = false;
 
     this.isPast = false;
     this.now = new Date(`${newDate.year}-${newDate.month < 10 ? "0" + newDate.month : newDate.month}-${newDate.day < 10 ? "0" + newDate.day : newDate.day}T00:00:00`);

@@ -250,7 +250,9 @@
                   </div>
                   
                   <div class="cont-inf position-absolute">
-                    <span class="text-sala">{{movie.ScreenName}}</span>
+                    <span class="text-sala">
+                      <img src="/assets/icons/rivet-icons_caution.svg" alt="" *ngIf="movie.IsSold"> {{movie.ScreenName}}
+                    </span>
                     <span class="text-movie">{{movie.Title}}</span>
                     <span class="text-hora">Hora {{movie.StartTime}}</span>
                   </div>
