@@ -71,7 +71,7 @@ export class SeatsComponent extends LoadingComponent {
     const sessionValid = await this.ValSession();
 
     if (!sessionValid) {
-      this.router.navigate([`${this.config.baseUrl}/login`]);
+      this.router.navigate(['/login']);
       return;
     }
 
@@ -114,7 +114,7 @@ export class SeatsComponent extends LoadingComponent {
       }, 200);
 
       setTimeout(() => {
-        this.router.navigate([`${this.config.baseUrl}/dashboard`]);
+        this.router.navigate(['/dashboard']);
       }, 300);
 
       return;
@@ -407,7 +407,7 @@ export class SeatsComponent extends LoadingComponent {
   }
 
   goBack() {
-    this.router.navigate([`${this.config.baseUrl}/dashboard`]);
+    this.router.navigate(['/dashboard']);
   }
 
   startInterval() {

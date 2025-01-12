@@ -83,7 +83,8 @@ export class LoginComponent {
     localStorage.setItem('userSession', JSON.stringify(res.data));
     setTimeout(() => {
       console.log(`Aqui login 2` + `${this.config.baseUrl}/dashboard`); // Agregar este log para confirmar
-      this.router.navigate([`${this.config.baseUrl}/dashboard`]);
+      // this.router.navigate([`${this.config.baseUrl}/dashboard`]);
+      this.router.navigate(['/dashboard']);
   } , 500);
 
   }

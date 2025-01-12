@@ -92,7 +92,7 @@ export class HomeComponent extends LoadingComponent {
     const sessionValid = await this.ValSession();
 
     if (!sessionValid) {
-      this.router.navigate([`${environment.baseUrl}/login`]);
+      this.router.navigate(['/login']);
       return;
   }
 

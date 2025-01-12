@@ -42,13 +42,14 @@ export class SidebarMenuComponent {
 
   home() {
     // Redirigir directamente a la URL externa
-    window.location.href = 'http://gestion.jiiff.com/cine-butacas/home';
+    this.router.navigate([`${this.config.baseUrl}/dashboard`]);
+
   }
   
   logout() {
     // Redirigir directamente a la URL externa
     // window.location.href = 'http://gestion.jiiff.com/cine-butacas/login';
-     this.router.navigate([`${this.config.baseUrl}/dashboard`]);
+     this.router.navigate([`${this.config.baseUrl}/login`]);
   }
 
 }
