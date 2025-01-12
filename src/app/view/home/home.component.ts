@@ -189,7 +189,7 @@ export class HomeComponent extends LoadingComponent {
 
       let shows_array = [];
 
-      console.log("array", Array.isArray(screen.Show));
+      // console.log("array", Array.isArray(screen.Show));
 
       if(Array.isArray(screen.Show)){
         shows_array = screen.Show;
@@ -254,7 +254,7 @@ export class HomeComponent extends LoadingComponent {
       IsSold: result[key].show.Habilitadas == result[key].show.Seats
     }));
 
-    console.log("showsArray", showsArray);
+    // console.log("showsArray", showsArray);
     return showsArray;
   }
 
@@ -477,7 +477,7 @@ export class HomeComponent extends LoadingComponent {
 
     filtro.forEach((movie: any) => {
 
-      console.log(movie);
+      // console.log(movie);
 
       const show = movie;
 
@@ -592,6 +592,8 @@ export class HomeComponent extends LoadingComponent {
 
       this.screen = await this.soapClient.getScreen(this.formatDateToString(this.now));
 
+      console.log("this.screen", this.screen);
+
       this.movie_screen_original = await this.getCurrentOrUpcomingShows(this.screen);
 
       this.movie_screen = this.movie_screen_original;
@@ -680,6 +682,7 @@ export class HomeComponent extends LoadingComponent {
     this.inProgress = [];
     this.toFinish = [];
     this.filterTime = false;
+    this.dateTime = "";
 
     this.isPast = false;
     this.now = new Date(`${newDate.year}-${newDate.month < 10 ? "0" + newDate.month : newDate.month}-${newDate.day < 10 ? "0" + newDate.day : newDate.day}T00:00:00`);
@@ -697,7 +700,7 @@ export class HomeComponent extends LoadingComponent {
 
     this.screen = await this.soapClient.getScreen(this.formatDateToString(this.now));
 
-    console.log(this.screen);
+    // console.log(this.screen);
 
     this.movie_screen_original = await this.getCurrentOrUpcomingShows(this.screen);
 
@@ -729,7 +732,6 @@ export class HomeComponent extends LoadingComponent {
   async FilterMovie() {
 
     let now = new Date();
-    const marginMinutes = 15;
     const result: any = {};
     
     const promises = this.screen.map(async (screen: any) => {
@@ -755,8 +757,7 @@ export class HomeComponent extends LoadingComponent {
         const movie = filteredMovies[0];
 
         const endTime = new Date(startTime.getTime() + parseInt(filteredMovies[0].TotalRuntime) * 60000);
-        // const marginStartTime = new Date(startTime.getTime() - marginMinutes * 60000);
-
+  
         if (this.dateTime) {
 
           if (this.dateTime == show.StartTime) {
@@ -791,7 +792,7 @@ export class HomeComponent extends LoadingComponent {
     });
 
     await Promise.all(promises);
-    // console.log(result);
+    console.log(result);
 
     // Convertir el resultado a un array
     const showsArray = Object.keys(result).map(key => ({

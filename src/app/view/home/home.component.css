@@ -151,15 +151,22 @@
 .noSold{
   overflow: hidden;
 }
-.noSold .text-sala::before{
+/* .noSold .text-sala::before{
   content: "";
   position: absolute;
   width: 15px;
   height: 15px;
-  background-image: url('/cine-butacas/assets/icons/rivet-icons_caution.svg');
+  background-image: url('./assets/icons/rivet-icons_caution.svg');
   background-size: cover;
   top: 6px;
   left: 0px;
+} */
+
+.imgWarning{
+  position: relative;
+  top: -1px;
+  width: 14px;
+  height: 14px;
 }
 
 .noSold .text-sala{
