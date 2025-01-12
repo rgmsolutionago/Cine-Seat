@@ -177,6 +177,7 @@ export class HomeComponent extends LoadingComponent {
 
     let now = new Date();
     const result: any = {};
+    this.movie_times = [];
 
     const promises = shows.map(async (screen: any) => {
 
