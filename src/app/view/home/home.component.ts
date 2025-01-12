@@ -94,7 +94,7 @@ export class HomeComponent extends LoadingComponent {
         document.documentElement.style.setProperty('--base-url', this.config.baseUrl);
       }
     });
-
+ 
     const sessionValid = await this.ValSession();
 
     if (!sessionValid) {
