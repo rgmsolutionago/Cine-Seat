@@ -87,6 +87,12 @@ export class HomeComponent extends LoadingComponent {
     this.configService.configValue$.subscribe((data) => {
       this.config = data;
       console.log(this.config);  // Accede a la configuración cargada
+
+      if (this.config) {
+        console.log('Configuración cargada en El componente:',  this.config);
+        // Inyectar baseUrl como variable CSS
+        document.documentElement.style.setProperty('--base-url', this.config.baseUrl);
+      }
     });
 
     const sessionValid = await this.ValSession();
