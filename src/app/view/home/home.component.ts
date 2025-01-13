@@ -736,7 +736,15 @@ export class HomeComponent extends LoadingComponent {
     
     const promises = this.screen.map(async (screen: any) => {
 
-      await Promise.all(screen.Show.map(async (show: any) => {
+      let shows_array = [];
+
+      if(Array.isArray(screen.Show)){
+        shows_array = screen.Show;
+      }else{
+        shows_array.push(screen.Show);
+      }
+
+      await Promise.all(shows_array.map(async (show: any) => {
 
         const timeStr = `${screen.ScheduleDate.slice(0, 4)}-${screen.ScheduleDate.slice(4, 6)}-${screen.ScheduleDate.slice(6, 8)}T${show.StartTime}`;
 
