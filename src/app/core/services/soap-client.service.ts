@@ -341,14 +341,18 @@ export class SoapClientService {
 
       const seatsDistribution = result['soap:Envelope']['soap:Body']['GetSeatsv2Response']['GetSeatsv2Result']['root']['Distribution'];
 
-      let zone;
-
       if(Array.isArray(seatsDistribution.Zones.Zone)){
-        zone = seatsDistribution.Zones.Zone[0];
+        // console.log(seatsDistribution.Zones.Zone);
+        // seats = seatsDistribution.Zones.Zone[0].Seats.Seat;
+        seatsDistribution.Zones.Zone.forEach((zone: any) => {
+          if (zone.Seats && Array.isArray(zone.Seats.Seat)) {
+            seats = seats.concat(zone.Seats.Seat);
+          }
+        });
+
       }else{
-        zone = seatsDistribution.Zones.Zone;
+        seats = seatsDistribution.Zones.Zone.Seats.Seat;
       }
-      seats = zone.Seats.Seat
       
     } catch (error) {
 
