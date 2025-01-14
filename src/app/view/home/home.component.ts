@@ -625,7 +625,7 @@ export class HomeComponent extends LoadingComponent {
       // console.log("inProgress", this.inProgress);
       // console.log("toFinish", this.toFinish);
 
-    }, 1000);
+    }, 5000);
   }
 
   stopInterval() {

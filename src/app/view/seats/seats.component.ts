@@ -418,7 +418,7 @@ export class SeatsComponent extends LoadingComponent {
       await this.filterShows();
       await this.DataSeats();
 
-    }, 1000);
+    }, 5000);
   }
 
   stopInterval() {
