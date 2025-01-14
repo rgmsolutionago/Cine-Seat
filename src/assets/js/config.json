@@ -1,12 +1,12 @@
 {
-    "baseUrl": "http://gestion.jiiff.com/cine-butacas",
-    "TheatreId": 201,
-    "WorkStation": 1,
-    "Colors": {
-      "primary": "",
-      "secondary": ""
-    },
-    "Logo": "",
-    "Info": "http://gestion.jiiff.com/cswsinfo/info.asmx?wsdl",
-    "Trans": "http://gestion.jiiff.com/cswstranspromo/trans.asmx?wsdl"
-  }
+  "baseUrl": "http://jiiff.com/cine-butacas",
+  "TheatreId": 201,
+  "WorkStation": 1,
+  "Colors": {
+    "primary": "",
+    "secondary": ""
+  },
+  "Logo": "",
+  "Info": "http://gestion.jiiff.com/cswsinfo/info.asmx?wsdl",
+  "Trans": "http://gestion.jiiff.com/cswstranspromo/trans.asmx?wsdl"
+}
