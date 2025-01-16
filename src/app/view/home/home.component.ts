@@ -495,9 +495,7 @@ export class HomeComponent extends LoadingComponent {
       } else if (this.date >= endThreshold && this.date <= endTime) {
         // Por terminar
         this.toFinish.push(movie);
-      }
-
-      if (this.isPast) {
+      }else if (this.isPast) {
         this.toStart.push(movie);
       }
 
